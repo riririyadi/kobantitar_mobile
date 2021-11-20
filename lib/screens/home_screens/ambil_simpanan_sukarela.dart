@@ -110,6 +110,11 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                         padding: EdgeInsets.symmetric(
                             horizontal: 30.0, vertical: 20.0),
                         decoration: BoxDecoration(
+                          /** @change Background Image */
+                          image: DecorationImage(
+                            image: AssetImage('assets/bg-penarikan-simpanan.png'),
+                            fit: BoxFit.cover
+                            ),
                           border: Border(
                             top: BorderSide(
                                 color: Theme.of(context).dividerColor),

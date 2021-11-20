@@ -59,10 +59,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                   borderRadius: BorderRadius.circular(12.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
+                      color: const Color(0x967A2121),
                       blurRadius: 5.0,
                       spreadRadius: 1.0,
-                      offset: Offset(0.0, 5.0), // shadow direction: bottom
+                      offset: Offset(0.0, 6.0), // shadow direction: bottom
                     )
                   ],
                 ),
@@ -83,10 +83,11 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
+                              /** @Change text color  */
                               Text(
                                 '40128',
                                 style: TextStyle(
-                                  color: Colors.grey[400],
+                                  color: Colors.white38,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -117,10 +118,11 @@ class _HomeWidgetState extends State<HomeWidget> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
+                            /** @Change text color  */
                             Text(
                               'TOTAL SIMPANAN',
                               style: TextStyle(
-                                color: Colors.grey[400],
+                                color: Colors.white38,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 10.0,
                               ),
@@ -329,30 +331,41 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                   SizedBox(height: 16.0),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    /** @change horizontal padding set zero */
+                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
                     child: Column(
                       children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Informasi terbaru'),
-                              Text(
-                                'Lihat Semua',
-                                style: TextStyle(
-                                  color: Color(0xff9A3A3A),
-                                  fontWeight: FontWeight.w600,
+                        /** @change Added horiontal padding for header */
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Informasi terbaru'),
+                                Text(
+                                  'Lihat Semua',
+                                  style: TextStyle(
+                                    color: Color(0xff9A3A3A),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                            ]),
+                              ]),
+                        ),
                         SizedBox(
                           height: 100,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: 3,
                             itemBuilder: (context, index) {
+                              
                               return Container(
                                 margin: EdgeInsets.only(
-                                    top: 8, bottom: 8, right: 10),
+                                  /** @change left margin for first item only */
+                                  left: index == 0 ? 16 : 0,
+                                  top: 8,
+                                  bottom: 8,
+                                  right: 10,
+                                ),
                                 width: MediaQuery.of(context).size.width / 1.5,
                                 height: 80,
                                 decoration: BoxDecoration(

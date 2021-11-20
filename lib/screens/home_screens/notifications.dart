@@ -82,12 +82,21 @@ class _NotificationsState extends State<Notifications> {
                               children: [
                                 Text(
                                     "Permohonan Transaksi Logam Mulai Anda Diterima"),
+                                
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Icon(Icons.lock_clock),
+                                    /** @Change iconData, color & size  */
+                                    Icon(Icons.access_time,
+                                        size: 12.0, color: Colors.black45),
+                                    /** @Change add padding  */
+                                    Padding(
+                                        padding: EdgeInsets.only(right: 4.0)),
+                                    /** @Change text color  */
                                     Text("19 November 2021 17:02",
-                                        style: TextStyle(fontSize: 12.0))
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            color: Colors.black45))
                                   ],
                                 )
                               ],
