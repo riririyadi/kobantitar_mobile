@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/signup_controller.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/data_pribadi.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pendaftaran_sukses.dart';
 
@@ -16,7 +17,10 @@ class DaftarAkunBaru extends StatefulWidget {
 }
 
 class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
-  int _step = 0;
+  final SignUpController controller = Get.put(SignUpController());
+
+  int _step = 3;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,9 +185,12 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                       child: GestureDetector(
                         onTap: () {
                           if (_step < 3) {
-                            setState(() {
-                              _step += 1;
-                            });
+                            if (controller.dataPribadiFormKey.currentState!
+                                .validate()) {
+                              setState(() {
+                                _step += 1;
+                              });
+                            }
                           } else {
                             Get.to(() => PendaftaranSukses());
                           }

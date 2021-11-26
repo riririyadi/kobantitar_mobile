@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kobantitar_mobile">
+    package="com.brainy.kobantitar">
    <application
         android:label="kobantitar_mobile"
         android:icon="@mipmap/ic_launcher">
