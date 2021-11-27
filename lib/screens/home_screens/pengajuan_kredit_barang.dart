@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/kredit_barang_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_motor.dart';
 
 class PengajuanKreditBarang extends StatefulWidget {
@@ -10,6 +11,8 @@ class PengajuanKreditBarang extends StatefulWidget {
 }
 
 class _PengajuanKreditBarangState extends State<PengajuanKreditBarang> {
+  final KreditBarangController controller = Get.put(KreditBarangController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

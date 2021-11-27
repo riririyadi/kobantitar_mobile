@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/home_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/home_page.dart';
 import 'package:kobantitar_mobile/screens/kontak_screens/kontak_widget.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_widget.dart';

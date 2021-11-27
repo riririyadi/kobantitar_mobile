@@ -77,6 +77,7 @@ class _DataPribadiState extends State<DataPribadi> {
                   onTap: () {
                     setState(() {
                       jkel = "PRIA";
+                      controller.jenisKelaminController.text = "PRIA";
                     });
                   },
                   child: Container(
@@ -108,6 +109,7 @@ class _DataPribadiState extends State<DataPribadi> {
                   onTap: () {
                     setState(() {
                       jkel = "WANITA";
+                      controller.jenisKelaminController.text = "WANITA";
                     });
                   },
                   child: Container(
@@ -188,7 +190,7 @@ class _DataPribadiState extends State<DataPribadi> {
               decoration: InputDecoration(
                 helperText: ' ',
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                    EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -212,10 +214,8 @@ class _DataPribadiState extends State<DataPribadi> {
           ),
           SizedBox(height: 5.0),
           Container(
-            height: 40,
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-            ),
+            height: 50,
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 1.0),
               borderRadius: BorderRadius.circular(10),
@@ -223,10 +223,17 @@ class _DataPribadiState extends State<DataPribadi> {
             child: Obx(() {
               if (controller.list.isNotEmpty) {
                 return DropdownButtonHideUnderline(
-                  child: DropdownButton(
+                  child: DropdownButtonFormField(
+                    decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent))),
                     value: value,
+                    validator: (value) =>
+                        value == null ? 'Instansi tidak boleh kosong' : null,
                     onChanged: (value) => setState(() {
                       this.value = value.toString();
+                      controller.instansiController.text =
+                          (controller.list.indexOf(value) + 1).toString();
                     }),
                     items: controller.list.map((item) {
                       return DropdownMenuItem(

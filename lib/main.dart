@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
-import 'package:kobantitar_mobile/screens/auth_screens/halaman_pin.dart';
-import 'package:kobantitar_mobile/screens/home_screen.dart';
-import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
-import 'package:kobantitar_mobile/screens/home_screens/simpanan_pokok.dart';
-import 'package:kobantitar_mobile/screens/home_screens/simpanan_sukarela.dart';
-import 'package:kobantitar_mobile/screens/home_screens/simpanan_wajib.dart';
+import 'package:get_storage/get_storage.dart';
+
 import 'package:kobantitar_mobile/screens/splash_screen.dart';
-import 'package:kobantitar_mobile/screens/home_screens/total_simpanan.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   runApp(const KobantitarApp());
 }
 

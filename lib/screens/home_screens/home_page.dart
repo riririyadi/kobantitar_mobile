@@ -1,13 +1,14 @@
 import "package:flutter/material.dart";
+import 'package:kobantitar_mobile/controllers/home_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart.dart';
 import 'package:kobantitar_mobile/screens/home_screens/laporan_keuangan.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_lain.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_transaksi_logam_mulia.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simulasi_shu.dart';
-import 'package:kobantitar_mobile/screens/home_screens/total_simpanan.dart';
+import 'package:kobantitar_mobile/screens/home_screens/detail_simpanan.dart';
 import 'package:get/get.dart';
-
+import 'package:intl/intl.dart';
 import 'notifications.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -18,6 +19,10 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  final HomeController controller = Get.put(HomeController());
+
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -76,21 +81,29 @@ class _HomeWidgetState extends State<HomeWidget> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'RIZQI MULYANA',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                              Obx(() {
+                                if (controller.isLoaded.value) {
+                                  return Text('${controller.me.nama}',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                      ));
+                                } else {
+                                  return Text("data");
+                                }
+                              }),
                               /** @Change text color  */
-                              Text(
-                                '40128',
-                                style: TextStyle(
-                                  color: Colors.white38,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                              Obx(() {
+                                if (controller.isLoaded.value) {
+                                  return Text('${controller.me.nomorAnggota}',
+                                      style: TextStyle(
+                                        color: Colors.white38,
+                                        fontWeight: FontWeight.w600,
+                                      ));
+                                } else {
+                                  return Text("data");
+                                }
+                              }),
                             ],
                           ),
                           Container(
@@ -127,19 +140,27 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 fontSize: 10.0,
                               ),
                             ),
-                            Text(
-                              'RP 100.000.000',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18.0,
-                              ),
-                            ),
+                            Obx(() {
+                              if (controller.isSimpananLoaded.value) {
+                                return Text(
+                                  'RP ${currencyFormatter.format(controller.simpanan.total)}',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 18.0,
+                                  ),
+                                );
+                              } else {
+                                return Text("Nominal");
+                              }
+                            }),
                             SizedBox(
                               height: 5.0,
                             ),
                             GestureDetector(
-                              onTap: () => Get.to(() => TotalSimpanan()),
+                              onTap: () => Get.to(
+                                () => DetailSimpanan(),
+                              ),
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 5.0),
@@ -357,7 +378,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                             scrollDirection: Axis.horizontal,
                             itemCount: 3,
                             itemBuilder: (context, index) {
-                              
                               return Container(
                                 margin: EdgeInsets.only(
                                   /** @change left margin for first item only */

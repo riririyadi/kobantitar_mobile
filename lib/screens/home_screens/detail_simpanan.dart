@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/controllers/detail_simpanan_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simpanan_pokok.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simpanan_sukarela.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simpanan_wajib.dart';
 
-class TotalSimpanan extends StatefulWidget {
-  const TotalSimpanan({Key? key}) : super(key: key);
+class DetailSimpanan extends StatefulWidget {
+  const DetailSimpanan({Key? key}) : super(key: key);
 
   @override
-  _TotalSimpananState createState() => _TotalSimpananState();
+  _DetailSimpananState createState() => _DetailSimpananState();
 }
 
-class _TotalSimpananState extends State<TotalSimpanan> {
+class _DetailSimpananState extends State<DetailSimpanan> {
+  final DetailSimpananController controller =
+      Get.put(DetailSimpananController());
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,25 +74,31 @@ class _TotalSimpananState extends State<TotalSimpanan> {
                             fontSize: 10.0),
                       ),
                       SizedBox(height: 10.0),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Rp  ',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.0),
-                          ),
-                          Text(
-                            '100.000.000',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 24.0),
-                          ),
-                        ],
-                      ),
+                      Obx(() {
+                        if (controller.isSimpananLoaded.value) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Rp  ',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.0),
+                              ),
+                              Text(
+                                '${currencyFormatter.format(controller.simpanan.total)}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 24.0),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Text("Halo");
+                        }
+                      }),
                     ],
                   ),
                 ),
@@ -181,13 +192,26 @@ class _TotalSimpananState extends State<TotalSimpanan> {
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
-                                                Text(
-                                                  "1.000.000",
-                                                  style: TextStyle(
-                                                      fontSize: 24.0,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
+                                                Obx(() {
+                                                  if (controller
+                                                      .isSimpananLoaded.value) {
+                                                    return Text(
+                                                      "${currencyFormatter.format(controller.simpanan.pokok)}",
+                                                      style: TextStyle(
+                                                          fontSize: 24.0,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    );
+                                                  } else {
+                                                    return Text(
+                                                      "Hallo",
+                                                      style: TextStyle(
+                                                          fontSize: 24.0,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    );
+                                                  }
+                                                })
                                               ],
                                             ),
                                           ],
@@ -301,13 +325,26 @@ class _TotalSimpananState extends State<TotalSimpanan> {
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
-                                                Text(
-                                                  "9.000.000",
-                                                  style: TextStyle(
-                                                      fontSize: 24.0,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
+                                                Obx(() {
+                                                  if (controller
+                                                      .isSimpananLoaded.value) {
+                                                    return Text(
+                                                      "${currencyFormatter.format(controller.simpanan.wajib)}",
+                                                      style: TextStyle(
+                                                          fontSize: 24.0,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    );
+                                                  } else {
+                                                    return Text(
+                                                      "Hallo",
+                                                      style: TextStyle(
+                                                          fontSize: 24.0,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    );
+                                                  }
+                                                })
                                               ],
                                             ),
                                           ],
@@ -416,13 +453,26 @@ class _TotalSimpananState extends State<TotalSimpanan> {
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
-                                                Text(
-                                                  "90.000.000",
-                                                  style: TextStyle(
-                                                      fontSize: 24.0,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
+                                                Obx(() {
+                                                  if (controller
+                                                      .isSimpananLoaded.value) {
+                                                    return Text(
+                                                      "${currencyFormatter.format(controller.simpanan.sukarela)}",
+                                                      style: TextStyle(
+                                                          fontSize: 24.0,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    );
+                                                  } else {
+                                                    return Text(
+                                                      "Hallo",
+                                                      style: TextStyle(
+                                                          fontSize: 24.0,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    );
+                                                  }
+                                                })
                                               ],
                                             ),
                                           ],

@@ -297,7 +297,7 @@ class _AkunWidgetState extends State<AkunWidget> {
                         ),
                         Spacer(),
                         GestureDetector(
-                            onTap: () => Get.to(() => LoginScreen()),
+                            onTap: () => Get.offAll(() => LoginScreen()),
                             child: Icon(Icons.login_outlined, size: 20.0)),
                       ],
                     ),

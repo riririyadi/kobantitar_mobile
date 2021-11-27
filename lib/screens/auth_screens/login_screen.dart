@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final loginFormKey = GlobalKey<FormState>();
   final nomorAnggotaFormKey = GlobalKey<FormState>();
   bool obscureValue = true;
+  String _jenisPendaftaran = "";
 
   final LoginController controller = Get.put(LoginController());
 
@@ -298,7 +299,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       /** @Change Gradient Button */
                       GradientButton(
-                        onTap: () => Get.off(() => DaftarAkunBaru()),
+                        onTap: () => Get.off(() => DaftarAkunBaru(),
+                            arguments: [null, "Anggota baru"]),
                         text: 'Daftar Anggota',
                         gradientColors: [Color(0xff56BC73), Color(0xff6CC585)],
                       ),
@@ -307,7 +309,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       /** @Change Gradient Button */
                       GradientButton(
-                        onTap: () => Get.off(() => DaftarAkunBaru()),
+                        onTap: () => Get.off(() => DaftarAkunBaru(),
+                            arguments: [null, "Non Anggota"]),
                         text: 'Non Anggota',
                         gradientColors: [Color(0xffDDDDDD), Color(0xffDDDDDD)],
                       ),

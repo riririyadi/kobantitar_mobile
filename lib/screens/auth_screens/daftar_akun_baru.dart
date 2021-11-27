@@ -19,7 +19,7 @@ class DaftarAkunBaru extends StatefulWidget {
 class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
   final SignUpController controller = Get.put(SignUpController());
 
-  int _step = 3;
+  int _step = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +192,7 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                               });
                             }
                           } else {
-                            Get.to(() => PendaftaranSukses());
+                            controller.signUp().then((value) => print(value));
                           }
                         },
                         child: Container(

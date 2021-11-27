@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/models/nomor_anggota.dart';
 import 'package:kobantitar_mobile/models/user_token.dart';
@@ -11,6 +12,8 @@ import 'package:kobantitar_mobile/screens/home_screen.dart';
 class LoginController extends GetxController {
   var isLoading = false.obs;
   var isLoading2 = false.obs;
+  final userData = GetStorage();
+  var jenisPendaftaran = "";
 
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -23,9 +26,6 @@ class LoginController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    nomorAnggotaController.dispose();
     super.onClose();
   }
 
@@ -39,7 +39,9 @@ class LoginController extends GetxController {
     );
 
     if (response.statusCode == 200) {
-      Get.to(() => HomeScreen());
+      final json = jsonDecode(response.body);
+      final token = json['data']['token'];
+      Get.to(() => HomeScreen(), arguments: [token]);
       return UserToken.fromJson(jsonDecode(response.body));
     } else {
       Get.snackbar("Login Failed", "Invalid email or address");
@@ -69,7 +71,8 @@ class LoginController extends GetxController {
       final json = jsonDecode(response.body);
       final data = json['data'];
       print(data);
-      Get.off(() => DaftarAkunBaru(), arguments: data);
+      Get.off(() => DaftarAkunBaru(),
+          arguments: [nomorAnggota.toString(), "Anggota lama"]);
       return null;
     } else if (response.statusCode == 402) {
       final json = jsonDecode(response.body);
