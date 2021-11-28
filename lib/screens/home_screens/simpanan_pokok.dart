@@ -1,5 +1,13 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import 'dart:convert';
+
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/models/simpanan_pokok.dart';
+import 'package:kobantitar_mobile/models/simpanan_sukarela.dart';
+import 'package:http/http.dart' as http;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SimpananPokok extends StatefulWidget {
   const SimpananPokok({Key? key}) : super(key: key);
@@ -9,6 +17,92 @@ class SimpananPokok extends StatefulWidget {
 }
 
 class _SimpananPokokState extends State<SimpananPokok> {
+  final userData = GetStorage();
+  late String token;
+  int _screen = 0;
+  int currentPage = 1;
+  late int totalPages;
+  int totalSimpananPokok = 0;
+  int numOfSimpananPokok = 0;
+  List<DataSimpananPokok> simpananPokoks = [];
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
+
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: true);
+
+  Future<bool> getSimpananPokokData({bool isRefresh = false}) async {
+    if (isRefresh) {
+      currentPage = 1;
+    }
+
+    final Uri uri = Uri.parse(
+        "https://backend.kobantitar.com/api/simpanan/pokok?page=$currentPage");
+
+    final response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      final list =
+          dataSimpananPokokFromJson(jsonEncode(json['data']['list']['data']));
+      if (isRefresh) {
+        simpananPokoks = list;
+      } else {
+        simpananPokoks.addAll(list);
+      }
+
+      totalPages =
+          (json['data']['list']['pagination']['object_count'] / 15).ceil();
+      numOfSimpananPokok = json['data']['list']['pagination']['object_count'];
+      totalSimpananPokok = json['data']['total'];
+
+      currentPage++;
+      setState(() {});
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void refreshData() async {
+    try {
+      await getSimpananPokokData(isRefresh: true);
+      setState(() {});
+      refreshController.refreshCompleted();
+    } catch (e) {
+      refreshController.refreshFailed();
+    }
+  }
+
+  void loadData() async {
+    try {
+      await getSimpananPokokData();
+
+      if (simpananPokoks.length >= numOfSimpananPokok) {
+        // stop gaada user di database .... sudah abis datanya
+        refreshController.loadNoData();
+      } else {
+        setState(() {});
+        refreshController.loadComplete();
+      }
+    } catch (e) {
+      refreshController.loadFailed();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    token = userData.read('token');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +173,7 @@ class _SimpananPokokState extends State<SimpananPokok> {
                                   fontSize: 14.0),
                             ),
                             Text(
-                              '100.000.000',
+                              '${currencyFormatter.format(totalSimpananPokok)}',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -115,7 +209,7 @@ class _SimpananPokokState extends State<SimpananPokok> {
                         child: Row(
                           children: [
                             Text(
-                              'Menampilkan 1 dari 1',
+                              'Menampilkan ${simpananPokoks.length} dari $numOfSimpananPokok',
                               style: TextStyle(fontSize: 12.0),
                             ),
                             Spacer(),
@@ -139,17 +233,40 @@ class _SimpananPokokState extends State<SimpananPokok> {
                         ),
                       ),
                       Flexible(
-                        child: ListView.builder(
-                            itemCount: 1,
+                        child: SmartRefresher(
+                          controller: refreshController,
+                          enablePullUp: true,
+                          onRefresh: refreshData,
+                          onLoading: loadData,
+                          footer: CustomFooter(
+                            height: 30,
+                            builder: (context, mode) {
+                              if (mode == LoadStatus.idle) {
+                                return Center(child: Text("Pull up to load"));
+                              } else if (mode == LoadStatus.loading) {
+                                return Center(
+                                  child: SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              } else if (mode == LoadStatus.failed) {
+                                return Center(child: Text("Load Failed!"));
+                              } else if (mode == LoadStatus.canLoading) {
+                                return Center(
+                                    child: Text("release to load more"));
+                              } else {
+                                return Center(child: Text("No more Data"));
+                              }
+                            },
+                          ),
+                          child: ListView.separated(
+                            itemCount: simpananPokoks.length,
                             itemBuilder: (context, index) {
+                              final simpananSukarela = simpananPokoks[index];
                               return Container(
                                 padding: EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color:
-                                              Theme.of(context).dividerColor)),
-                                ),
                                 child: Row(children: [
                                   Icon(Icons.verified_sharp,
                                       color: Colors.green),
@@ -161,14 +278,15 @@ class _SimpananPokokState extends State<SimpananPokok> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Simpanan Pokok",
+                                        "${simpananSukarela.text}",
                                         style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                       Text(
-                                        "06 Okt 2021",
+                                        "${simpananSukarela.date}",
                                         style: TextStyle(
                                           fontSize: 10.0,
                                         ),
@@ -176,16 +294,29 @@ class _SimpananPokokState extends State<SimpananPokok> {
                                     ],
                                   ),
                                   Spacer(),
-                                  Text(
-                                    "+Rp100.000",
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w600,
+                                  if (simpananSukarela.isPositive ?? true)
+                                    Text(
+                                      "+Rp${currencyFormatter.format(simpananSukarela.amount)}",
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    )
+                                  else
+                                    Text(
+                                      "-Rp${currencyFormatter.format(simpananSukarela.amount!.abs())}",
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
                                 ]),
                               );
-                            }),
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) => Divider(),
+                          ),
+                        ),
                       ),
                     ],
                   ),

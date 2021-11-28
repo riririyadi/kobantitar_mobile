@@ -63,7 +63,9 @@ class _PengajuanKreditBarangState extends State<PengajuanKreditBarang> {
                   decoration: BoxDecoration(
                     color: Color(0xfff8f8f8),
                   ),
-                  child: ListView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -76,125 +78,78 @@ class _PengajuanKreditBarangState extends State<PengajuanKreditBarang> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
-                        child: GestureDetector(
-                          onTap: () => Get.to(() => PengajuanMotorJenis()),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 5.0,
-                                  spreadRadius: 1.0,
-                                  offset: Offset(
-                                      0.0, 5.0), // shadow direction: bottom
-                                )
-                              ],
-                            ),
-                            padding: EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xfff0f0f0),
-                                    borderRadius: BorderRadius.circular(10),
+                      Flexible(
+                        child: Obx(() {
+                          if (controller.isLoading.value) {
+                            return Center(child: Text("Loading..."));
+                          } else {
+                            return ListView.builder(
+                              itemCount: controller.merkKendaraan!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final kendaraan =
+                                    controller.merkKendaraan![index];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                  child: GestureDetector(
+                                    onTap: () => Get.to(
+                                        () => PengajuanMotorJenis(),
+                                        arguments: kendaraan.id),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.1),
+                                            blurRadius: 5.0,
+                                            spreadRadius: 1.0,
+                                            offset: Offset(0.0,
+                                                5.0), // shadow direction: bottom
+                                          )
+                                        ],
+                                      ),
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 40,
+                                            width: 40,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xfff0f0f0),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            // child: kendaraan.iconUrl
+                                            //     ? Image.network(
+                                            //         "${kendaraan.iconUrl}",
+                                            //         fit: BoxFit.fill)
+                                            //     : Container(
+                                            //         decoration: BoxDecoration(
+                                            //           color: Color(0xfff0f0f0),
+                                            //           borderRadius:
+                                            //               BorderRadius.circular(10),
+                                            //         ),
+                                            //       ),
+                                          ),
+                                          SizedBox(
+                                            width: 16.0,
+                                          ),
+                                          Text(
+                                            "${kendaraan.brand}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 16.0,
-                                ),
-                                Text(
-                                  "Yamaha",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 5.0,
-                                spreadRadius: 1.0,
-                                offset: Offset(
-                                    0.0, 5.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          padding: EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff0f0f0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16.0,
-                              ),
-                              Text(
-                                "Honda",
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 5.0,
-                                spreadRadius: 1.0,
-                                offset: Offset(
-                                    0.0, 5.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          padding: EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff0f0f0),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16.0,
-                              ),
-                              Text(
-                                "Kawasaki",
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                        ),
+                                );
+                              },
+                            );
+                          }
+                        }),
                       ),
                     ],
                   ),

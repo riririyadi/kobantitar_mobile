@@ -205,6 +205,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () {
         if (loginFormKey.currentState!.validate()) {
+          print(controller.emailController.text);
+          print(controller.passwordController.text);
+
           // controller.printData(controller.emailController.text,
           //     controller.passwordController.text);
           controller.isLoading(true);
@@ -213,8 +216,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller.passwordController.text)
               .then((value) {
             controller.isLoading(false);
+            Get.to(() => HomeScreen());
           }).catchError((e) {
             print(e);
+            controller.isLoading(false);
           });
         }
       },

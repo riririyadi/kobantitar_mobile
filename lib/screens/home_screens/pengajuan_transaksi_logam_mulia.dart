@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/controllers/pengajuan_logam_mulia_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_transaksi_logam_mulia_form.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simpanan_pokok.dart';
-import 'package:kobantitar_mobile/screens/home_screens/simpanan_sukarela.dart';
+import 'package:kobantitar_mobile/screens/home_screens/simpanan_sukarela_screen.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simpanan_wajib.dart';
 
 class PengajuanTransaksiLogamMulia extends StatefulWidget {
@@ -15,6 +17,13 @@ class PengajuanTransaksiLogamMulia extends StatefulWidget {
 
 class _PengajuanTransaksiLogamMuliaState
     extends State<PengajuanTransaksiLogamMulia> {
+  final PengajuanLogamMuliaController controller =
+      Get.put(PengajuanLogamMuliaController());
+
+  String value = "";
+
+  int amount = 0;
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,105 +135,132 @@ class _PengajuanTransaksiLogamMuliaState
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width / 3.8,
-                              height: MediaQuery.of(context).size.width / 3.8,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "1",
-                                      style: TextStyle(
-                                          fontSize: 32.0,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      "Juta",
-                                      style: TextStyle(fontSize: 12),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  amount = 1;
+                                });
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 3.8,
+                                height: MediaQuery.of(context).size.width / 3.8,
+                                decoration: BoxDecoration(
+                                  color: amount == 1
+                                      ? Color(0xffEE6A6A)
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 5.0,
+                                      spreadRadius: 1.0,
+                                      offset: Offset(
+                                          0.0, 5.0), // shadow direction: bottom
                                     )
                                   ],
                                 ),
-                              ),
-                            ),
-                            Container(
-                              height: MediaQuery.of(context).size.width / 3.8,
-                              width: MediaQuery.of(context).size.width / 3.8,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "2",
-                                      style: TextStyle(
-                                          fontSize: 32.0,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      "Juta",
-                                      style: TextStyle(fontSize: 12),
-                                    )
-                                  ],
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "1",
+                                        style: TextStyle(
+                                            fontSize: 32.0,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        "Juta",
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width / 3.8,
-                              height: MediaQuery.of(context).size.width / 3.8,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "3",
-                                      style: TextStyle(
-                                          fontSize: 32.0,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      "Juta",
-                                      style: TextStyle(fontSize: 12),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  amount = 2;
+                                });
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.width / 3.8,
+                                width: MediaQuery.of(context).size.width / 3.8,
+                                decoration: BoxDecoration(
+                                  color: amount == 2
+                                      ? Color(0xffEE6A6A)
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 5.0,
+                                      spreadRadius: 1.0,
+                                      offset: Offset(
+                                          0.0, 5.0), // shadow direction: bottom
                                     )
                                   ],
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "2",
+                                        style: TextStyle(
+                                            fontSize: 32.0,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        "Juta",
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  amount = 3;
+                                });
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 3.8,
+                                height: MediaQuery.of(context).size.width / 3.8,
+                                decoration: BoxDecoration(
+                                  color: amount == 3
+                                      ? Color(0xffEE6A6A)
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 5.0,
+                                      spreadRadius: 1.0,
+                                      offset: Offset(
+                                          0.0, 5.0), // shadow direction: bottom
+                                    )
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "3",
+                                        style: TextStyle(
+                                            fontSize: 32.0,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        "Juta",
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -234,76 +270,97 @@ class _PengajuanTransaksiLogamMuliaState
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              height: MediaQuery.of(context).size.width / 3.8,
-                              width: MediaQuery.of(context).size.width / 3.8,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "5",
-                                      style: TextStyle(
-                                          fontSize: 32.0,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      "Juta",
-                                      style: TextStyle(fontSize: 12),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  amount = 5;
+                                });
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.width / 3.8,
+                                width: MediaQuery.of(context).size.width / 3.8,
+                                decoration: BoxDecoration(
+                                  color: amount == 5
+                                      ? Color(0xffEE6A6A)
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 5.0,
+                                      spreadRadius: 1.0,
+                                      offset: Offset(
+                                          0.0, 5.0), // shadow direction: bottom
                                     )
                                   ],
                                 ),
-                              ),
-                            ),
-                            Container(
-                              height: MediaQuery.of(context).size.width / 3.8,
-                              width: MediaQuery.of(context).size.width / 3.8,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "10",
-                                      style: TextStyle(
-                                          fontSize: 32.0,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      "Juta",
-                                      style: TextStyle(fontSize: 12),
-                                    )
-                                  ],
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "5",
+                                        style: TextStyle(
+                                            fontSize: 32.0,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        "Juta",
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                             GestureDetector(
                               onTap: () {
+                                setState(() {
+                                  amount = 10;
+                                });
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.width / 3.8,
+                                width: MediaQuery.of(context).size.width / 3.8,
+                                decoration: BoxDecoration(
+                                  color: amount == 10
+                                      ? Color(0xffEE6A6A)
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 5.0,
+                                      spreadRadius: 1.0,
+                                      offset: Offset(
+                                          0.0, 5.0), // shadow direction: bottom
+                                    )
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "10",
+                                        style: TextStyle(
+                                            fontSize: 32.0,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(
+                                        "Juta",
+                                        style: TextStyle(fontSize: 12),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  amount = 99;
+                                });
                                 _bottomSheet(context);
                               },
                               child: Container(
@@ -388,98 +445,131 @@ class _PengajuanTransaksiLogamMuliaState
     showModalBottomSheet(
         context: context,
         builder: (BuildContext c) {
-          return Container(
-            color: Color(0xff757575),
+          return SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
+              color: Color(0xff757575),
+              child: Container(
+                padding: EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
                 ),
-              ),
-              height: 220,
-              child: Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Nilai Logam Mulia',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text("Nilai dalam rupiah"),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 40,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                height: 220,
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        'Nilai Logam Mulia',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "*) Nilai maksimum Rp 20.000.000",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () =>
-                          Get.off(() => PengajuanTransaksiLogamMuliaForm()),
-                      child: Container(
-                        height: 48.0,
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text("Nilai dalam rupiah"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Container(
+                        height: 50,
+                        width: double.infinity,
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [Color(0xff851212), Color(0xffFF8A8A)]),
+                          border: Border.all(color: Colors.grey, width: 1.0),
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 1.0,
-                              spreadRadius: 0.0,
-                              offset:
-                                  Offset(0.0, 4.0), // shadow direction: bottom
-                            )
-                          ],
                         ),
-                        child: Center(
-                          child: Text(
-                            "Selanjutnya",
+                        child: Obx(() {
+                          if (controller.isLoading.value) {
+                            return Center(child: Text("Loading"));
+                          } else {
+                            return DropdownButtonHideUnderline(
+                              child: DropdownButtonFormField(
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.transparent))),
+                                value: value,
+                                validator: (value) => value == null
+                                    ? 'Instansi tidak boleh kosong'
+                                    : null,
+                                onChanged: (value) => setState(() {
+                                  this.value = value.toString();
+                                }),
+                                items: controller.amountList!.map((item) {
+                                  return DropdownMenuItem(
+                                      value: item.id,
+                                      child: Text(
+                                          currencyFormatter.format(item.amount),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12.0)));
+                                }).toList(),
+                              ),
+                            );
+                          }
+                        }),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "*) Nilai maksimum Rp 20.000.000",
                             style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
+                              fontSize: 12,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () =>
+                            Get.off(() => PengajuanTransaksiLogamMuliaForm()),
+                        child: Container(
+                          height: 48.0,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff851212), Color(0xffFF8A8A)]),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 1.0,
+                                spreadRadius: 0.0,
+                                offset: Offset(
+                                    0.0, 4.0), // shadow direction: bottom
+                              )
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Selanjutnya",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -1,112 +1,46 @@
 // To parse this JSON data, do
 //
-//     final SimpananSukarela = SimpananSukarelaFromJson(jsonString);
+//     final dataSimpananSukarela = dataSimpananSukarelaFromJson(jsonString);
 
 import 'dart:convert';
 
-SimpananSukarela SimpananSukarelaFromJson(String str) =>
-    SimpananSukarela.fromJson(json.decode(str));
+List<DataSimpananSukarela> dataSimpananSukarelaFromJson(String str) =>
+    List<DataSimpananSukarela>.from(
+        json.decode(str).map((x) => DataSimpananSukarela.fromJson(x)));
 
-String SimpananSukarelaToJson(SimpananSukarela data) =>
-    json.encode(data.toJson());
+String dataSimpananSukarelaToJson(List<DataSimpananSukarela> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class SimpananSukarela {
-  SimpananSukarela({
-    this.total,
-    this.list,
-  });
-
-  int? total;
-  ListClass? list;
-
-  factory SimpananSukarela.fromJson(Map<String, dynamic> json) =>
-      SimpananSukarela(
-        total: json["total"],
-        list: ListClass.fromJson(json["list"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "total": total,
-        "list": list!.toJson(),
-      };
-}
-
-class ListClass {
-  ListClass({
-    this.pagination,
-    this.data,
-  });
-
-  Pagination? pagination;
-  List<Datum>? data;
-
-  factory ListClass.fromJson(Map<String, dynamic> json) => ListClass(
-        pagination: Pagination.fromJson(json["pagination"]),
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "pagination": pagination!.toJson(),
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-      };
-}
-
-class Datum {
-  Datum({
+class DataSimpananSukarela {
+  DataSimpananSukarela({
     this.text,
-    this.amount,
+    this.description,
     this.date,
-    this.isPostive,
+    this.amount,
+    this.isPositive,
   });
 
   String? text;
+  dynamic? description;
+  DateTime? date;
   int? amount;
-  String? date;
-  bool? isPostive;
+  bool? isPositive;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory DataSimpananSukarela.fromJson(Map<String, dynamic> json) =>
+      DataSimpananSukarela(
         text: json["text"],
+        description: json["description"],
+        date: DateTime.parse(json["date"]),
         amount: json["amount"],
-        date: json["date"],
-        isPostive: json["is_postive"],
+        isPositive: json["is_positive"],
       );
 
   Map<String, dynamic> toJson() => {
         "text": text,
+        "description": description,
+        "date":
+            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
         "amount": amount,
-        "date": date,
-        "is_postive": isPostive,
-      };
-}
-
-class Pagination {
-  Pagination({
-    this.objectCount,
-    this.pageNumber,
-    this.pageSize,
-    this.pageCount,
-    this.hasMoreItem,
-  });
-
-  int? objectCount;
-  int? pageNumber;
-  int? pageSize;
-  int? pageCount;
-  bool? hasMoreItem;
-
-  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
-        objectCount: json["object_count"],
-        pageNumber: json["page_number"],
-        pageSize: json["page_size"],
-        pageCount: json["page_count"],
-        hasMoreItem: json["has_more_item"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "object_count": objectCount,
-        "page_number": pageNumber,
-        "page_size": pageSize,
-        "page_count": pageCount,
-        "has_more_item": hasMoreItem,
+        "is_positive": isPositive,
       };
 }

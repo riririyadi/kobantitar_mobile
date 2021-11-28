@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'package:kobantitar_mobile/controllers/kredit_barang_form_controller.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
 class PengajuanKreditMotorForm extends StatefulWidget {
@@ -11,9 +13,17 @@ class PengajuanKreditMotorForm extends StatefulWidget {
 }
 
 class _PengajuanKreditMotorFormState extends State<PengajuanKreditMotorForm> {
-  bool value = false;
+  final KreditBarangFormController controller =
+      Get.put(KreditBarangFormController());
+  late DateTime _selectedDate;
+  Task task = Task();
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _dateController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
 
-  get onChanged => null;
+  bool checkBoxValue = false;
+  var value;
+  get ondataChanged => null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,37 +167,83 @@ class _PengajuanKreditMotorFormState extends State<PengajuanKreditMotorForm> {
                               ],
                             ),
                             padding: EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Tenor",
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  height: 40,
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Tenor",
+                                    style: TextStyle(fontSize: 12.0),
+                                  ),
+                                  SizedBox(height: 16.0),
+                                  Text(
+                                    "Pembayaran dimulai tanggal",
+                                    style: TextStyle(fontSize: 12.0),
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    width: double.infinity,
+                                    padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
+                                    child: Obx(() {
+                                      if (controller.isLoading.value) {
+                                        return Center(child: Text("Loading"));
+                                      } else {
+                                        return DropdownButtonHideUnderline(
+                                          child: DropdownButtonFormField(
+                                            decoration: InputDecoration(
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color: Colors
+                                                                .transparent))),
+                                            validator: (value) => value == null
+                                                ? 'Instansi tidak boleh kosong'
+                                                : null,
+                                            onChanged: (value) =>
+                                                setState(() {}),
+                                            items:
+                                                controller.tenors!.map((item) {
+                                              return DropdownMenuItem(
+                                                  value: item.id,
+                                                  child: Text(item.caption!,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 12.0)));
+                                            }).toList(),
+                                          ),
+                                        );
+                                      }
+                                    }),
                                   ),
-                                ),
-                                SizedBox(height: 16.0),
-                                Text(
-                                  "Pembayaran dimulai tanggal",
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  height: 40,
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        suffixIcon: Icon(Icons.calendar_today)),
-                                  ),
-                                )
-                              ],
+                                  SizedBox(height: 10),
+                                  Text("Pembayaran dimulai tanggal",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 12.0)),
+                                  Container(
+                                    width: double.infinity,
+                                    height: 40,
+                                    child: GestureDetector(
+                                      onTap: () => _selectDate(context),
+                                      child: AbsorbPointer(
+                                        child: TextFormField(
+                                          controller: _dateController,
+                                          keyboardType: TextInputType.datetime,
+                                          decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              suffixIcon:
+                                                  Icon(Icons.calendar_today)),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -287,7 +343,8 @@ class _PengajuanKreditMotorFormState extends State<PengajuanKreditMotorForm> {
                               Expanded(
                                 flex: 1,
                                 child: Checkbox(
-                                    value: value, onChanged: onChanged),
+                                    value: checkBoxValue,
+                                    onChanged: ondataChanged),
                               ),
                               Expanded(
                                 flex: 5,
@@ -351,4 +408,26 @@ class _PengajuanKreditMotorFormState extends State<PengajuanKreditMotorForm> {
       ),
     );
   }
+
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2019, 8),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        var date =
+            "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+        _dateController.text = date;
+      });
+  }
+}
+
+class Task {
+  String? name;
+  DateTime? date;
+
+  Task({this.name, this.date});
 }

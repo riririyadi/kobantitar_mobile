@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:get/state_manager.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:kobantitar_mobile/ApiServices/service.dart';
 import 'package:kobantitar_mobile/models/me.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
-import 'package:kobantitar_mobile/services/service.dart';
 
 class HomeController extends GetxController {
   dynamic argumentData = Get.arguments;
@@ -12,15 +13,18 @@ class HomeController extends GetxController {
   var simpanan = Simpanan();
   var isLoaded = false.obs;
   var isSimpananLoaded = false.obs;
+  final userData = GetStorage();
+  String token = "";
 
   @override
   void onInit() {
-    print(argumentData);
-    Future.delayed(Duration(seconds: 2), () async {
-      if (argumentData != null) {
-        getMe();
-        getSimpanan();
-      }
+    token = userData.read("token");
+
+    Future.delayed(Duration(seconds: 2), () {
+      // 5 seconds over, navigate to Page2.
+
+      getMe();
+      getSimpanan();
     });
 
     super.onInit();
@@ -32,20 +36,21 @@ class HomeController extends GetxController {
   }
 
   void getMe() async {
-    final res = await Service.fetchMe(argumentData);
-    if (res != null) {
-      me = res;
+    final resMe = await Service.fetchMe(token);
+    if (resMe != null) {
+      me = resMe;
+      print(resMe);
       isLoaded(true);
     }
     // print(list);
   }
 
   void getSimpanan() async {
-    final res = await Service.fetchSimpanan(argumentData);
-    if (res != null) {
-      simpanan = res;
+    final resSimp = await Service.fetchSimpanan(token);
+    if (resSimp != null) {
+      simpanan = resSimp;
+      print(resSimp);
       isSimpananLoaded(true);
     }
-    // print(list);
   }
 }

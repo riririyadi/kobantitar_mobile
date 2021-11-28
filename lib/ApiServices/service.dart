@@ -5,7 +5,11 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/models/bank.dart';
 import 'package:kobantitar_mobile/models/instansi.dart';
+import 'package:kobantitar_mobile/models/jenis_kendaraan.dart';
+import 'package:kobantitar_mobile/models/kredit_kendaraan_configuration.dart';
+import 'package:kobantitar_mobile/models/logam_mulia_configuration.dart';
 import 'package:kobantitar_mobile/models/me.dart';
+import 'package:kobantitar_mobile/models/pengambilan_sukarela.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
 
 class Service extends GetConnect {
@@ -72,29 +76,36 @@ class Service extends GetConnect {
     }
   }
 
-  static Future<Me?> fetchMe(token) async {
-    final response = await client.get(
-      Uri.parse("${BASE_URL}/me"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final data = jsonEncode(json["data"]);
-      // print(data);
-      return meFromJson(data);
-    } else {
-      return null;
+  static Future<Me?> fetchMe(String token) async {
+    try {
+      final response = await client.get(
+        Uri.parse("${BASE_URL}/me"),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+        final data = jsonEncode(json["data"]);
+        print(data);
+        return meFromJson(data);
+      } else {
+        print("Ini me ${response.statusCode}");
+        return null;
+      }
+    } on HttpException catch (e) {
+      print(e);
     }
   }
 
-  static Future<Simpanan?> fetchSimpanan(token) async {
+  static Future<Simpanan?> fetchSimpanan(String token) async {
     final response = await client.get(
       Uri.parse("${BASE_URL}/simpanan"),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       },
     );
@@ -104,23 +115,62 @@ class Service extends GetConnect {
       // print(data);
       return simpananFromJson(data);
     } else {
+      print("Ini simp ${response.statusCode}");
       return null;
     }
   }
 
-  static Future<String?> fetchKendaraan(token) async {
+  static Future<KreditKendaraanConfiguration?>
+      fetchKreditKendaraanConfiguration(String token) async {
     final response = await client.get(
       Uri.parse("${BASE_URL}/pengajuan/kreditkendaraan/configuration"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = kreditKendaraanConfigurationFromJson(response.body);
+      // final data = jsonEncode(json["data"]);
+
+      return json;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<JenisKendaraan>?> fetchJenisKendaraanByBrandId(
+      String token, int id) async {
+    final response = await client.get(
+      Uri.parse("${BASE_URL}/pengajuan/kreditkendaraan/brand/$id"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       },
     );
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      // final data = jsonEncode(json["data"]);
-      print(json);
-      return json;
+      final data = jsonEncode(json['data']["products"]);
+      return jenisKendaraanFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<LogamMuliaConfiguration?> fetchPengajuanLogamMuliaConfig(
+      String token) async {
+    final response = await client.get(
+      Uri.parse("${BASE_URL}/pengajuan/logammulia/configuration"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return logamMuliaConfigurationFromJson(response.body);
     } else {
       return null;
     }

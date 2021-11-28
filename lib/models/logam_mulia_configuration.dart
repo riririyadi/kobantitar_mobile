@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+// To parse this JSON DataList, do
 //
 //     final logamMuliaConfiguration = logamMuliaConfigurationFromJson(jsonString);
 
@@ -12,6 +12,31 @@ String logamMuliaConfigurationToJson(LogamMuliaConfiguration data) =>
 
 class LogamMuliaConfiguration {
   LogamMuliaConfiguration({
+    this.success,
+    this.status,
+    this.data,
+  });
+
+  bool? success;
+  String? status;
+  DataList? data;
+
+  factory LogamMuliaConfiguration.fromJson(Map<String, dynamic> json) =>
+      LogamMuliaConfiguration(
+        success: json["success"],
+        status: json["status"],
+        data: DataList.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "status": status,
+        "data": data!.toJson(),
+      };
+}
+
+class DataList {
+  DataList({
     this.featuredAmountIds,
     this.amounts,
     this.tenors,
@@ -21,10 +46,9 @@ class LogamMuliaConfiguration {
   List<int>? featuredAmountIds;
   List<Amount>? amounts;
   List<Tenor>? tenors;
-  String? termsUrl;
+  dynamic termsUrl;
 
-  factory LogamMuliaConfiguration.fromJson(Map<String, dynamic> json) =>
-      LogamMuliaConfiguration(
+  factory DataList.fromJson(Map<String, dynamic> json) => DataList(
         featuredAmountIds:
             List<int>.from(json["featured_amount_ids"].map((x) => x)),
         amounts:
@@ -53,13 +77,13 @@ class Amount {
   int? id;
   int? amount;
   String? caption;
-  int? weight;
+  double? weight;
 
   factory Amount.fromJson(Map<String, dynamic> json) => Amount(
         id: json["id"],
         amount: json["amount"],
         caption: json["caption"],
-        weight: json["weight"],
+        weight: json["weight"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {

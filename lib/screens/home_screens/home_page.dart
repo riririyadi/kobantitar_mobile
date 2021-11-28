@@ -83,13 +83,14 @@ class _HomeWidgetState extends State<HomeWidget> {
                             children: [
                               Obx(() {
                                 if (controller.isLoaded.value) {
-                                  return Text('${controller.me.nama}',
+                                  return Text(
+                                      '${controller.me.nama!.toUpperCase()}',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
                                       ));
                                 } else {
-                                  return Text("data");
+                                  return Text("Loading...");
                                 }
                               }),
                               /** @Change text color  */
@@ -101,7 +102,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                         fontWeight: FontWeight.w600,
                                       ));
                                 } else {
-                                  return Text("data");
+                                  return Text("Loading...");
                                 }
                               }),
                             ],
@@ -151,7 +152,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   ),
                                 );
                               } else {
-                                return Text("Nominal");
+                                return Text("Loading...");
                               }
                             }),
                             SizedBox(

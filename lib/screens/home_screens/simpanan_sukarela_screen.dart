@@ -1,6 +1,15 @@
+import 'dart:convert';
+
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/models/simpanan_sukarela.dart';
 import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
+import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/screens/home_screens/history.dart';
+import 'package:kobantitar_mobile/screens/home_screens/pengambilan.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SimpananSukarela extends StatefulWidget {
   const SimpananSukarela({Key? key}) : super(key: key);
@@ -10,7 +19,15 @@ class SimpananSukarela extends StatefulWidget {
 }
 
 class _SimpananSukarelaState extends State<SimpananSukarela> {
+  final userData = GetStorage();
+  late String token;
   int _screen = 0;
+  int currentPage = 1;
+  late int totalPages;
+  int totalSimpananSukarela = 0;
+  int numOfSimpananSukarela = 0;
+  List<DataSimpananSukarela> simpananSukarelas = [];
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +99,7 @@ class _SimpananSukarelaState extends State<SimpananSukarela> {
                                   fontSize: 14.0),
                             ),
                             Text(
-                              '90.000.000',
+                              '${currencyFormatter.format(totalSimpananSukarela)}',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -201,99 +218,7 @@ class _SimpananSukarelaState extends State<SimpananSukarela> {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                color: Theme.of(context).dividerColor),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Menampilkan 12 dari 90',
-                              style: TextStyle(fontSize: 12.0),
-                            ),
-                            Spacer(),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.download,
-                                  color: Colors.green,
-                                  size: 12.0,
-                                ),
-                                Text(
-                                  'DOWNLOAD',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        child: ListView.builder(
-                            itemCount: 15,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                padding: EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color:
-                                              Theme.of(context).dividerColor)),
-                                ),
-                                child: Row(children: [
-                                  Icon(Icons.verified_sharp,
-                                      color: Colors.green),
-                                  SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Simpanan Wajib 2021",
-                                        style: TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        "06 Okt 2021",
-                                        style: TextStyle(
-                                          fontSize: 10.0,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    "+Rp100.000",
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ]),
-                              );
-                            }),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _screen == 0 ? History() : Pengambilan(),
               ),
             ],
           ),

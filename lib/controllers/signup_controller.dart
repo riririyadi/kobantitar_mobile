@@ -9,7 +9,7 @@ import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kobantitar_mobile/models/instansi.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pendaftaran_sukses.dart';
-import 'package:kobantitar_mobile/services/service.dart';
+import 'package:kobantitar_mobile/ApiServices/service.dart';
 
 class SignUpController extends GetxController {
   var ktpFileId = 0;

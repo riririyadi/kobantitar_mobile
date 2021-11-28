@@ -1,25 +1,25 @@
+// To parse this JSON data, do
+//
+//     final userToken = userTokenFromJson(jsonString);
+
+import 'dart:convert';
+
+UserToken userTokenFromJson(String str) => UserToken.fromJson(json.decode(str));
+
+String userTokenToJson(UserToken data) => json.encode(data.toJson());
+
 class UserToken {
-  final bool success;
-  final String status;
-  final DataToken data;
+  UserToken({
+    this.token,
+  });
 
-  UserToken({required this.success, required this.status, required this.data});
+  String? token;
 
-  factory UserToken.fromJson(Map<String, dynamic> json) {
-    return UserToken(
-      success: json['success'],
-      status: json['status'],
-      data: DataToken.fromJson(json['data']),
-    );
-  }
-}
+  factory UserToken.fromJson(Map<String, dynamic> json) => UserToken(
+        token: json["token"],
+      );
 
-class DataToken {
-  final String token;
-  final String role;
-
-  DataToken({required this.token, required this.role});
-  factory DataToken.fromJson(Map<String, dynamic> json) {
-    return DataToken(token: json['token'], role: json['role']);
-  }
+  Map<String, dynamic> toJson() => {
+        "token": token,
+      };
 }

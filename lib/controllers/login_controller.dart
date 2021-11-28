@@ -21,6 +21,8 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
+    emailController.text = "rizqymulyana@kobantitar.com";
+    passwordController.text = "rizqy1234";
     super.onInit();
   }
 
@@ -29,11 +31,12 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
-  Future<UserToken?> checkUser(String email, String password) async {
+  Future<String?> checkUser(String email, String password) async {
     final response = await http.post(
-      Uri.parse('https://backend.kobantitar.com/api/login'),
+      Uri.parse("https://backend.kobantitar.com/api/login"),
       headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
       body: jsonEncode(<String, String>{'email': email, 'password': password}),
     );
@@ -41,17 +44,13 @@ class LoginController extends GetxController {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       final token = json['data']['token'];
-      Get.to(() => HomeScreen(), arguments: [token]);
-      return UserToken.fromJson(jsonDecode(response.body));
+      print(token);
+      userData.write("token", token);
+      return token;
     } else {
-      Get.snackbar("Login Failed", "Invalid email or address");
+      print(response.statusCode);
       return null;
     }
-  }
-
-  void printData(String email, String password) {
-    print(email);
-    print(password);
   }
 
   Future<NomorAnggota?> checkNomorAnggota(int nomorAnggota) async {

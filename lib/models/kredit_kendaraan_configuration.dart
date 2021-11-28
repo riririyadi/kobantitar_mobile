@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+// To parse this JSON DataConfig, do
 //
 //     final kreditKendaraanConfiguration = kreditKendaraanConfigurationFromJson(jsonString);
 
@@ -12,25 +12,49 @@ String kreditKendaraanConfigurationToJson(KreditKendaraanConfiguration data) =>
 
 class KreditKendaraanConfiguration {
   KreditKendaraanConfiguration({
-    this.brands,
-    this.tenors,
-    this.termsUrl,
+    this.success,
+    this.status,
+    this.data,
   });
 
-  List<Brand>? brands;
-  List<Tenor>? tenors;
-  String? termsUrl;
+  bool? success;
+  String? status;
+  DataConfig? data;
 
   factory KreditKendaraanConfiguration.fromJson(Map<String, dynamic> json) =>
       KreditKendaraanConfiguration(
-        brands: List<Brand>.from(json["brands"].map((x) => Brand.fromJson(x))),
+        success: json["success"],
+        status: json["status"],
+        data: DataConfig.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "status": status,
+        "data": data!.toJson(),
+      };
+}
+
+class DataConfig {
+  DataConfig({
+    this.tenors,
+    this.brands,
+    this.termsUrl,
+  });
+
+  List<Tenor>? tenors;
+  List<Brand>? brands;
+  dynamic termsUrl;
+
+  factory DataConfig.fromJson(Map<String, dynamic> json) => DataConfig(
         tenors: List<Tenor>.from(json["tenors"].map((x) => Tenor.fromJson(x))),
+        brands: List<Brand>.from(json["brands"].map((x) => Brand.fromJson(x))),
         termsUrl: json["terms_url"],
       );
 
   Map<String, dynamic> toJson() => {
-        "brands": List<dynamic>.from(brands!.map((x) => x.toJson())),
         "tenors": List<dynamic>.from(tenors!.map((x) => x.toJson())),
+        "brands": List<dynamic>.from(brands!.map((x) => x.toJson())),
         "terms_url": termsUrl,
       };
 }
@@ -44,7 +68,7 @@ class Brand {
 
   int? id;
   String? brand;
-  String? iconUrl;
+  dynamic iconUrl;
 
   factory Brand.fromJson(Map<String, dynamic> json) => Brand(
         id: json["id"],

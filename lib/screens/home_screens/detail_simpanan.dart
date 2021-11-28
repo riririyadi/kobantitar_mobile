@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/detail_simpanan_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simpanan_pokok.dart';
-import 'package:kobantitar_mobile/screens/home_screens/simpanan_sukarela.dart';
+import 'package:kobantitar_mobile/screens/home_screens/simpanan_sukarela_screen.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simpanan_wajib.dart';
 
 class DetailSimpanan extends StatefulWidget {
@@ -204,7 +204,7 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                     );
                                                   } else {
                                                     return Text(
-                                                      "Hallo",
+                                                      "Loading...",
                                                       style: TextStyle(
                                                           fontSize: 24.0,
                                                           fontWeight:
@@ -337,7 +337,7 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                     );
                                                   } else {
                                                     return Text(
-                                                      "Hallo",
+                                                      "Loading...",
                                                       style: TextStyle(
                                                           fontSize: 24.0,
                                                           fontWeight:
@@ -465,7 +465,7 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                     );
                                                   } else {
                                                     return Text(
-                                                      "Hallo",
+                                                      "Loading...",
                                                       style: TextStyle(
                                                           fontSize: 24.0,
                                                           fontWeight:

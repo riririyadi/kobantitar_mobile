@@ -33,12 +33,12 @@ class KreditBarangConfiguration {
 
 class Tenor {
   Tenor({
-    this.id,
-    this.caption,
+    required this.id,
+    required this.caption,
   });
 
-  int? id;
-  String? caption;
+  int id;
+  String caption;
 
   factory Tenor.fromJson(Map<String, dynamic> json) => Tenor(
         id: json["id"],
