@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_form.dart';
+import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/controllers/pengajuan_kredit_barang_lain_controller.dart';
+import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_form.dart';
+import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_lain_form.dart';
 
 class PengajuanKreditBarangLain extends StatefulWidget {
   const PengajuanKreditBarangLain({Key? key}) : super(key: key);
@@ -11,12 +14,13 @@ class PengajuanKreditBarangLain extends StatefulWidget {
 }
 
 class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
-  bool value = false;
-
-  get onChanged => null;
+  final PengajuanKreditBarangLainController controller =
+      Get.put(PengajuanKreditBarangLainController());
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -85,51 +89,117 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                               ],
                             ),
                             padding: EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Jenis Barang",
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  height: 40,
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
+                            child: Form(
+                              key: controller.dataBarangFormKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Jenis Barang",
+                                    style: TextStyle(fontSize: 12.0),
+                                  ),
+                                  SizedBox(height: 5.0),
+                                  Container(
+                                    width: double.infinity,
+                                    height: 65,
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 12.0,
+                                      ),
+                                      controller:
+                                          controller.jenisBarangController,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 0.0),
+                                        helperText: ' ',
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == "") {
+                                          return 'Jenis barang tidak boleh kosong';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 16.0),
-                                Text(
-                                  "Tipe Barang",
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  height: 40,
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
+                                  SizedBox(height: 5.0),
+                                  Text(
+                                    "Tipe Barang",
+                                    style: TextStyle(fontSize: 12.0),
+                                  ),
+                                  SizedBox(height: 5.0),
+                                  Container(
+                                    width: double.infinity,
+                                    height: 65,
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 12.0,
+                                      ),
+                                      controller:
+                                          controller.tipeBarangController,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 0.0),
+                                        helperText: ' ',
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == "") {
+                                          return 'Tipe barang tidak boleh kosong';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 16.0),
-                                Text(
-                                  "Nilai Barang",
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  height: 40,
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                    ),
+                                  SizedBox(height: 5.0),
+                                  Text(
+                                    "Nilai Barang",
+                                    style: TextStyle(fontSize: 12.0),
                                   ),
-                                )
-                              ],
+                                  SizedBox(height: 5.0),
+                                  Container(
+                                    width: double.infinity,
+                                    height: 65,
+                                    child: TextFormField(
+                                      style: TextStyle(
+                                        fontSize: 12.0,
+                                      ),
+                                      controller:
+                                          controller.nilaiBarangController,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 0.0),
+                                        helperText: ' ',
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == "") {
+                                          return 'Nilai barang tidak boleh kosong';
+                                        } else if (int.parse(value!) <
+                                            controller.nilaiMinimal) {
+                                          return 'Nilai barang minimal Rp ${currencyFormatter.format(controller.nilaiMinimal)}';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -145,7 +215,22 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: GestureDetector(
-                    onTap: () => Get.to(() => PengajuanKreditMotorForm()),
+                    onTap: () {
+                      if (controller.dataBarangFormKey.currentState!
+                          .validate()) {
+                        Get.to(() => PengajuanKreditBarangLainForm(),
+                            arguments: [
+                              {
+                                "jenis_barang":
+                                    controller.jenisBarangController.text,
+                                "tipe_barang":
+                                    controller.tipeBarangController.text,
+                                "nilai_barang":
+                                    controller.nilaiBarangController.text
+                              }
+                            ]);
+                      }
+                    },
                     child: Container(
                       height: 48.0,
                       decoration: BoxDecoration(

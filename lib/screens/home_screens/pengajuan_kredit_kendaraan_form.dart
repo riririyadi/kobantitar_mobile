@@ -5,21 +5,20 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-import 'package:kobantitar_mobile/controllers/pengajuan_logam_mulia_form_controller.dart';
+import 'package:kobantitar_mobile/controllers/kredit_kendaraan_form_controller.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
-class PengajuanTransaksiLogamMuliaForm extends StatefulWidget {
-  const PengajuanTransaksiLogamMuliaForm({Key? key}) : super(key: key);
+class PengajuanKreditMotorForm extends StatefulWidget {
+  const PengajuanKreditMotorForm({Key? key}) : super(key: key);
 
   @override
-  _PengajuanTransaksiLogamMuliaFormState createState() =>
-      _PengajuanTransaksiLogamMuliaFormState();
+  _PengajuanKreditMotorFormState createState() =>
+      _PengajuanKreditMotorFormState();
 }
 
-class _PengajuanTransaksiLogamMuliaFormState
-    extends State<PengajuanTransaksiLogamMuliaForm> {
-  final PengajuanLogamMuliaFormController controller =
-      Get.put(PengajuanLogamMuliaFormController());
+class _PengajuanKreditMotorFormState extends State<PengajuanKreditMotorForm> {
+  final KreditBarangFormController controller =
+      Get.put(KreditBarangFormController());
   late DateTime _selectedDate;
   Task task = Task();
   final _formKey = GlobalKey<FormState>();
@@ -59,7 +58,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                           width: 5.0,
                         ),
                         Text(
-                          'Pengajuan Transaksi Logam Mulia',
+                          'Pengajuan Kredit Barang',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -113,8 +112,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                     height: 40,
                                     width: 40,
                                     child: Image(
-                                        image: AssetImage(
-                                            "assets/gold-ingots.png"),
+                                        image: AssetImage("assets/scooter.png"),
                                         fit: BoxFit.fill),
                                   ),
                                 ),
@@ -127,11 +125,11 @@ class _PengajuanTransaksiLogamMuliaFormState
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${controller.argumentData.caption} / ${controller.argumentData.weight} gram",
+                                    "${controller.argumentData.productName}",
                                     style: TextStyle(fontSize: 12.0),
                                   ),
                                   Text(
-                                    "RP ${currencyFormatter.format(controller.argumentData.amount)}",
+                                    "RP ${currencyFormatter.format(controller.argumentData.price)}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16.0),
@@ -235,11 +233,6 @@ class _PengajuanTransaksiLogamMuliaFormState
                                   Container(
                                     width: double.infinity,
                                     height: 40,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
                                     child: GestureDetector(
                                       onTap: () => _selectDate(context),
                                       child: AbsorbPointer(
@@ -251,27 +244,6 @@ class _PengajuanTransaksiLogamMuliaFormState
                                               suffixIcon:
                                                   Icon(Icons.calendar_today)),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text("Keperluan",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 12.0)),
-                                  Container(
-                                    width: double.infinity,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: TextFormField(
-                                      style: TextStyle(fontSize: 12.0),
-                                      controller:
-                                          controller.keperluanController,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
                                       ),
                                     ),
                                   )
@@ -444,10 +416,10 @@ class _PengajuanTransaksiLogamMuliaFormState
                                             )
                                           : Column(children: [
                                               Image.file(
-                                                  File(controller
-                                                      .selectedSelfieImagePath
-                                                      .value),
-                                                  height: 140.0),
+                                                File(controller
+                                                    .selectedSelfieImagePath
+                                                    .value),
+                                              ),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -523,13 +495,12 @@ class _PengajuanTransaksiLogamMuliaFormState
                         child: GestureDetector(
                           onTap: () {
                             // Get.to(() => PengajuanSukses());
-                            // controller
-                            //     .submitPengajuanLogamMulia()
-                            //     .then((value) {
-                            //   print(value);
-                            //   Get.to(() => PengajuanSukses());
-                            // }).printError();
-                            controller.printData();
+                            controller
+                                .submitPengajuanKreditKendaraan()
+                                .then((value) {
+                              print(value);
+                              Get.to(() => PengajuanSukses());
+                            }).printError();
                           },
                           child: Container(
                             height: 48.0,

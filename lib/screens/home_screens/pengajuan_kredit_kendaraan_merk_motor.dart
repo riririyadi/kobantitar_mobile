@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:kobantitar_mobile/controllers/pilih_jenis_motor_controller.dart';
-import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_form.dart';
+import 'package:kobantitar_mobile/controllers/kredit_kendaraan_controller.dart';
+import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_jenis_motor.dart';
 
-class PengajuanMotorJenis extends StatefulWidget {
-  const PengajuanMotorJenis({Key? key}) : super(key: key);
+class PengajuanKreditBarang extends StatefulWidget {
+  const PengajuanKreditBarang({Key? key}) : super(key: key);
 
   @override
-  _PengajuanMotorJenisState createState() => _PengajuanMotorJenisState();
+  _PengajuanKreditBarangState createState() => _PengajuanKreditBarangState();
 }
 
-class _PengajuanMotorJenisState extends State<PengajuanMotorJenis> {
-  final PilihJenisMotorController controller =
-      Get.put(PilihJenisMotorController());
-  final currencyFormatter = NumberFormat('#,##0', 'ID');
+class _PengajuanKreditBarangState extends State<PengajuanKreditBarang> {
+  final KreditKendaraanController controller =
+      Get.put(KreditKendaraanController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +65,7 @@ class _PengajuanMotorJenisState extends State<PengajuanMotorJenis> {
                     color: Color(0xfff8f8f8),
                   ),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
@@ -74,7 +74,7 @@ class _PengajuanMotorJenisState extends State<PengajuanMotorJenis> {
                         child: Container(
                           padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                           child: Text(
-                            "Pilih Jenis Motor",
+                            "Pilih Merk Motor",
                             style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -85,16 +85,17 @@ class _PengajuanMotorJenisState extends State<PengajuanMotorJenis> {
                             return Center(child: Text("Loading..."));
                           } else {
                             return ListView.builder(
-                              itemCount: controller.listKendaraan!.length,
+                              itemCount: controller.merkKendaraan!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 final kendaraan =
-                                    controller.listKendaraan![index];
+                                    controller.merkKendaraan![index];
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16.0, vertical: 8.0),
                                   child: GestureDetector(
                                     onTap: () => Get.to(
-                                        () => PengajuanKreditMotorForm()),
+                                        () => PengajuanMotorJenis(),
+                                        arguments: kendaraan.id),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
@@ -114,45 +115,33 @@ class _PengajuanMotorJenisState extends State<PengajuanMotorJenis> {
                                       child: Row(
                                         children: [
                                           Container(
-                                            height: 50,
-                                            width: 50,
+                                            height: 40,
+                                            width: 40,
                                             decoration: BoxDecoration(
                                               color: Color(0xfff0f0f0),
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
-                                            child: Center(
-                                              child: Container(
-                                                height: 40,
-                                                width: 40,
-                                                child: Image(
-                                                    image: AssetImage(
-                                                        "assets/scooter.png"),
-                                                    fit: BoxFit.fill),
-                                              ),
-                                            ),
+                                            // child: kendaraan.iconUrl
+                                            //     ? Image.network(
+                                            //         "${kendaraan.iconUrl}",
+                                            //         fit: BoxFit.fill)
+                                            //     : Container(
+                                            //         decoration: BoxDecoration(
+                                            //           color: Color(0xfff0f0f0),
+                                            //           borderRadius:
+                                            //               BorderRadius.circular(
+                                            //                   10),
+                                            //         ),
+                                            //       ),
                                           ),
                                           SizedBox(
                                             width: 16.0,
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "${kendaraan.productName}",
-                                                style:
-                                                    TextStyle(fontSize: 12.0),
-                                              ),
-                                              Text(
-                                                "RP ${currencyFormatter.format(kendaraan.price)}",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 16.0),
-                                              ),
-                                            ],
+                                          Text(
+                                            "${kendaraan.brand}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600),
                                           ),
                                         ],
                                       ),

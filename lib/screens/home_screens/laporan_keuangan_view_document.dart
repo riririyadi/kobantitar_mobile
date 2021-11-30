@@ -1,15 +1,26 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 class ViewDocument extends StatefulWidget {
-  const ViewDocument({Key? key}) : super(key: key);
+  final String? path;
+  const ViewDocument({Key? key, this.path}) : super(key: key);
 
   @override
   _ViewDocumentState createState() => _ViewDocumentState();
 }
 
 class _ViewDocumentState extends State<ViewDocument> {
+  final Completer<PDFViewController> _controller =
+      Completer<PDFViewController>();
+  int? pages = 0;
+  int? currentPage = 0;
+  bool isReady = false;
+  String errorMessage = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,11 +71,59 @@ class _ViewDocumentState extends State<ViewDocument> {
                   decoration: BoxDecoration(
                     color: Color(0xfff8f8f8),
                   ),
-                  child: ListView(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 16.0),
+                  child: Stack(
                     children: [
-                      Text("Laporan Bulanan Disini"),
+                      PDFView(
+                        filePath: widget.path,
+                        enableSwipe: true,
+                        swipeHorizontal: true,
+                        autoSpacing: false,
+                        pageFling: true,
+                        pageSnap: true,
+                        defaultPage: currentPage!,
+                        fitPolicy: FitPolicy.BOTH,
+                        preventLinkNavigation:
+                            false, // if set to true the link is handled in flutter
+                        onRender: (_pages) {
+                          setState(() {
+                            pages = _pages;
+                            isReady = true;
+                          });
+                        },
+                        onError: (error) {
+                          setState(() {
+                            errorMessage = error.toString();
+                          });
+                          print(error.toString());
+                        },
+                        onPageError: (page, error) {
+                          setState(() {
+                            errorMessage = '$page: ${error.toString()}';
+                          });
+                          print('$page: ${error.toString()}');
+                        },
+                        onViewCreated: (PDFViewController pdfViewController) {
+                          _controller.complete(pdfViewController);
+                        },
+                        onLinkHandler: (String? uri) {
+                          print('goto uri: $uri');
+                        },
+                        onPageChanged: (int? page, int? total) {
+                          print('page change: $page/$total');
+                          setState(() {
+                            currentPage = page;
+                          });
+                        },
+                      ),
+                      errorMessage.isEmpty
+                          ? !isReady
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Container()
+                          : Center(
+                              child: Text(errorMessage),
+                            )
                     ],
                   ),
                 ),

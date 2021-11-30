@@ -42,12 +42,13 @@ class DataConfig {
     this.termsUrl,
   });
 
-  List<Tenor>? tenors;
+  List<TenorConfig>? tenors;
   List<Brand>? brands;
   dynamic termsUrl;
 
   factory DataConfig.fromJson(Map<String, dynamic> json) => DataConfig(
-        tenors: List<Tenor>.from(json["tenors"].map((x) => Tenor.fromJson(x))),
+        tenors: List<TenorConfig>.from(
+            json["tenors"].map((x) => TenorConfig.fromJson(x))),
         brands: List<Brand>.from(json["brands"].map((x) => Brand.fromJson(x))),
         termsUrl: json["terms_url"],
       );
@@ -83,8 +84,8 @@ class Brand {
       };
 }
 
-class Tenor {
-  Tenor({
+class TenorConfig {
+  TenorConfig({
     this.id,
     this.caption,
   });
@@ -92,7 +93,7 @@ class Tenor {
   int? id;
   String? caption;
 
-  factory Tenor.fromJson(Map<String, dynamic> json) => Tenor(
+  factory TenorConfig.fromJson(Map<String, dynamic> json) => TenorConfig(
         id: json["id"],
         caption: json["caption"],
       );

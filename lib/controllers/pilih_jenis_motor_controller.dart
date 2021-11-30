@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:kobantitar_mobile/ApiServices/service.dart';
+import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/jenis_kendaraan.dart';
 
 class PilihJenisMotorController extends GetxController {

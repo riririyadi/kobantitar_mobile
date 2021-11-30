@@ -7,16 +7,21 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kobantitar_mobile/models/bank.dart';
 import 'package:kobantitar_mobile/models/instansi.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pendaftaran_sukses.dart';
-import 'package:kobantitar_mobile/ApiServices/service.dart';
+import 'package:kobantitar_mobile/api_services/service.dart';
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
 
 class SignUpController extends GetxController {
+  static var client = http.Client();
   var ktpFileId = 0;
   var selfieFileId = 0;
 
-  final list = [].obs;
-  final bankList = [].obs;
+  List<Instansi> instansis = [];
+  List<Bank> banks = [];
+  var isBankLoading = false.obs;
+  var isInstansiLoading = false.obs;
 
   final dataPribadiFormKey = GlobalKey<FormState>();
   final dataBankFormKey = GlobalKey<FormState>();
@@ -41,13 +46,6 @@ class SignUpController extends GetxController {
 
   @override
   void onInit() {
-    // Future.delayed(Duration(seconds: 5), () async {
-    //   if (argumentData != null) {
-    //     Get.snackbar("Hello", argumentData['message']);
-    //   }
-    // });
-    print(argumentData[1]);
-
     jenisKelaminController.text = "PRIA";
     getInstansi();
     getBank();
@@ -79,23 +77,26 @@ class SignUpController extends GetxController {
   }
 
   void getInstansi() async {
-    var instansis = await Service.fetchInstansi();
-    if (instansis != null) {
-      for (var i = 0; i < instansis.length; i++) {
-        list.add(instansis[i].name);
+    try {
+      isInstansiLoading(true);
+      var data = await Service.fetchInstansi();
+      if (data != null) {
+        instansis = data;
       }
+    } finally {
+      isInstansiLoading(false);
     }
   }
 
   void getBank() async {
-    var banks = await Service.fetchBank();
-    if (banks != null) {
-      // isLoaded = true.obs;
-      // instansi2.add(dataInstansi);
-      for (var i = 0; i < banks.length; i++) {
-        bankList.add(banks[i].name);
+    try {
+      isBankLoading(true);
+      var data = await Service.fetchBank();
+      if (data != null) {
+        banks = data;
       }
-      // print(bankList);
+    } finally {
+      isBankLoading(false);
     }
   }
 
@@ -103,10 +104,6 @@ class SignUpController extends GetxController {
     print(ktpFileId);
     print(selfieFileId);
   }
-
-  static var BASE_URL = "https://backend.kobantitar.com/api";
-
-  static var client = http.Client();
 
   var selectedSelfieImagePath = "".obs;
   var selectedSelfieImageSize = "".obs;
@@ -152,7 +149,7 @@ class SignUpController extends GetxController {
   Future<http.StreamedResponse> uploadImage(
       String file, String uploadContext) async {
     var uploadType = uploadContext;
-    var uri = Uri.parse("${BASE_URL}/upload");
+    var uri = Uri.parse("${config.BASE_URL}/upload");
     var request = http.MultipartRequest('POST', uri);
     request.files.add(await http.MultipartFile.fromPath("file", file));
     request.headers.addAll({"Content-type": "multipart/form-data"});
@@ -168,17 +165,15 @@ class SignUpController extends GetxController {
       } else {
         selfieFileId = fileId;
       }
-      // print(fileId);
       return response;
     } else {
-      // print(response.statusCode);
       return Future.error(response);
     }
   }
 
   Future<String?> signUp() async {
     final response = await http.post(
-      Uri.parse("${BASE_URL}/register"),
+      Uri.parse("${config.BASE_URL}/register"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -205,9 +200,8 @@ class SignUpController extends GetxController {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      print(json);
       Get.off(() => PendaftaranSukses());
-      return "Okee";
+      return "Success";
     } else {
       Get.snackbar("Sign Up Failed", "Invalid data");
       return null;

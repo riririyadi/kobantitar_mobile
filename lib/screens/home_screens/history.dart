@@ -4,6 +4,8 @@ import 'dart:convert';
 import "package:get/get.dart";
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/controllers/home_controller.dart';
+import 'package:kobantitar_mobile/controllers/simpanan_sukarela_controller.dart';
 import 'package:kobantitar_mobile/models/simpanan_sukarela.dart';
 import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
 import 'package:http/http.dart' as http;
@@ -17,12 +19,15 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
+  final SimpananSukarelaController controller =
+      Get.put(SimpananSukarelaController());
+
   final userData = GetStorage();
   late String token;
   int _screen = 0;
   int currentPage = 1;
   late int totalPages;
-  int totalSimpananSukarela = 0;
+
   int numOfSimpananSukarela = 0;
   List<DataSimpananSukarela> simpananSukarelas = [];
   final currencyFormatter = NumberFormat('#,##0', 'ID');
@@ -31,6 +36,7 @@ class _HistoryState extends State<History> {
       RefreshController(initialRefresh: true);
 
   Future<bool> getSimpananSukarelaData({bool isRefresh = false}) async {
+    controller.isLoading(true);
     if (isRefresh) {
       currentPage = 1;
     }
@@ -61,13 +67,15 @@ class _HistoryState extends State<History> {
           (json['data']['list']['pagination']['object_count'] / 15).ceil();
       numOfSimpananSukarela =
           json['data']['list']['pagination']['object_count'];
-      totalSimpananSukarela = json['data']['total'];
-
+      controller.totalSimpananSukarela = json['data']['total'];
+      print(controller.totalSimpananSukarela);
       currentPage++;
       setState(() {});
+      controller.isLoading(false);
 
       return true;
     } else {
+      controller.isLoading(false);
       return false;
     }
   }

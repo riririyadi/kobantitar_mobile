@@ -45,7 +45,7 @@ class DataList {
 
   List<int>? featuredAmountIds;
   List<Amount>? amounts;
-  List<Tenor>? tenors;
+  List<TenorLogamMulia>? tenors;
   dynamic termsUrl;
 
   factory DataList.fromJson(Map<String, dynamic> json) => DataList(
@@ -53,7 +53,8 @@ class DataList {
             List<int>.from(json["featured_amount_ids"].map((x) => x)),
         amounts:
             List<Amount>.from(json["amounts"].map((x) => Amount.fromJson(x))),
-        tenors: List<Tenor>.from(json["tenors"].map((x) => Tenor.fromJson(x))),
+        tenors: List<TenorLogamMulia>.from(
+            json["tenors"].map((x) => TenorLogamMulia.fromJson(x))),
         termsUrl: json["terms_url"],
       );
 
@@ -94,8 +95,8 @@ class Amount {
       };
 }
 
-class Tenor {
-  Tenor({
+class TenorLogamMulia {
+  TenorLogamMulia({
     this.id,
     this.caption,
   });
@@ -103,7 +104,8 @@ class Tenor {
   int? id;
   String? caption;
 
-  factory Tenor.fromJson(Map<String, dynamic> json) => Tenor(
+  factory TenorLogamMulia.fromJson(Map<String, dynamic> json) =>
+      TenorLogamMulia(
         id: json["id"],
         caption: json["caption"],
       );

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
-import 'package:kobantitar_mobile/ApiServices/service.dart';
+import 'package:kobantitar_mobile/api_services/service.dart';
 
 class DetailSimpananController extends GetxController {
   var simpanan = Simpanan();
@@ -22,6 +22,5 @@ class DetailSimpananController extends GetxController {
       simpanan = res;
       isSimpananLoaded(true);
     }
-    // print(list);
   }
 }

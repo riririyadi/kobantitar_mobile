@@ -1,10 +1,12 @@
 import "package:flutter/material.dart";
 import 'package:kobantitar_mobile/controllers/home_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart.dart';
+import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart_list_produk.dart';
 import 'package:kobantitar_mobile/screens/home_screens/laporan_keuangan.dart';
-import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang.dart';
+import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_merk_motor.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_lain.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_transaksi_logam_mulia.dart';
+import 'package:kobantitar_mobile/screens/home_screens/promo_kobmart.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simulasi_shu.dart';
 import 'package:kobantitar_mobile/screens/home_screens/detail_simpanan.dart';
 import 'package:get/get.dart';
@@ -54,138 +56,11 @@ class _HomeWidgetState extends State<HomeWidget> {
           top: 150,
         ),
         ListView(
-          padding: const EdgeInsets.symmetric(vertical: 80.0),
+          padding: controller.role == "ANGGOTA"
+              ? const EdgeInsets.only(top: 80, bottom: 80)
+              : const EdgeInsets.only(top: 100, bottom: 80),
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xff9A3A3A),
-                  borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0x967A2121),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0,
-                      offset: Offset(0.0, 6.0), // shadow direction: bottom
-                    )
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Obx(() {
-                                if (controller.isLoaded.value) {
-                                  return Text(
-                                      '${controller.me.nama!.toUpperCase()}',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                      ));
-                                } else {
-                                  return Text("Loading...");
-                                }
-                              }),
-                              /** @Change text color  */
-                              Obx(() {
-                                if (controller.isLoaded.value) {
-                                  return Text('${controller.me.nomorAnggota}',
-                                      style: TextStyle(
-                                        color: Colors.white38,
-                                        fontWeight: FontWeight.w600,
-                                      ));
-                                } else {
-                                  return Text("Loading...");
-                                }
-                              }),
-                            ],
-                          ),
-                          Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: Center(
-                                child: Container(
-                                  height: 45,
-                                  width: 45,
-                                  child: Image(
-                                    image: AssetImage(
-                                        'assets/kartu-anggota-qr.png'),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      SizedBox(height: 10.0),
-                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            /** @Change text color  */
-                            Text(
-                              'TOTAL SIMPANAN',
-                              style: TextStyle(
-                                color: Colors.white38,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 10.0,
-                              ),
-                            ),
-                            Obx(() {
-                              if (controller.isSimpananLoaded.value) {
-                                return Text(
-                                  'RP ${currencyFormatter.format(controller.simpanan.total)}',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18.0,
-                                  ),
-                                );
-                              } else {
-                                return Text("Loading...");
-                              }
-                            }),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            GestureDetector(
-                              onTap: () => Get.to(
-                                () => DetailSimpanan(),
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 5.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.4),
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: Text(
-                                  'LIHAT DETAIL',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 10.0,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ]),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            controller.role == "ANGGOTA" ? cardAnggota() : cardNonAnggota(),
             SizedBox(height: 14.0),
             Container(
               padding: EdgeInsets.only(top: 10.0),
@@ -203,152 +78,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                         horizontal: 0.0, vertical: 20.0),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () =>
-                                  Get.to(() => PengajuanTransaksiLogamMulia()),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 30.0,
-                                    width: 30.0,
-                                    child: Image(
-                                      image:
-                                          AssetImage('assets/gold-ingots.png'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.0),
-                                  Text(
-                                    'Transaksi\nLogam Mulia',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 9.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                _bottomSheet(context);
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 30.0,
-                                    width: 30.0,
-                                    child: Image(
-                                      image: AssetImage('assets/wallet.png'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.0),
-                                  Text(
-                                    'Kredit\nBarang',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 9.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => Get.to(() => SimulasiSHU()),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 30.0,
-                                    width: 30.0,
-                                    child: Image(
-                                      image: AssetImage(
-                                          'assets/point-of-service.png'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.0),
-                                  Text(
-                                    'Simulasi SHU',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 9.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => Get.to(() => LaporanKeuangan()),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 30.0,
-                                    width: 30.0,
-                                    child: Image(
-                                      image:
-                                          AssetImage('assets/presentation.png'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.0),
-                                  Text(
-                                    'Laporan\nKeuangan',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 9.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => Get.to(() => KobantitarMart()),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 30.0,
-                                    width: 30.0,
-                                    child: Image(
-                                      image: AssetImage('assets/store.png'),
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10.0),
-                                  Text(
-                                    'Kobantitar\nMart',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 9.0,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: controller.role == "ANGGOTA"
+                          ? menuAnggota()
+                          : menuNonAnggota(),
                     ),
                   ),
                   SizedBox(height: 16.0),
@@ -449,101 +181,207 @@ class _HomeWidgetState extends State<HomeWidget> {
                     ),
                   ),
                   SizedBox(height: 26.0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      children: [
-                        Row(
+                  Obx(() {
+                    if (controller.isKobmartLoading.value) {
+                      return Text("loading..");
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
                           children: [
-                            Text('Promo menarik'),
-                          ],
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 8),
-                          padding: EdgeInsets.all(20.0),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [Color(0xffFF3C3C), Color(0xffEDD715)]),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                            Row(
+                              children: [
+                                Text('Promo menarik'),
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 8),
+                              padding: EdgeInsets.all(20.0),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xffFF3C3C),
+                                      Color(0xffEDD715)
+                                    ]),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        "Promo Kobmart",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Promo Kobmart",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text("1-15 Sept 2021",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10.0),
+                                              textAlign: TextAlign.left),
+                                        ],
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(() => PromoKobmart(),
+                                              arguments: controller
+                                                  .kobmart.promoImageUrl);
+                                        },
+                                        child: Text(
+                                          'Lihat Semua',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 10.0,
+                                          ),
                                         ),
                                       ),
-                                      Text("1-15 Sept 2021",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10.0),
-                                          textAlign: TextAlign.left),
                                     ],
                                   ),
-                                  Text(
-                                    'Lihat Semua',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 10.0,
-                                    ),
+                                  SizedBox(
+                                    height: 30.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                4.2,
+                                        height: 150.0,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Image.network(
+                                                  "https://backend.kobantitar.com${controller.kobmart.promoProducts![0].imageUrl}"),
+                                              Text(
+                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![0].hargaPromo).toString()}",
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w600,
+                                                  )),
+                                              Text(
+                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![0].hargaAwal).toString()}",
+                                                  style: TextStyle(
+                                                    color: Colors.grey[400],
+                                                    fontSize: 12,
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                4.2,
+                                        height: 150.0,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Image.network(
+                                                  "https://backend.kobantitar.com${controller.kobmart.promoProducts![1].imageUrl}"),
+                                              Text(
+                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![1].hargaPromo).toString()}",
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w600,
+                                                  )),
+                                              Text(
+                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![1].hargaAwal).toString()}",
+                                                  style: TextStyle(
+                                                    color: Colors.grey[400],
+                                                    fontSize: 12,
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                4.2,
+                                        height: 150,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Image.network(
+                                                  "https://backend.kobantitar.com${controller.kobmart.promoProducts![2].imageUrl}"),
+                                              Text(
+                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![2].hargaPromo).toString()}",
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w600,
+                                                  )),
+                                              Text(
+                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![2].hargaAwal).toString()}",
+                                                  style: TextStyle(
+                                                    color: Colors.grey[400],
+                                                    fontSize: 12,
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 30.0,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 4.2,
-                                    height: 150.0,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 4.2,
-                                    height: 150.0,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 4.2,
-                                    height: 150,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  }),
                 ],
               ),
             ),
@@ -690,5 +528,434 @@ class _HomeWidgetState extends State<HomeWidget> {
             ),
           );
         });
+  }
+
+  Widget cardAnggota() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xff9A3A3A),
+          borderRadius: BorderRadius.circular(12.0),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x967A2121),
+              blurRadius: 5.0,
+              spreadRadius: 1.0,
+              offset: Offset(0.0, 6.0), // shadow direction: bottom
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Obx(() {
+                        if (controller.isLoaded.value) {
+                          return Text('${controller.me.nama!.toUpperCase()}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ));
+                        } else {
+                          return Text("Loading...");
+                        }
+                      }),
+                      /** @Change text color  */
+                      Obx(() {
+                        if (controller.isLoaded.value) {
+                          return Text('${controller.me.nomorAnggota}',
+                              style: TextStyle(
+                                color: Colors.white38,
+                                fontWeight: FontWeight.w600,
+                              ));
+                        } else {
+                          return Text("Loading...");
+                        }
+                      }),
+                    ],
+                  ),
+                  Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Container(
+                          height: 45,
+                          width: 45,
+                          child: Image(
+                            image: AssetImage('assets/kartu-anggota-qr.png'),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    /** @Change text color  */
+                    Text(
+                      'TOTAL SIMPANAN',
+                      style: TextStyle(
+                        color: Colors.white38,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10.0,
+                      ),
+                    ),
+                    Obx(() {
+                      if (controller.isSimpananLoaded.value) {
+                        return Text(
+                          'RP ${currencyFormatter.format(controller.simpanan.total)}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.0,
+                          ),
+                        );
+                      } else {
+                        return Text("Loading...");
+                      }
+                    }),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    GestureDetector(
+                      onTap: () => Get.to(
+                        () => DetailSimpanan(),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 5.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Text(
+                          'LIHAT DETAIL',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 10.0,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget cardNonAnggota() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xff9A3A3A),
+          borderRadius: BorderRadius.circular(12.0),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x967A2121),
+              blurRadius: 5.0,
+              spreadRadius: 1.0,
+              offset: Offset(0.0, 6.0), // shadow direction: bottom
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "SELAMAT DATANG,",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Obx(() {
+                        if (controller.isLoaded.value) {
+                          return Text(
+                            '${controller.me.nama!.toUpperCase()}',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          );
+                        } else {
+                          return Text("Loading...");
+                        }
+                      }),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget menuAnggota() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () => Get.to(() => PengajuanTransaksiLogamMulia()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 30.0,
+                  width: 30.0,
+                  child: Image(
+                    image: AssetImage('assets/gold-ingots.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Transaksi\nLogam Mulia',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () {
+              _bottomSheet(context);
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 30.0,
+                  width: 30.0,
+                  child: Image(
+                    image: AssetImage('assets/wallet.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Kredit\nBarang',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => Get.to(() => SimulasiSHU()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 30.0,
+                  width: 30.0,
+                  child: Image(
+                    image: AssetImage('assets/point-of-service.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Simulasi SHU',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => Get.to(() => LaporanKeuangan()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 30.0,
+                  width: 30.0,
+                  child: Image(
+                    image: AssetImage('assets/presentation.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Laporan\nKeuangan',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => Get.to(() => KobantitarMartListProduk()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 30.0,
+                  width: 30.0,
+                  child: Image(
+                    image: AssetImage('assets/store.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Kobantitar\nMart',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget menuNonAnggota() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: GestureDetector(
+            onTap: () => Get.to(() => PengajuanTransaksiLogamMulia()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 30.0,
+                  width: 30.0,
+                  child: Image(
+                    image: AssetImage('assets/gold-ingots.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Transaksi\nLogam Mulia',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: GestureDetector(
+            onTap: () {
+              _bottomSheet(context);
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 30.0,
+                  width: 30.0,
+                  child: Image(
+                    image: AssetImage('assets/wallet.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Kredit\nBarang',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: GestureDetector(
+            onTap: () => Get.to(() => KobantitarMartListProduk()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 30.0,
+                  width: 30.0,
+                  child: Image(
+                    image: AssetImage('assets/store.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  'Kobantitar\nMart',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 9.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

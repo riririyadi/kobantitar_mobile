@@ -1,46 +1,79 @@
 // To parse this JSON data, do
 //
-//     final kreditBarangConfiguration = kreditBarangConfigurationFromJson(jsonString);
+//     final barangLainConfig = barangLainConfigFromJson(jsonString);
 
 import 'dart:convert';
 
-KreditBarangConfiguration kreditBarangConfigurationFromJson(String str) =>
-    KreditBarangConfiguration.fromJson(json.decode(str));
+BarangLainConfig barangLainConfigFromJson(String str) =>
+    BarangLainConfig.fromJson(json.decode(str));
 
-String kreditBarangConfigurationToJson(KreditBarangConfiguration data) =>
+String barangLainConfigToJson(BarangLainConfig data) =>
     json.encode(data.toJson());
 
-class KreditBarangConfiguration {
-  KreditBarangConfiguration({
+class BarangLainConfig {
+  BarangLainConfig({
+    this.success,
+    this.status,
+    this.data,
+  });
+
+  bool? success;
+  String? status;
+  Data? data;
+
+  factory BarangLainConfig.fromJson(Map<String, dynamic> json) =>
+      BarangLainConfig(
+        success: json["success"],
+        status: json["status"],
+        data: Data.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "status": status,
+        "data": data!.toJson(),
+      };
+}
+
+class Data {
+  Data({
+    this.minPrice,
+    this.maxPrice,
     this.tenors,
     this.termsUrl,
   });
 
-  List<Tenor>? tenors;
-  String? termsUrl;
+  int? minPrice;
+  int? maxPrice;
+  List<TenorBarang>? tenors;
+  dynamic termsUrl;
 
-  factory KreditBarangConfiguration.fromJson(Map<String, dynamic> json) =>
-      KreditBarangConfiguration(
-        tenors: List<Tenor>.from(json["tenors"].map((x) => Tenor.fromJson(x))),
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        minPrice: json["min_price"],
+        maxPrice: json["max_price"],
+        tenors: List<TenorBarang>.from(
+            json["tenors"].map((x) => TenorBarang.fromJson(x))),
         termsUrl: json["terms_url"],
       );
 
   Map<String, dynamic> toJson() => {
+        "min_price": minPrice,
+        "max_price": maxPrice,
         "tenors": List<dynamic>.from(tenors!.map((x) => x.toJson())),
         "terms_url": termsUrl,
       };
 }
 
-class Tenor {
-  Tenor({
-    required this.id,
-    required this.caption,
+class TenorBarang {
+  TenorBarang({
+    this.id,
+    this.caption,
   });
 
-  int id;
-  String caption;
+  int? id;
+  String? caption;
 
-  factory Tenor.fromJson(Map<String, dynamic> json) => Tenor(
+  factory TenorBarang.fromJson(Map<String, dynamic> json) => TenorBarang(
         id: json["id"],
         caption: json["caption"],
       );

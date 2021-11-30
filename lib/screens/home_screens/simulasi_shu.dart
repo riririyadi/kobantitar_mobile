@@ -108,7 +108,10 @@ class _SimulasiSHUState extends State<SimulasiSHU> {
                                   height: 40,
                                   child: TextField(
                                     decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -123,7 +126,10 @@ class _SimulasiSHUState extends State<SimulasiSHU> {
                                   height: 40,
                                   child: TextField(
                                     decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
                                     ),
                                   ),
                                 ),

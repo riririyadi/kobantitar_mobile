@@ -1,5 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get/get.dart';
 import 'package:kobantitar_mobile/screens/home_screens/laporan_keuangan_view_document.dart';
 
@@ -20,6 +27,48 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
     'Mei 2019',
     'Juni 2019'
   ];
+
+  String pathPDF = "";
+  String landscapePathPdf = "";
+  String remotePDFpath = "";
+  String corruptedPathPDF = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    createFileOfPdfUrl().then((f) {
+      setState(() {
+        remotePDFpath = f.path;
+      });
+    });
+  }
+
+  Future<File> createFileOfPdfUrl() async {
+    Completer<File> completer = Completer();
+    print("Start download file from internet!");
+    try {
+      // "https://berlin2017.droidcon.cod.newthinking.net/sites/global.droidcon.cod.newthinking.net/files/media/documents/Flutter%20-%2060FPS%20UI%20of%20the%20future%20%20-%20DroidconDE%2017.pdf";
+      // final url = "https://pdfkit.org/docs/guide.pdf";
+      final url = "http://www.pdf995.com/samples/pdf.pdf";
+      final filename = url.substring(url.lastIndexOf("/") + 1);
+      var request = await HttpClient().getUrl(Uri.parse(url));
+      var response = await request.close();
+      var bytes = await consolidateHttpClientResponseBytes(response);
+      var dir = await getApplicationDocumentsDirectory();
+      print("Download files");
+      print("${dir.path}/$filename");
+      File file = File("${dir.path}/$filename");
+
+      await file.writeAsBytes(bytes, flush: true);
+      completer.complete(file);
+    } catch (e) {
+      throw Exception('Error parsing asset file!');
+    }
+
+    return completer.future;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,7 +252,11 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
                   ),
                   Spacer(),
                   GestureDetector(
-                    onTap: () => Get.off(() => ViewDocument()),
+                    onTap: () {
+                      if (remotePDFpath.isNotEmpty) {
+                        Get.off(() => ViewDocument(), arguments: remotePDFpath);
+                      }
+                    },
                     child: Container(
                       height: 48.0,
                       decoration: BoxDecoration(
@@ -258,7 +311,7 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
               height: 260,
               child: Column(
                 children: [
-                  Text("Pilih Tahun",
+                  Text("Pilih Bulan",
                       style: TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 16.0)),
                   SizedBox(height: 20.0),

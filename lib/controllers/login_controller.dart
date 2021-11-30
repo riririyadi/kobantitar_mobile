@@ -5,9 +5,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/models/nomor_anggota.dart';
-import 'package:kobantitar_mobile/models/user_token.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/daftar_akun_baru.dart';
-import 'package:kobantitar_mobile/screens/home_screen.dart';
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -33,7 +32,7 @@ class LoginController extends GetxController {
 
   Future<String?> checkUser(String email, String password) async {
     final response = await http.post(
-      Uri.parse("https://backend.kobantitar.com/api/login"),
+      Uri.parse("${config.BASE_URL}/login"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json"
@@ -44,19 +43,18 @@ class LoginController extends GetxController {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       final token = json['data']['token'];
-      print(token);
+      final role = json['data']['role'];
       userData.write("token", token);
+      userData.write("role", role);
       return token;
     } else {
-      print(response.statusCode);
       return null;
     }
   }
 
   Future<NomorAnggota?> checkNomorAnggota(int nomorAnggota) async {
     final response = await http.get(
-      Uri.parse(
-          "https://backend.kobantitar.com/api/register/nomor-anggota/${nomorAnggota}"),
+      Uri.parse("${config.BASE_URL}/register/nomor-anggota/${nomorAnggota}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -64,19 +62,17 @@ class LoginController extends GetxController {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       final data = jsonEncode(json['data']);
-      print(data);
+
       return nomorAnggotaFromJson(data);
     } else if (response.statusCode == 401) {
       final json = jsonDecode(response.body);
       final data = json['data'];
-      print(data);
       Get.off(() => DaftarAkunBaru(),
           arguments: [nomorAnggota.toString(), "Anggota lama"]);
       return null;
     } else if (response.statusCode == 402) {
       final json = jsonDecode(response.body);
       final data = json['data'];
-      print(data);
       Get.off(() => DaftarAkunBaru(), arguments: data);
       return null;
     } else {

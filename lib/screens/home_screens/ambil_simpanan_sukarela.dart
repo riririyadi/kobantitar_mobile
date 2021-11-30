@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kobantitar_mobile/controllers/ambil%20_simpanan_sukarela_controller.dart';
+import 'package:kobantitar_mobile/controllers/ambil_simpanan_sukarela_controller.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
 class AmbilSimpananSukarela extends StatefulWidget {
@@ -180,7 +180,7 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                   onTap: () {
                     if (controller.nominalFormKey.currentState!.validate()) {
                       controller
-                          .ajukanPengambilan(
+                          .postAjukanPengambilan(
                               int.parse(controller.nominalController.text))
                           .then((value) {
                         print(value);

@@ -221,31 +221,28 @@ class _DataPribadiState extends State<DataPribadi> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Obx(() {
-              if (controller.list.isNotEmpty) {
+              if (controller.isInstansiLoading.value) {
+                return Text("");
+              } else {
                 return DropdownButtonHideUnderline(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent))),
-                    value: value,
                     validator: (value) =>
                         value == null ? 'Instansi tidak boleh kosong' : null,
                     onChanged: (value) => setState(() {
-                      this.value = value.toString();
-                      controller.instansiController.text =
-                          (controller.list.indexOf(value) + 1).toString();
+                      controller.instansiController.text = value.toString();
                     }),
-                    items: controller.list.map((item) {
+                    items: controller.instansis.map((item) {
                       return DropdownMenuItem(
-                          value: item,
-                          child: Text(item,
+                          value: item.id,
+                          child: Text(item.name!,
                               style: TextStyle(
                                   color: Colors.black, fontSize: 12.0)));
                     }).toList(),
                   ),
                 );
-              } else {
-                return Text("Hallo");
               }
             }),
           ),
@@ -320,9 +317,4 @@ class _DataPribadiState extends State<DataPribadi> {
       ),
     );
   }
-
-  // DropdownMenuItem buildMenuItem(String item) => DropdownMenuItem(
-  //       value: item.toString(),
-  //       child: Text(item.toString()),
-  //     );
 }

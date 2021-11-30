@@ -35,7 +35,9 @@ class _DetailBankState extends State<DetailBank> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Obx(() {
-              if (controller.bankList.isNotEmpty) {
+              if (controller.isBankLoading.value) {
+                return Text("");
+              } else {
                 return DropdownButtonHideUnderline(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
@@ -44,23 +46,19 @@ class _DetailBankState extends State<DetailBank> {
                     validator: (value) =>
                         value == null ? 'Bank tidak boleh kosong' : null,
                     isExpanded: true,
-                    value: value,
                     onChanged: (value) => setState(() {
                       this.value = value.toString();
-                      controller.bankController.text =
-                          (controller.bankList.indexOf(value) + 1).toString();
+                      controller.bankController.text = value.toString();
                     }),
-                    items: controller.bankList.map((item) {
+                    items: controller.banks.map((item) {
                       return DropdownMenuItem(
-                          value: item,
-                          child: Text(item,
+                          value: item.id,
+                          child: Text(item.name!,
                               style: TextStyle(
                                   color: Colors.black, fontSize: 12.0)));
                     }).toList(),
                   ),
                 );
-              } else {
-                return Text("Hallo");
               }
             }),
           ),
@@ -120,7 +118,7 @@ class _DetailBankState extends State<DetailBank> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                labelText: 'Masukkan nama rekening',
+                labelText: 'Masukkan nama cabang',
               ),
               validator: (value) {
                 if (value == "") {

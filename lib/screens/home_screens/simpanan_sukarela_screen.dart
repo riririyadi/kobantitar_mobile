@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:get/get.dart";
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/controllers/simpanan_sukarela_controller.dart';
 import 'package:kobantitar_mobile/models/simpanan_sukarela.dart';
 import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
 import 'package:http/http.dart' as http;
@@ -19,14 +20,10 @@ class SimpananSukarela extends StatefulWidget {
 }
 
 class _SimpananSukarelaState extends State<SimpananSukarela> {
-  final userData = GetStorage();
-  late String token;
+  final SimpananSukarelaController controller =
+      Get.put(SimpananSukarelaController());
   int _screen = 0;
-  int currentPage = 1;
-  late int totalPages;
-  int totalSimpananSukarela = 0;
-  int numOfSimpananSukarela = 0;
-  List<DataSimpananSukarela> simpananSukarelas = [];
+
   final currencyFormatter = NumberFormat('#,##0', 'ID');
 
   @override
@@ -98,13 +95,19 @@ class _SimpananSukarelaState extends State<SimpananSukarela> {
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14.0),
                             ),
-                            Text(
-                              '${currencyFormatter.format(totalSimpananSukarela)}',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 24.0),
-                            ),
+                            Obx(() {
+                              if (controller.isLoading.value) {
+                                return Text("Loading");
+                              } else {
+                                return Text(
+                                  '${currencyFormatter.format(controller.totalSimpananSukarela)}',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 24.0),
+                                );
+                              }
+                            }),
                           ],
                         ),
                         SizedBox(height: 10.0),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
 
 class AmbilSimpananSukarelaController extends GetxController {
   var nominalController = TextEditingController();
@@ -23,10 +24,9 @@ class AmbilSimpananSukarelaController extends GetxController {
     super.onInit();
   }
 
-  Future<String?> ajukanPengambilan(int nominal) async {
+  Future<String?> postAjukanPengambilan(int nominal) async {
     final response = await http.post(
-      Uri.parse(
-          "https://backend.kobantitar.com/api/simpanan/sukarela/pengambilan"),
+      Uri.parse("${config.BASE_URL}/simpanan/sukarela/pengambilan"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",

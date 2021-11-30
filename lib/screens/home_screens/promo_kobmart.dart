@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
+import 'package:kobantitar_mobile/controllers/promo_kobmart_controller.dart';
 
 class PromoKobmart extends StatefulWidget {
   const PromoKobmart({Key? key}) : super(key: key);
@@ -11,9 +10,8 @@ class PromoKobmart extends StatefulWidget {
 }
 
 class _PromoKobmartState extends State<PromoKobmart> {
-  bool value = false;
-  int _jenisTagihan = 0;
-  get onChanged => null;
+  final PromoKobmartController controller = Get.put(PromoKobmartController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,16 +71,9 @@ class _PromoKobmartState extends State<PromoKobmart> {
                   decoration: BoxDecoration(
                     color: Color(0xfff0f0f0),
                   ),
-                  child: ListView(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text("Promo Kobmart here")],
-                        ),
-                      ),
-                    ],
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Image.network(controller.imageUrl),
                   ),
                 ),
               ),

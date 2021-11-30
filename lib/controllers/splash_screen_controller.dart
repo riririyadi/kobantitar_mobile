@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/screens/auth_screens/halaman_pin.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
 
 class SplashScreenController extends GetxController {
@@ -12,7 +13,7 @@ class SplashScreenController extends GetxController {
 
   Future<void> loading() async {
     Timer(Duration(seconds: 3), () {
-      Get.off(() => LoginScreen());
+      Get.off(() => HalamanPIN());
     });
   }
 }

@@ -12,6 +12,31 @@ String logamMuliaCalculationToJson(LogamMuliaCalculation data) =>
 
 class LogamMuliaCalculation {
   LogamMuliaCalculation({
+    this.success,
+    this.status,
+    this.data,
+  });
+
+  bool? success;
+  String? status;
+  Data? data;
+
+  factory LogamMuliaCalculation.fromJson(Map<String, dynamic> json) =>
+      LogamMuliaCalculation(
+        success: json["success"],
+        status: json["status"],
+        data: Data.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "status": status,
+        "data": data!.toJson(),
+      };
+}
+
+class Data {
+  Data({
     this.amount,
     this.tenor,
     this.angsuranPokok,
@@ -27,8 +52,7 @@ class LogamMuliaCalculation {
   int? angsuranPerBulan;
   int? totalAngsuran;
 
-  factory LogamMuliaCalculation.fromJson(Map<String, dynamic> json) =>
-      LogamMuliaCalculation(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         amount: Amount.fromJson(json["amount"]),
         tenor: Tenor.fromJson(json["tenor"]),
         angsuranPokok: json["angsuran_pokok"],
@@ -58,13 +82,13 @@ class Amount {
   int? id;
   int? amount;
   String? caption;
-  int? weight;
+  double? weight;
 
   factory Amount.fromJson(Map<String, dynamic> json) => Amount(
         id: json["id"],
         amount: json["amount"],
         caption: json["caption"],
-        weight: json["weight"],
+        weight: json["weight"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
