@@ -387,7 +387,8 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Get.to(() => SimpananSukarela()),
+                          onTap: () => Get.to(() => SimpananSukarela(),
+                              arguments: controller.simpanan.sukarela),
                           child: Padding(
                             padding:
                                 const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),

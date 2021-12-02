@@ -12,7 +12,7 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> loading() async {
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 2), () {
       Get.off(() => HalamanPIN());
     });
   }

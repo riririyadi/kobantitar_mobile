@@ -14,7 +14,7 @@ import 'package:kobantitar_mobile/api_config/config.dart' as config;
 
 class PengajuanLogamMuliaFormController extends GetxController {
   var tenorController = TextEditingController();
-  var tglPembayaranController = TextEditingController();
+
   var dateController = TextEditingController();
   var keperluanController = TextEditingController();
   final userData = GetStorage();
@@ -26,6 +26,10 @@ class PengajuanLogamMuliaFormController extends GetxController {
   List<TenorLogamMulia>? tenors = <TenorLogamMulia>[].obs;
   var detailKredit = <LogamMuliaCalculation>[].obs;
   int approvalFileId = 0;
+  int approvalFileId2 = 0;
+  var isDoubleApproval = false;
+  var namaAtasanController = TextEditingController();
+  var namaAtasan2Controller = TextEditingController();
 
   @override
   void onInit() {
@@ -44,6 +48,11 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
   @override
   void onClose() {
+    tenorController.dispose();
+    dateController.dispose();
+    keperluanController.dispose();
+    namaAtasanController.dispose();
+    namaAtasan2Controller.dispose();
     super.onInit();
   }
 
@@ -52,11 +61,8 @@ class PengajuanLogamMuliaFormController extends GetxController {
       isLoading(true);
       final data = await Service.fetchPengajuanLogamMuliaConfig(token);
       if (data != null) {
-        // print(jsonEncode(data));
-
-        final tenor = data.data!.tenors;
-
-        tenors = tenor;
+        tenors = data.data!.tenors;
+        isDoubleApproval = data.data!.isDoubleApproval!;
       }
     } finally {
       isLoading(false);
@@ -83,17 +89,27 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
   var selectedSelfieImagePath = "".obs;
   var selectedSelfieImageSize = "".obs;
+  var selectedSelfieImage2Path = "".obs;
+  var selectedSelfieImage2Size = "".obs;
 
-  void getSelfie(ImageSource imageSource) async {
+  void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
       final image = await ImagePicker().pickImage(source: imageSource);
 
       if (image != null) {
-        selectedSelfieImagePath.value = image.path;
-        selectedSelfieImageSize.value =
-            ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
-                    .toStringAsFixed(2) +
-                " Mb";
+        if (imageContext == "app1") {
+          selectedSelfieImagePath.value = image.path;
+          selectedSelfieImageSize.value =
+              ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
+                      .toStringAsFixed(2) +
+                  " Mb";
+        } else {
+          selectedSelfieImage2Path.value = image.path;
+          selectedSelfieImage2Size.value =
+              ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
+                      .toStringAsFixed(2) +
+                  " Mb";
+        }
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -105,7 +121,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
   Future<http.StreamedResponse> uploadImage(
       String file, String uploadContext) async {
     var uploadType = uploadContext;
-    var uri = Uri.parse("${config.BASE_URL}/upload");
+    var uri = Uri.parse("${config.baseURL}/upload");
     var request = http.MultipartRequest('POST', uri);
     request.files.add(await http.MultipartFile.fromPath("file", file));
     request.headers.addAll({"Content-type": "multipart/form-data"});
@@ -117,8 +133,11 @@ class PengajuanLogamMuliaFormController extends GetxController {
       final json = jsonDecode(respStr.body);
       final fileId = json['data']['file_id'];
 
-      approvalFileId = fileId;
-      print(approvalFileId);
+      if (uploadType == "app1") {
+        approvalFileId = fileId;
+      } else {
+        approvalFileId2 = fileId;
+      }
       return response;
     } else {
       return Future.error(response);
@@ -129,14 +148,16 @@ class PengajuanLogamMuliaFormController extends GetxController {
     print(argumentData.id);
     print(tenorController.text);
     print(dateController.text);
-    print(approvalFileId);
     print(keperluanController.text);
-    print("nama atasan");
+    print(namaAtasanController.text);
+    print(approvalFileId);
+    print(namaAtasan2Controller.text);
+    print(approvalFileId2);
   }
 
   Future<String?> submitPengajuanLogamMulia() async {
     final response = await http.post(
-      Uri.parse("${config.BASE_URL}/pengajuan/logammulia"),
+      Uri.parse("${config.baseURL}/pengajuan/logammulia"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -147,8 +168,9 @@ class PengajuanLogamMuliaFormController extends GetxController {
         "product_id": argumentData.id,
         "start_date": dateController.text,
         "keperluan": keperluanController.text,
-        "aprroval_file_id": approvalFileId,
-        "nama_atasan": "nama atasan"
+        "approval": [
+          {"file_id": approvalFileId, "nama_atasan": namaAtasanController.text}
+        ]
       }),
     );
 
@@ -157,6 +179,39 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
       return json["status"];
     } else {
+      return null;
+    }
+  }
+
+  Future<String?> submitPengajuanLogamMulia2() async {
+    final response = await http.post(
+      Uri.parse("${config.baseURL}/pengajuan/logammulia"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "tenor_id": tenorController.text,
+        "product_id": argumentData.id,
+        "start_date": dateController.text,
+        "keperluan": keperluanController.text,
+        "approval": [
+          {"file_id": approvalFileId, "nama_atasan": namaAtasanController.text},
+          {
+            "file_id": approvalFileId2,
+            "nama_atasan": namaAtasan2Controller.text
+          }
+        ]
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+
+      return json["status"];
+    } else {
+      print(response.statusCode);
       return null;
     }
   }

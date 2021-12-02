@@ -52,8 +52,12 @@ class _DokumenState extends State<Dokumen> {
                   ),
                 )
               : Column(children: [
-                  Image.file(
-                    File(controller.selectedSelfieImagePath.value),
+                  Container(
+                    height: 160,
+                    width: double.infinity,
+                    child: Image.file(
+                        File(controller.selectedSelfieImagePath.value),
+                        fit: BoxFit.fitWidth),
                   ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -108,8 +112,12 @@ class _DokumenState extends State<Dokumen> {
                   ),
                 )
               : Column(children: [
-                  Image.file(
-                    File(controller.selectedKTPImagePath.value),
+                  Container(
+                    height: 160,
+                    width: double.infinity,
+                    child: Image.file(
+                        File(controller.selectedKTPImagePath.value),
+                        fit: BoxFit.fitWidth),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

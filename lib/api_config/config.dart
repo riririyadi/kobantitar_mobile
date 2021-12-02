@@ -1,1 +1,1 @@
-const String BASE_URL = "https://backend.kobantitar.com/api";
+const String baseURL = "https://backend.kobantitar.com/api";

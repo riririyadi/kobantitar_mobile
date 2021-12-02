@@ -3,7 +3,10 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:kobantitar_mobile/models/app_setting.dart';
 import 'package:kobantitar_mobile/models/bank.dart';
+import 'package:kobantitar_mobile/models/informasi.dart';
 import 'package:kobantitar_mobile/models/instansi.dart';
 import 'package:kobantitar_mobile/models/jenis_kendaraan.dart';
 import 'package:kobantitar_mobile/models/kobmart.dart';
@@ -15,14 +18,32 @@ import 'package:kobantitar_mobile/models/logam_mulia_calculation.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_configuration.dart';
 import 'package:kobantitar_mobile/models/me.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
-import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:kobantitar_mobile/models/tagihan.dart';
+import 'package:kobantitar_mobile/models/kontak.dart';
 
 class Service extends GetConnect {
   static var client = http.Client();
 
+  static Future<AppSetting?> fetchSetting() async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/setting"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      final data = jsonEncode(json["data"]);
+      return appSettingFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
   static Future<List<Instansi>?> fetchInstansi() async {
     final response = await client.get(
-      Uri.parse("${config.BASE_URL}/instansi"),
+      Uri.parse("${config.baseURL}/instansi"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json'
@@ -39,7 +60,7 @@ class Service extends GetConnect {
 
   static Future<List<Bank>?> fetchBank() async {
     final response = await client.get(
-      Uri.parse("${config.BASE_URL}/bank"),
+      Uri.parse("${config.baseURL}/bank"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -60,7 +81,7 @@ class Service extends GetConnect {
         'file': MultipartFile(file, filename: 'dokumen.jpg'),
       });
 
-      final response = await client.post(Uri.parse("${config.BASE_URL}/upload"),
+      final response = await client.post(Uri.parse("${config.baseURL}/upload"),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -81,7 +102,7 @@ class Service extends GetConnect {
   static Future<Me?> fetchMe(String token) async {
     try {
       final response = await client.get(
-        Uri.parse("${config.BASE_URL}/me"),
+        Uri.parse("${config.baseURL}/me"),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -104,7 +125,7 @@ class Service extends GetConnect {
 
   static Future<Simpanan?> fetchSimpanan(String token) async {
     final response = await client.get(
-      Uri.parse("${config.BASE_URL}/simpanan"),
+      Uri.parse("${config.baseURL}/simpanan"),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -125,7 +146,7 @@ class Service extends GetConnect {
   static Future<KreditKendaraanConfiguration?>
       fetchKreditKendaraanConfiguration(String token) async {
     final response = await client.get(
-      Uri.parse("${config.BASE_URL}/pengajuan/kreditkendaraan/configuration"),
+      Uri.parse("${config.baseURL}/pengajuan/kreditkendaraan/configuration"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -146,7 +167,7 @@ class Service extends GetConnect {
   static Future<List<JenisKendaraan>?> fetchJenisKendaraanByBrandId(
       String token, int id) async {
     final response = await client.get(
-      Uri.parse("${config.BASE_URL}/pengajuan/kreditkendaraan/brand/$id"),
+      Uri.parse("${config.baseURL}/pengajuan/kreditkendaraan/brand/$id"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -166,7 +187,7 @@ class Service extends GetConnect {
       String token, dynamic productId, String tenorId) async {
     final response = await client.get(
       Uri.parse(
-          "${config.BASE_URL}/pengajuan/kreditkendaraan/calculation?product_id=$productId&tenor_id=$tenorId"),
+          "${config.baseURL}/pengajuan/kreditkendaraan/calculation?product_id=$productId&tenor_id=$tenorId"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -184,7 +205,7 @@ class Service extends GetConnect {
   static Future<LogamMuliaConfiguration?> fetchPengajuanLogamMuliaConfig(
       String token) async {
     final response = await client.get(
-      Uri.parse("${config.BASE_URL}/pengajuan/logammulia/configuration"),
+      Uri.parse("${config.baseURL}/pengajuan/logammulia/configuration"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -202,7 +223,7 @@ class Service extends GetConnect {
       String token, int amountId, String tenorId) async {
     final response = await client.get(
       Uri.parse(
-          "${config.BASE_URL}/pengajuan/logammulia/calculation?amount_id=$amountId&tenor_id=$tenorId"),
+          "${config.baseURL}/pengajuan/logammulia/calculation?amount_id=$amountId&tenor_id=$tenorId"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -216,10 +237,10 @@ class Service extends GetConnect {
     }
   }
 
-  static Future<BarangLainConfig?> fetchPengajuanBarangLainConfig(
+  static Future<KreditBarangConfiguration?> fetchPengajuanBarangLainConfig(
       String token) async {
     final response = await client.get(
-      Uri.parse("${config.BASE_URL}/pengajuan/kreditbarang/configuration"),
+      Uri.parse("${config.baseURL}/pengajuan/kreditbarang/configuration"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -228,7 +249,7 @@ class Service extends GetConnect {
     );
     if (response.statusCode == 200) {
       print(jsonEncode(response.body));
-      return barangLainConfigFromJson(response.body);
+      return kreditBarangConfigurationFromJson(response.body);
     } else {
       return null;
     }
@@ -238,7 +259,7 @@ class Service extends GetConnect {
       String token, int nominal, String tenorId) async {
     final response = await client.get(
       Uri.parse(
-          "${config.BASE_URL}/pengajuan/kreditbarang/calculation?nominal=$nominal&tenor_id=$tenorId"),
+          "${config.baseURL}/pengajuan/kreditbarang/calculation?nominal=$nominal&tenor_id=$tenorId"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -255,7 +276,7 @@ class Service extends GetConnect {
 
   static Future<Kobmart?> fetchKobmart(String token) async {
     final response = await client.get(
-      Uri.parse("${config.BASE_URL}/kobmart"),
+      Uri.parse("${config.baseURL}/kobmart"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -265,6 +286,54 @@ class Service extends GetConnect {
     if (response.statusCode == 200) {
       print(jsonEncode(response.body));
       return kobmartFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Tagihan?> fetchTagihan(String token) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/tagihan"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return tagihanFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Informasi?> fetchInformasi(String token) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/informasi"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return informasiFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Kontak?> fetchKontak(String token) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/kontak"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return kontakFromJson(response.body);
     } else {
       return null;
     }

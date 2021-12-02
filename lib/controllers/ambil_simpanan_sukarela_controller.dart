@@ -26,7 +26,7 @@ class AmbilSimpananSukarelaController extends GetxController {
 
   Future<String?> postAjukanPengambilan(int nominal) async {
     final response = await http.post(
-      Uri.parse("${config.BASE_URL}/simpanan/sukarela/pengambilan"),
+      Uri.parse("${config.baseURL}/simpanan/sukarela/pengambilan"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",

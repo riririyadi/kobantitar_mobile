@@ -1,17 +1,17 @@
 // To parse this JSON data, do
 //
-//     final barangLainConfig = barangLainConfigFromJson(jsonString);
+//     final kreditBarangConfiguration = kreditBarangConfigurationFromJson(jsonString);
 
 import 'dart:convert';
 
-BarangLainConfig barangLainConfigFromJson(String str) =>
-    BarangLainConfig.fromJson(json.decode(str));
+KreditBarangConfiguration kreditBarangConfigurationFromJson(String str) =>
+    KreditBarangConfiguration.fromJson(json.decode(str));
 
-String barangLainConfigToJson(BarangLainConfig data) =>
+String kreditBarangConfigurationToJson(KreditBarangConfiguration data) =>
     json.encode(data.toJson());
 
-class BarangLainConfig {
-  BarangLainConfig({
+class KreditBarangConfiguration {
+  KreditBarangConfiguration({
     this.success,
     this.status,
     this.data,
@@ -21,8 +21,8 @@ class BarangLainConfig {
   String? status;
   Data? data;
 
-  factory BarangLainConfig.fromJson(Map<String, dynamic> json) =>
-      BarangLainConfig(
+  factory KreditBarangConfiguration.fromJson(Map<String, dynamic> json) =>
+      KreditBarangConfiguration(
         success: json["success"],
         status: json["status"],
         data: Data.fromJson(json["data"]),
@@ -40,12 +40,14 @@ class Data {
     this.minPrice,
     this.maxPrice,
     this.tenors,
+    this.isDoubleApproval,
     this.termsUrl,
   });
 
   int? minPrice;
   int? maxPrice;
   List<TenorBarang>? tenors;
+  bool? isDoubleApproval;
   dynamic termsUrl;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -53,6 +55,7 @@ class Data {
         maxPrice: json["max_price"],
         tenors: List<TenorBarang>.from(
             json["tenors"].map((x) => TenorBarang.fromJson(x))),
+        isDoubleApproval: json["is_double_approval"],
         termsUrl: json["terms_url"],
       );
 
@@ -60,6 +63,7 @@ class Data {
         "min_price": minPrice,
         "max_price": maxPrice,
         "tenors": List<dynamic>.from(tenors!.map((x) => x.toJson())),
+        "is_double_approval": isDoubleApproval,
         "terms_url": termsUrl,
       };
 }

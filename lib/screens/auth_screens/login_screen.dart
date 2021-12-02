@@ -98,16 +98,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text(
-                                        'Lupa username / password?',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: Color(0xffC30707)),
+                                      GestureDetector(
+                                        onTap: () => controller.openLink(),
+                                        child: Text(
+                                          'Lupa username / password?',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xffC30707)),
+                                        ),
                                       ),
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: 25,
                                   ),
                                   loginButton(),
                                 ],

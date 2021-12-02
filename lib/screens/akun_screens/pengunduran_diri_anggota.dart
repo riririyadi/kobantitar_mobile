@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/akun_controller.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
 class PengunduranDiriAnggota extends StatefulWidget {
@@ -10,7 +11,9 @@ class PengunduranDiriAnggota extends StatefulWidget {
 }
 
 class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
-  bool value = false;
+  final AkunController controller = Get.put(AkunController());
+
+  bool isSubmitting = false;
 
   get onChanged => null;
   @override
@@ -91,24 +94,35 @@ class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
                                       fontSize: 12.0,
                                     ),
                                   ),
-                                  Container(
-                                    height: 80,
-                                    child: TextField(
-                                      style: TextStyle(
-                                        fontSize: 12.0,
-                                      ),
-                                      maxLines: 5,
-                                      keyboardType: TextInputType.multiline,
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.all(10.0),
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                  Form(
+                                    key: controller.mengundurkanDiriFormKey,
+                                    child: Container(
+                                      height: 100,
+                                      child: TextFormField(
+                                        controller: controller
+                                            .alasanPengunduranDiriController,
+                                        style: TextStyle(
+                                          fontSize: 12.0,
                                         ),
-                                        labelText:
-                                            'Masukkan Alasan Pengunduran diri',
+                                        maxLines: null,
+                                        keyboardType: TextInputType.multiline,
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.all(10.0),
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.never,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          labelText:
+                                              'Masukkan Alasan Pengunduran diri',
+                                        ),
+                                        validator: (value) {
+                                          if (value == "") {
+                                            return 'Alasan tidak boleh kosong';
+                                          }
+                                          return null;
+                                        },
                                       ),
                                     ),
                                   ),
@@ -159,7 +173,10 @@ class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
                         padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
                         child: GestureDetector(
                           onTap: () {
-                            _bottomSheet(context);
+                            if (controller.mengundurkanDiriFormKey.currentState!
+                                .validate()) {
+                              _bottomSheet(context);
+                            }
                           },
                           child: Container(
                             height: 48.0,
@@ -208,78 +225,126 @@ class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext c) {
-          return Container(
-            color: Color(0xff757575),
-            child: Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
-                ),
-              ),
-              height: 180,
-              child: Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Password Anda',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
+          return Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SingleChildScrollView(
+              child: Form(
+                key: controller.passwordFormKey,
+                child: Container(
+                  color: Color(0xff757575),
+                  child: Container(
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
                       ),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: 40,
-                      child: TextField(
-                        style: TextStyle(fontSize: 12.0),
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(10.0),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            labelText: "Masukkan Password Anda"),
-                      ),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () => Get.off(() => PengajuanSukses()),
-                      child: Container(
-                        height: 48.0,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [Color(0xff851212), Color(0xffFF8A8A)]),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 1.0,
-                              spreadRadius: 0.0,
-                              offset:
-                                  Offset(0.0, 4.0), // shadow direction: bottom
-                            )
-                          ],
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Submit",
+                    height: 200,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Password Anda',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: Colors.white,
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: 40,
+                            child: TextFormField(
+                              controller: controller.passwordController,
+                              style: TextStyle(fontSize: 12.0),
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(10.0),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  labelText: "Masukkan Password Anda"),
+                              validator: (value) {
+                                if (value == "") {
+                                  return 'Password tidak boleh kosong';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              if (controller.passwordFormKey.currentState!
+                                  .validate()) {
+                                setState(() {
+                                  isSubmitting = true;
+                                });
+                                controller
+                                    .ajukanPengunduranDiri(
+                                        controller
+                                            .alasanPengunduranDiriController
+                                            .text,
+                                        controller.passwordController.text)
+                                    .then((value) {
+                                  setState(() {
+                                    isSubmitting = false;
+                                  });
+                                  Get.off(() => PengajuanSukses());
+                                }).catchError((e) {
+                                  setState(() {
+                                    isSubmitting = false;
+                                  });
+                                  Get.snackbar("Error", "Something went wrong");
+                                });
+                              }
+                            },
+                            child: Container(
+                              height: 48.0,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xff851212),
+                                      Color(0xffFF8A8A)
+                                    ]),
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 1.0,
+                                    spreadRadius: 0.0,
+                                    offset: Offset(
+                                        0.0, 4.0), // shadow direction: bottom
+                                  )
+                                ],
+                              ),
+                              child: Center(
+                                child: isSubmitting
+                                    ? CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : Text(
+                                        "Submit",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

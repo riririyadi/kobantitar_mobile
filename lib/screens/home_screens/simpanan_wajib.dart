@@ -4,8 +4,7 @@ import 'dart:convert';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:kobantitar_mobile/models/simpanan_pokok.dart';
-import 'package:kobantitar_mobile/models/simpanan_sukarela.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/models/simpanan_wajib.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -20,7 +19,7 @@ class SimpananWajib extends StatefulWidget {
 class _SimpananWajibState extends State<SimpananWajib> {
   final userData = GetStorage();
   late String token;
-  int _screen = 0;
+
   int currentPage = 1;
   late int totalPages;
   int totalSimpananWajib = 0;

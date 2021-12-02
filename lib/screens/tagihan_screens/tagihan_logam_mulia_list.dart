@@ -3,16 +3,16 @@ import 'package:get/get.dart';
 import 'package:kobantitar_mobile/controllers/tagihan_controller.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
 
-class AllTagihan extends StatefulWidget {
-  const AllTagihan({Key? key}) : super(key: key);
+class TagihanLogamMulia extends StatefulWidget {
+  const TagihanLogamMulia({Key? key}) : super(key: key);
 
   @override
-  _AllTagihanState createState() => _AllTagihanState();
+  _TagihanLogamMuliaState createState() => _TagihanLogamMuliaState();
 }
 
-class _AllTagihanState extends State<AllTagihan> {
+class _TagihanLogamMuliaState extends State<TagihanLogamMulia> {
   final TagihanController controller = Get.put(TagihanController());
-  @override
+
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoading.value) {
@@ -20,9 +20,9 @@ class _AllTagihanState extends State<AllTagihan> {
       } else {
         return ListView.builder(
             padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-            itemCount: controller.tagihanList!.length,
+            itemCount: controller.tagihanLogamMulia!.length,
             itemBuilder: (context, index) {
-              final tagihan = controller.tagihanList![index];
+              final tagihan = controller.tagihanLogamMulia![index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: Container(

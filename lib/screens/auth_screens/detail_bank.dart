@@ -15,7 +15,7 @@ class _DetailBankState extends State<DetailBank> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: controller.dataBankFormKey,
+      key: controller.detailBankFormKey,
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         children: [
@@ -62,7 +62,7 @@ class _DetailBankState extends State<DetailBank> {
               }
             }),
           ),
-          SizedBox(height: 5.0),
+          SizedBox(height: 20.0),
           Text(
             "Nomor Rekening",
             style: TextStyle(

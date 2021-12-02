@@ -31,8 +31,9 @@ class PengajuanLogamMuliaController extends GetxController {
     try {
       isLoading(true);
       final res = await Service.fetchPengajuanLogamMuliaConfig(token);
-      if (res != null) {}
-      amountList = res!.data!.amounts;
+      if (res != null) {
+        amountList = res.data!.amounts;
+      }
     } finally {
       isLoading(false);
     }

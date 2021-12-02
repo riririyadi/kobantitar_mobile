@@ -19,8 +19,6 @@ class DaftarAkunBaru extends StatefulWidget {
 class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
   final SignUpController controller = Get.put(SignUpController());
 
-  int _step = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +93,7 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                           Row(
                             children: [
                               CircleAvatar(
-                                backgroundColor: _step >= 0
+                                backgroundColor: controller.step >= 0
                                     ? Color(0xffE54444)
                                     : Color(0xffe0e0e0),
                                 child: Icon(Icons.person,
@@ -109,13 +107,13 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                               Container(
                                 height: 2,
                                 width: 30,
-                                decoration: _step >= 1
+                                decoration: controller.step >= 1
                                     ? BoxDecoration(color: Color(0xffE54444))
                                     : BoxDecoration(color: Color(0xffe0e0e0)),
                               ),
                               SizedBox(width: 5.0),
                               CircleAvatar(
-                                backgroundColor: _step >= 1
+                                backgroundColor: controller.step >= 1
                                     ? Color(0xffE54444)
                                     : Color(0xffe0e0e0),
                                 child: Icon(Icons.home,
@@ -129,13 +127,13 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                               Container(
                                 height: 2,
                                 width: 30,
-                                decoration: _step >= 2
+                                decoration: controller.step >= 2
                                     ? BoxDecoration(color: Color(0xffE54444))
                                     : BoxDecoration(color: Color(0xffe0e0e0)),
                               ),
                               SizedBox(width: 5.0),
                               CircleAvatar(
-                                backgroundColor: _step >= 2
+                                backgroundColor: controller.step >= 2
                                     ? Color(0xffE54444)
                                     : Color(0xffe0e0e0),
                                 child: Icon(Icons.lock,
@@ -149,13 +147,13 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                               Container(
                                 height: 2,
                                 width: 30,
-                                decoration: _step >= 3
+                                decoration: controller.step >= 3
                                     ? BoxDecoration(color: Color(0xffE54444))
                                     : BoxDecoration(color: Color(0xffe0e0e0)),
                               ),
                               SizedBox(width: 5.0),
                               CircleAvatar(
-                                backgroundColor: _step >= 3
+                                backgroundColor: controller.step >= 3
                                     ? Color(0xffE54444)
                                     : Color(0xffe0e0e0),
                                 child: Icon(Icons.document_scanner,
@@ -171,7 +169,7 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                     ),
                     Flexible(
                       child: IndexedStack(
-                        index: _step,
+                        index: controller.step,
                         children: [
                           DataPribadi(),
                           DetailBank(),
@@ -184,11 +182,25 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                       padding: const EdgeInsets.all(16.0),
                       child: GestureDetector(
                         onTap: () {
-                          if (_step < 3) {
+                          if (controller.step == 0) {
                             if (controller.dataPribadiFormKey.currentState!
                                 .validate()) {
                               setState(() {
-                                _step += 1;
+                                controller.step += 1;
+                              });
+                            }
+                          } else if (controller.step == 1) {
+                            if (controller.detailBankFormKey.currentState!
+                                .validate()) {
+                              setState(() {
+                                controller.step += 1;
+                              });
+                            }
+                          } else if (controller.step == 2) {
+                            if (controller.detailAkunFormKey.currentState!
+                                .validate()) {
+                              setState(() {
+                                controller.step += 1;
                               });
                             }
                           } else {

@@ -21,6 +21,7 @@ class KreditBarangFormController extends GetxController {
   var isLoading = false.obs;
   var isLoading2 = false.obs;
   var isMounted = false.obs;
+  var isDoubleApproval = false.obs;
   dynamic argumentData = Get.arguments;
   List<TenorConfig>? tenors = <TenorConfig>[].obs;
   var detailKredit = <KreditKendaraanCalculation>[].obs;
@@ -53,6 +54,7 @@ class KreditBarangFormController extends GetxController {
       if (data != null) {
         final tenor = data.data!.tenors;
         tenors = tenor;
+        isDoubleApproval = data.data!.isDoubleApproval as RxBool;
       }
     } finally {
       isLoading(false);
@@ -68,7 +70,6 @@ class KreditBarangFormController extends GetxController {
       if (data != null) {
         print(jsonEncode(data));
         detailKredit.add(data);
-        isMounted(true);
       }
     } finally {
       isLoading2(false);
@@ -101,7 +102,7 @@ class KreditBarangFormController extends GetxController {
   Future<http.StreamedResponse> uploadImage(
       String file, String uploadContext) async {
     var uploadType = uploadContext;
-    var uri = Uri.parse("${config.BASE_URL}/upload");
+    var uri = Uri.parse("${config.baseURL}/upload");
     var request = http.MultipartRequest('POST', uri);
     request.files.add(await http.MultipartFile.fromPath("file", file));
     request.headers.addAll({"Content-type": "multipart/form-data"});
@@ -131,7 +132,7 @@ class KreditBarangFormController extends GetxController {
 
   Future<String?> submitPengajuanKreditKendaraan() async {
     final response = await http.post(
-      Uri.parse("${config.BASE_URL}/pengajuan/kreditkendaraan"),
+      Uri.parse("${config.baseURL}/pengajuan/kreditkendaraan"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",

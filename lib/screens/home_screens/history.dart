@@ -67,8 +67,7 @@ class _HistoryState extends State<History> {
           (json['data']['list']['pagination']['object_count'] / 15).ceil();
       numOfSimpananSukarela =
           json['data']['list']['pagination']['object_count'];
-      controller.totalSimpananSukarela = json['data']['total'];
-      print(controller.totalSimpananSukarela);
+
       currentPage++;
       setState(() {});
       controller.isLoading(false);

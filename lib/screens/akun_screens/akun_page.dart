@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:get/get.dart";
+import 'package:kobantitar_mobile/controllers/akun_controller.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
 import 'package:kobantitar_mobile/screens/akun_screens/pengaturan_akun.dart';
 import 'package:kobantitar_mobile/screens/akun_screens/pengunduran_diri_anggota.dart';
@@ -14,6 +15,8 @@ class AkunWidget extends StatefulWidget {
 }
 
 class _AkunWidgetState extends State<AkunWidget> {
+  final AkunController controller = Get.put(AkunController());
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -109,12 +112,20 @@ class _AkunWidgetState extends State<AkunWidget> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'RIZQI MULYANA',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          Obx(
+                            () {
+                              if (controller.isMeLoading.value) {
+                                return Text("Loading");
+                              } else {
+                                return Text(
+                                  "${controller.me.nama!.toUpperCase()}",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                );
+                              }
+                            },
                           ),
                         ],
                       ),
@@ -122,13 +133,19 @@ class _AkunWidgetState extends State<AkunWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '40128',
-                            style: TextStyle(
-                              color: Colors.grey[400],
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          Obx(() {
+                            if (controller.isMeLoading.value) {
+                              return Text("Loading");
+                            } else {
+                              return Text(
+                                '${controller.me.nomorAnggota}',
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              );
+                            }
+                          }),
                           Container(
                             height: 50,
                             width: 70,
@@ -331,7 +348,7 @@ class _AkunWidgetState extends State<AkunWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "V.1.1.2",
+                    "V.${controller.setting.appVersionName}",
                     style: TextStyle(
                       fontSize: 16.0,
                     ),

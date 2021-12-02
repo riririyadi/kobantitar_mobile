@@ -27,6 +27,12 @@ class _PengajuanTransaksiLogamMuliaFormState
   DateTime selectedDate = DateTime.now();
 
   bool? checkBoxValue = false;
+  bool simpanGambar1 = false;
+  bool simpanGambar2 = false;
+  bool gambar1tersimpan = false;
+  bool gambar2tersimpan = false;
+
+  dynamic tenorValue;
 
   final currencyFormatter = NumberFormat('#,##0', 'ID');
   @override
@@ -210,9 +216,11 @@ class _PengajuanTransaksiLogamMuliaFormState
                                             validator: (value) => value == null
                                                 ? 'Instansi tidak boleh kosong'
                                                 : null,
+                                            value: tenorValue,
                                             onChanged: (value) => setState(() {
                                               controller.tenorController.text =
                                                   value.toString();
+                                              tenorValue = value;
                                             }),
                                             items:
                                                 controller.tenors!.map((item) {
@@ -235,11 +243,6 @@ class _PengajuanTransaksiLogamMuliaFormState
                                   Container(
                                     width: double.infinity,
                                     height: 40,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
                                     child: GestureDetector(
                                       onTap: () => _selectDate(context),
                                       child: AbsorbPointer(
@@ -247,7 +250,10 @@ class _PengajuanTransaksiLogamMuliaFormState
                                           style: TextStyle(fontSize: 12.0),
                                           controller: controller.dateController,
                                           decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
                                               suffixIcon:
                                                   Icon(Icons.calendar_today)),
                                         ),
@@ -261,17 +267,15 @@ class _PengajuanTransaksiLogamMuliaFormState
                                   Container(
                                     width: double.infinity,
                                     height: 40,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
                                     child: TextFormField(
                                       style: TextStyle(fontSize: 12.0),
                                       controller:
                                           controller.keperluanController,
                                       decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
                                       ),
                                     ),
                                   )
@@ -404,88 +408,447 @@ class _PengajuanTransaksiLogamMuliaFormState
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Container(
-                                  height: 160,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[350],
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  child: Center(
-                                    child: Obx(
-                                      () => controller.selectedSelfieImagePath
-                                                  .value ==
-                                              ""
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                _bottomSheet(context, 2);
-                                              },
-                                              child: Container(
-                                                height: 160,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey[350],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                ),
-                                                child: Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                          Icons
-                                                              .camera_alt_outlined,
-                                                          size: 50),
-                                                      Text("Ambil Foto")
-                                                    ],
-                                                  ),
+                                  child: Obx(
+                                    () => controller.selectedSelfieImagePath
+                                                .value ==
+                                            ""
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              _bottomSheet(context, "app1");
+                                            },
+                                            child: Container(
+                                              height: 160,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[350],
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                        Icons
+                                                            .camera_alt_outlined,
+                                                        size: 50),
+                                                    Text("Ambil Foto")
+                                                  ],
                                                 ),
                                               ),
-                                            )
-                                          : Column(children: [
-                                              Image.file(
-                                                  File(controller
-                                                      .selectedSelfieImagePath
-                                                      .value),
-                                                  height: 140.0),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  GestureDetector(
+                                            ),
+                                          )
+                                        : Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                                Stack(children: [
+                                                  Container(
+                                                    height: 160,
+                                                    width: double.infinity,
+                                                    child: Image.file(
+                                                      File(controller
+                                                          .selectedSelfieImagePath
+                                                          .value),
+                                                      fit: BoxFit.fitWidth,
+                                                    ),
+                                                  ),
+                                                  simpanGambar1
+                                                      ? Container(
+                                                          height: 160,
+                                                          child: Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Container(),
+                                                ]),
+                                                SizedBox(height: 10),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    GestureDetector(
                                                       onTap: () {
                                                         _bottomSheet(
-                                                            context, 2);
+                                                            context, "app1");
                                                       },
-                                                      child:
-                                                          Text("Ambil ulang")),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      controller
-                                                          .uploadImage(
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 5,
+                                                                horizontal: 10),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.grey,
+                                                              width: 1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: Text(
+                                                          "Ambil ulang",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    !gambar1tersimpan
+                                                        ? GestureDetector(
+                                                            onTap: () {
+                                                              setState(() {
+                                                                simpanGambar1 =
+                                                                    true;
+                                                              });
                                                               controller
-                                                                  .selectedSelfieImagePath
-                                                                  .value,
-                                                              "ktp")
-                                                          .then((value) =>
-                                                              Get.snackbar(
-                                                                  "Success",
-                                                                  "Image saved successfully"));
-                                                    },
-                                                    child: Text("Simpan"),
-                                                  ),
-                                                ],
-                                              ),
-                                            ]),
-                                    ),
+                                                                  .uploadImage(
+                                                                      controller
+                                                                          .selectedSelfieImagePath
+                                                                          .value,
+                                                                      "app1")
+                                                                  .then(
+                                                                      (value) {
+                                                                setState(() {
+                                                                  simpanGambar1 =
+                                                                      false;
+                                                                  gambar1tersimpan =
+                                                                      true;
+                                                                });
+                                                                Get.snackbar(
+                                                                    "Success",
+                                                                    "Image saved successfully");
+                                                              }).catchError(
+                                                                      (e) {
+                                                                setState(() {
+                                                                  simpanGambar1 =
+                                                                      false;
+                                                                });
+
+                                                                print(e);
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          5,
+                                                                      horizontal:
+                                                                          10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Color(
+                                                                    0xffEE6A6A),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Text(
+                                                                "simpan",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Text(""),
+                                                  ],
+                                                ),
+                                              ]),
                                   ),
                                 ),
                               ),
+                              Text(
+                                "Nama Atasan",
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                              TextFormField(
+                                controller: controller.namaAtasanController,
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                                decoration: InputDecoration(
+                                  helperText: ' ',
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 0.0),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  labelText: 'Masukkan Nama Atasan',
+                                ),
+                                validator: (value) {
+                                  if (value == "") {
+                                    return 'Nama atasan tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                              )
                             ],
                           ),
                         ),
                       ),
+                      Obx(() {
+                        if (controller.isLoading.value) {
+                          return SizedBox(height: 0, width: 0);
+                        } else {
+                          if (controller.isDoubleApproval == true) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 5.0,
+                                      spreadRadius: 1.0,
+                                      offset: Offset(
+                                          0.0, 5.0), // shadow direction: bottom
+                                    )
+                                  ],
+                                ),
+                                padding: EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Bukti Approval",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child: Obx(
+                                          () => controller
+                                                      .selectedSelfieImage2Path
+                                                      .value ==
+                                                  ""
+                                              ? GestureDetector(
+                                                  onTap: () {
+                                                    _bottomSheet(
+                                                        context, "app2");
+                                                  },
+                                                  child: Container(
+                                                    height: 160,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[350],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                    ),
+                                                    child: Center(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(
+                                                              Icons
+                                                                  .camera_alt_outlined,
+                                                              size: 50),
+                                                          Text("Ambil Foto")
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                      Stack(children: [
+                                                        Container(
+                                                          height: 160,
+                                                          width:
+                                                              double.infinity,
+                                                          child: Image.file(
+                                                            File(controller
+                                                                .selectedSelfieImage2Path
+                                                                .value),
+                                                            fit:
+                                                                BoxFit.fitWidth,
+                                                          ),
+                                                        ),
+                                                        simpanGambar2
+                                                            ? Container(
+                                                                height: 160,
+                                                                child: Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : Container(),
+                                                      ]),
+                                                      SizedBox(height: 10),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              _bottomSheet(
+                                                                  context,
+                                                                  "app2");
+                                                            },
+                                                            child: Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          5,
+                                                                      horizontal:
+                                                                          10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    width: 1),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Text(
+                                                                "Ambil ulang",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          !gambar2tersimpan
+                                                              ? GestureDetector(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      simpanGambar2 =
+                                                                          true;
+                                                                    });
+                                                                    controller
+                                                                        .uploadImage(
+                                                                            controller
+                                                                                .selectedSelfieImagePath.value,
+                                                                            "app2")
+                                                                        .then(
+                                                                            (value) {
+                                                                      setState(
+                                                                          () {
+                                                                        simpanGambar2 =
+                                                                            false;
+                                                                        gambar2tersimpan =
+                                                                            true;
+                                                                      });
+                                                                      Get.snackbar(
+                                                                          "Success",
+                                                                          "Image saved successfully");
+                                                                    }).catchError(
+                                                                            (e) {
+                                                                      setState(
+                                                                          () {
+                                                                        simpanGambar2 =
+                                                                            false;
+                                                                      });
+
+                                                                      print(e);
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            5,
+                                                                        horizontal:
+                                                                            10),
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Color(
+                                                                          0xffEE6A6A),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10),
+                                                                    ),
+                                                                    child: Text(
+                                                                      "simpan",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontSize:
+                                                                              12),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              : Text(""),
+                                                        ],
+                                                      ),
+                                                    ]),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      "Nama Atasan",
+                                      style: TextStyle(
+                                        fontSize: 12.0,
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      controller:
+                                          controller.namaAtasan2Controller,
+                                      style: TextStyle(
+                                        fontSize: 12.0,
+                                      ),
+                                      decoration: InputDecoration(
+                                        helperText: ' ',
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 0.0),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        labelText: 'Masukkan Nama Atasan',
+                                      ),
+                                      validator: (value) {
+                                        if (value == "") {
+                                          return 'Nama atasan tidak boleh kosong';
+                                        }
+                                        return null;
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          return SizedBox(height: 0, width: 0);
+                        }
+                      }),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(
@@ -522,14 +885,24 @@ class _PengajuanTransaksiLogamMuliaFormState
                         padding: const EdgeInsets.all(16.0),
                         child: GestureDetector(
                           onTap: () {
-                            // Get.to(() => PengajuanSukses());
-                            // controller
-                            //     .submitPengajuanLogamMulia()
-                            //     .then((value) {
-                            //   print(value);
-                            //   Get.to(() => PengajuanSukses());
-                            // }).printError();
                             controller.printData();
+                            if (checkBoxValue == true) {
+                              if (controller.isDoubleApproval == true) {
+                                controller
+                                    .submitPengajuanLogamMulia2()
+                                    .then((value) {
+                                  print(value);
+                                  Get.to(() => PengajuanSukses());
+                                }).catchError((e){print(e);});
+                              } else {
+                                controller
+                                    .submitPengajuanLogamMulia()
+                                    .then((value) {
+                                  print(value);
+                                  Get.to(() => PengajuanSukses());
+                                }).catchError((e){print(e);});
+                              }
+                            }
                           },
                           child: Container(
                             height: 48.0,
@@ -591,7 +964,6 @@ class _PengajuanTransaksiLogamMuliaFormState
   }
 
   _bottomSheet(context, data) {
-    int control = data;
     showModalBottomSheet(
         context: context,
         builder: (BuildContext c) {
@@ -629,7 +1001,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                               onTap: () {
                                 Get.back();
 
-                                controller.getSelfie(ImageSource.gallery);
+                                controller.getSelfie(ImageSource.gallery, data);
                               },
                               child: Container(
                                 height: 60,
@@ -664,7 +1036,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                               onTap: () {
                                 Get.back();
 
-                                controller.getSelfie(ImageSource.camera);
+                                controller.getSelfie(ImageSource.camera, data);
                               },
                               child: Container(
                                 height: 60,

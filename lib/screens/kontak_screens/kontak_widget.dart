@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/kontak_controller.dart';
 
 class KontakWidget extends StatefulWidget {
   const KontakWidget({Key? key}) : super(key: key);
@@ -8,6 +10,8 @@ class KontakWidget extends StatefulWidget {
 }
 
 class _KontakWidgetState extends State<KontakWidget> {
+  final KontakController controller = Get.put(KontakController());
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -83,109 +87,126 @@ class _KontakWidgetState extends State<KontakWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3.9,
-                            height: 35.0,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 5.0),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xffEE6A6A),
-                                    Color(0xffC30707)
-                                  ]),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  top: 0,
-                                  left: 2,
-                                  child: Icon(Icons.phone,
-                                      color: Colors.white, size: 16.0),
-                                ),
-                                Center(
-                                  child: Text(
-                                    'Telepon',
-                                    style: TextStyle(
-                                        fontSize: 8.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
+                          GestureDetector(
+                            onTap: () {
+                              controller
+                                  .openKontak(controller.kontak!.telepon!);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 3.9,
+                              height: 35.0,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xffEE6A6A),
+                                      Color(0xffC30707)
+                                    ]),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: 0,
+                                    left: 2,
+                                    child: Icon(Icons.phone,
+                                        color: Colors.white, size: 16.0),
                                   ),
-                                ),
-                              ],
+                                  Center(
+                                    child: Text(
+                                      'Telepon',
+                                      style: TextStyle(
+                                          fontSize: 8.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          Container(
-                            height: 35.0,
-                            width: MediaQuery.of(context).size.width / 3.9,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 5.0),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xffEE6A6A),
-                                    Color(0xffC30707)
-                                  ]),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  top: 0,
-                                  left: 2,
-                                  child: Icon(Icons.email_outlined,
-                                      color: Colors.white, size: 16.0),
-                                ),
-                                Center(
-                                  child: Text(
-                                    'Email',
-                                    style: TextStyle(
-                                        fontSize: 8.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
+                          GestureDetector(
+                            onTap: () {
+                              controller.openKontak(controller.kontak!.email!);
+                            },
+                            child: Container(
+                              height: 35.0,
+                              width: MediaQuery.of(context).size.width / 3.9,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xffEE6A6A),
+                                      Color(0xffC30707)
+                                    ]),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: 0,
+                                    left: 2,
+                                    child: Icon(Icons.email_outlined,
+                                        color: Colors.white, size: 16.0),
                                   ),
-                                ),
-                              ],
+                                  Center(
+                                    child: Text(
+                                      'Email',
+                                      style: TextStyle(
+                                          fontSize: 8.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          Container(
-                            height: 35.0,
-                            width: MediaQuery.of(context).size.width / 3.9,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 5.0),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xffEE6A6A),
-                                    Color(0xffC30707)
-                                  ]),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  top: 0,
-                                  left: 2,
-                                  child: Icon(Icons.whatshot,
-                                      color: Colors.white, size: 16.0),
-                                ),
-                                Center(
-                                  child: Text(
-                                    'WhatsApp',
-                                    style: TextStyle(
-                                        fontSize: 8.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white),
+                          GestureDetector(
+                            onTap: () {
+                              controller
+                                  .openKontak(controller.kontak!.whatsapp!);
+                            },
+                            child: Container(
+                              height: 35.0,
+                              width: MediaQuery.of(context).size.width / 3.9,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xffEE6A6A),
+                                      Color(0xffC30707)
+                                    ]),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: 0,
+                                    left: 2,
+                                    child: Icon(Icons.whatshot,
+                                        color: Colors.white, size: 16.0),
                                   ),
-                                ),
-                              ],
+                                  Center(
+                                    child: Text(
+                                      'WhatsApp',
+                                      style: TextStyle(
+                                          fontSize: 8.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -249,123 +270,148 @@ class _KontakWidgetState extends State<KontakWidget> {
                       SizedBox(
                         height: 24.0,
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            height: 30.0,
-                            width: 30.0,
-                            child: Image(
-                                image: AssetImage('assets/gold-ingots.png'),
-                                fit: BoxFit.fill),
-                          ),
-                          SizedBox(
-                            width: 16.0,
-                          ),
-                          Text(
-                            'Transaksi Logam Mulia',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 12.0),
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward_ios, size: 16.0),
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          controller.openLink(controller.faq!.logamMulia!);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 30.0,
+                              width: 30.0,
+                              child: Image(
+                                  image: AssetImage('assets/gold-ingots.png'),
+                                  fit: BoxFit.fill),
+                            ),
+                            SizedBox(
+                              width: 16.0,
+                            ),
+                            Text(
+                              'Transaksi Logam Mulia',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 12.0),
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios, size: 16.0),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            height: 30.0,
-                            width: 30.0,
-                            child: Image(
-                                image: AssetImage('assets/wallet.png'),
-                                fit: BoxFit.fill),
-                          ),
-                          SizedBox(
-                            width: 16.0,
-                          ),
-                          Text(
-                            'Kredit Barang',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 12.0),
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward_ios, size: 16.0),
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          controller.openLink(controller.faq!.kreditBarang!);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 30.0,
+                              width: 30.0,
+                              child: Image(
+                                  image: AssetImage('assets/wallet.png'),
+                                  fit: BoxFit.fill),
+                            ),
+                            SizedBox(
+                              width: 16.0,
+                            ),
+                            Text(
+                              'Kredit Barang',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 12.0),
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios, size: 16.0),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            height: 30.0,
-                            width: 30.0,
-                            child: Image(
-                                image:
-                                    AssetImage('assets/point-of-service.png'),
-                                fit: BoxFit.fill),
-                          ),
-                          SizedBox(
-                            width: 16.0,
-                          ),
-                          Text(
-                            'Simulasi SHU',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 12.0),
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward_ios, size: 16.0),
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          controller.openLink(controller.faq!.simulasiShu!);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 30.0,
+                              width: 30.0,
+                              child: Image(
+                                  image:
+                                      AssetImage('assets/point-of-service.png'),
+                                  fit: BoxFit.fill),
+                            ),
+                            SizedBox(
+                              width: 16.0,
+                            ),
+                            Text(
+                              'Simulasi SHU',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 12.0),
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios, size: 16.0),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            height: 30.0,
-                            width: 30.0,
-                            child: Image(
-                                image: AssetImage('assets/presentation.png'),
-                                fit: BoxFit.fill),
-                          ),
-                          SizedBox(
-                            width: 16.0,
-                          ),
-                          Text(
-                            'Laporan Keuangan',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 12.0),
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward_ios, size: 16.0),
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          controller.openLink(controller.faq!.laporanKeuangan!);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 30.0,
+                              width: 30.0,
+                              child: Image(
+                                  image: AssetImage('assets/presentation.png'),
+                                  fit: BoxFit.fill),
+                            ),
+                            SizedBox(
+                              width: 16.0,
+                            ),
+                            Text(
+                              'Laporan Keuangan',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 12.0),
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios, size: 16.0),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         height: 16.0,
                       ),
-                      Row(
-                        children: [
-                          Container(
-                            height: 30.0,
-                            width: 30.0,
-                            child: Image(
-                                image: AssetImage('assets/store.png'),
-                                fit: BoxFit.fill),
-                          ),
-                          SizedBox(
-                            width: 16.0,
-                          ),
-                          Text(
-                            'Kobantitar Mart',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 12.0),
-                          ),
-                          Spacer(),
-                          Icon(Icons.arrow_forward_ios, size: 16.0),
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          controller.openLink(controller.faq!.kobantitarMart!);
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 30.0,
+                              width: 30.0,
+                              child: Image(
+                                  image: AssetImage('assets/store.png'),
+                                  fit: BoxFit.fill),
+                            ),
+                            SizedBox(
+                              width: 16.0,
+                            ),
+                            Text(
+                              'Kobantitar Mart',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 12.0),
+                            ),
+                            Spacer(),
+                            Icon(Icons.arrow_forward_ios, size: 16.0),
+                          ],
+                        ),
                       ),
                     ],
                   )),

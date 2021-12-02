@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
+
 import 'package:kobantitar_mobile/controllers/home_controller.dart';
-import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart.dart';
 import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart_list_produk.dart';
 import 'package:kobantitar_mobile/screens/home_screens/laporan_keuangan.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_merk_motor.dart';
@@ -105,85 +106,57 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 ),
                               ]),
                         ),
-                        SizedBox(
-                          height: 100,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 3,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.only(
-                                  /** @change left margin for first item only */
-                                  left: index == 0 ? 16 : 0,
-                                  top: 8,
-                                  bottom: 8,
-                                  right: 10,
-                                ),
-                                width: MediaQuery.of(context).size.width / 1.5,
-                                height: 80,
-                                decoration: BoxDecoration(
-                                  color: Color(0xff009FD9),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 20.0, right: 20),
-                                      child: Text(
-                                        "Plafon Kredit Logam Mulia sampai dengan 20jt",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
+                        Obx(() {
+                          if (controller.isInformasiLoading.value) {
+                            return SizedBox(height: 100);
+                          } else {
+                            return SizedBox(
+                              height: 100,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: controller.informasi.data!.length,
+                                itemBuilder: (context, index) {
+                                  final informasi =
+                                      controller.informasi.data![index];
+                                  return Container(
+                                    margin: EdgeInsets.only(
+                                      /** @change left margin for first item only */
+                                      left: index == 0 ? 16 : 0,
+                                      top: 8,
+                                      bottom: 8,
+                                      right: 10,
+                                    ),
+                                    width: 240,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        controller.openLink(informasi.url!);
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        child: Image.network(
+                                            "https://backend.kobantitar.com${informasi.backgroundUrl}",
+                                            fit: BoxFit.cover),
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 5),
-                                          decoration: BoxDecoration(
-                                              color: Colors.black
-                                                  .withOpacity(0.28),
-                                              borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                                topLeft: Radius.circular(10),
-                                              )),
-                                          child: Text(
-                                            'Ajukan Sekarang!',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 9.0,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        })
                       ],
                     ),
                   ),
                   SizedBox(height: 26.0),
                   Obx(() {
                     if (controller.isKobmartLoading.value) {
-                      return Text("loading..");
+                      return Container(
+                          height: 400, child: Center(child: Text("loading..")));
                     } else {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -254,126 +227,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                4.2,
-                                        height: 150.0,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Image.network(
-                                                  "https://backend.kobantitar.com${controller.kobmart.promoProducts![0].imageUrl}"),
-                                              Text(
-                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![0].hargaPromo).toString()}",
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight: FontWeight.w600,
-                                                  )),
-                                              Text(
-                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![0].hargaAwal).toString()}",
-                                                  style: TextStyle(
-                                                    color: Colors.grey[400],
-                                                    fontSize: 12,
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                  )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                4.2,
-                                        height: 150.0,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Image.network(
-                                                  "https://backend.kobantitar.com${controller.kobmart.promoProducts![1].imageUrl}"),
-                                              Text(
-                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![1].hargaPromo).toString()}",
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight: FontWeight.w600,
-                                                  )),
-                                              Text(
-                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![1].hargaAwal).toString()}",
-                                                  style: TextStyle(
-                                                    color: Colors.grey[400],
-                                                    fontSize: 12,
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                  )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                4.2,
-                                        height: 150,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Image.network(
-                                                  "https://backend.kobantitar.com${controller.kobmart.promoProducts![2].imageUrl}"),
-                                              Text(
-                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![2].hargaPromo).toString()}",
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight: FontWeight.w600,
-                                                  )),
-                                              Text(
-                                                  "Rp ${currencyFormatter.format(controller.kobmart.promoProducts![2].hargaAwal).toString()}",
-                                                  style: TextStyle(
-                                                    color: Colors.grey[400],
-                                                    fontSize: 12,
-                                                    decoration: TextDecoration
-                                                        .lineThrough,
-                                                  )),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    children: promoProducts(),
+                                  )
                                 ],
                               ),
                             )
@@ -957,5 +812,46 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
       ],
     );
+  }
+
+  List<Widget> promoProducts() {
+    List<Widget> list = [];
+    //i<5, pass your dynamic limit as per your requirment
+    for (int i = 0; i < controller.kobmart.promoProducts!.length; i++) {
+      final product = controller.kobmart.promoProducts![i];
+      list.add(Container(
+        width: MediaQuery.of(context).size.width / 4.2,
+        height: 150.0,
+        padding: EdgeInsets.symmetric(horizontal: 10.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.network(
+                  "https://backend.kobantitar.com${product.imageUrl}"),
+              Text(
+                  "Rp ${currencyFormatter.format(product.hargaPromo).toString()}",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w600,
+                  )),
+              Text(
+                  "Rp ${currencyFormatter.format(product.hargaAwal).toString()}",
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 12,
+                    decoration: TextDecoration.lineThrough,
+                  )),
+            ],
+          ),
+        ),
+      )); //add any Widget in place of Text("Index $i")
+    }
+    return list; // all widget added now retrun the list here
   }
 }

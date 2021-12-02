@@ -24,7 +24,7 @@ class SignUpController extends GetxController {
   var isInstansiLoading = false.obs;
 
   final dataPribadiFormKey = GlobalKey<FormState>();
-  final dataBankFormKey = GlobalKey<FormState>();
+  final detailBankFormKey = GlobalKey<FormState>();
   final detailAkunFormKey = GlobalKey<FormState>();
 
   var namaController = TextEditingController();
@@ -41,6 +41,8 @@ class SignUpController extends GetxController {
   var noHPController = TextEditingController();
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
+
+  int step = 0;
 
   dynamic argumentData = Get.arguments;
 
@@ -149,7 +151,7 @@ class SignUpController extends GetxController {
   Future<http.StreamedResponse> uploadImage(
       String file, String uploadContext) async {
     var uploadType = uploadContext;
-    var uri = Uri.parse("${config.BASE_URL}/upload");
+    var uri = Uri.parse("${config.baseURL}/upload");
     var request = http.MultipartRequest('POST', uri);
     request.files.add(await http.MultipartFile.fromPath("file", file));
     request.headers.addAll({"Content-type": "multipart/form-data"});
@@ -173,7 +175,7 @@ class SignUpController extends GetxController {
 
   Future<String?> signUp() async {
     final response = await http.post(
-      Uri.parse("${config.BASE_URL}/register"),
+      Uri.parse("${config.baseURL}/register"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

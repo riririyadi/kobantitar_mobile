@@ -28,6 +28,7 @@ class _PengajuanKreditMotorFormState extends State<PengajuanKreditMotorForm> {
   bool? checkBoxValue = false;
 
   final currencyFormatter = NumberFormat('#,##0', 'ID');
+  bool simpan = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,7 +241,10 @@ class _PengajuanKreditMotorFormState extends State<PengajuanKreditMotorForm> {
                                           style: TextStyle(fontSize: 12.0),
                                           controller: controller.dateController,
                                           decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
                                               suffixIcon:
                                                   Icon(Icons.calendar_today)),
                                         ),
@@ -376,88 +380,389 @@ class _PengajuanKreditMotorFormState extends State<PengajuanKreditMotorForm> {
                               Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Container(
-                                  height: 160,
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[350],
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  child: Center(
-                                    child: Obx(
-                                      () => controller.selectedSelfieImagePath
-                                                  .value ==
-                                              ""
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                _bottomSheet(context, 2);
-                                              },
-                                              child: Container(
-                                                height: 160,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey[350],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
+                                  child: Obx(
+                                    () => controller.selectedSelfieImagePath
+                                                .value ==
+                                            ""
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              _bottomSheet(context, 2);
+                                            },
+                                            child: Container(
+                                              height: 160,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[350],
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                        Icons
+                                                            .camera_alt_outlined,
+                                                        size: 50),
+                                                    Text("Ambil Foto")
+                                                  ],
                                                 ),
-                                                child: Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                          Icons
-                                                              .camera_alt_outlined,
-                                                          size: 50),
-                                                      Text("Ambil Foto")
-                                                    ],
+                                              ),
+                                            ),
+                                          )
+                                        : Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                                Stack(children: [
+                                                  Container(
+                                                    height: 160,
+                                                    width: double.infinity,
+                                                    child: Image.file(
+                                                      File(controller
+                                                          .selectedSelfieImagePath
+                                                          .value),
+                                                      fit: BoxFit.fitWidth,
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                            )
-                                          : Column(children: [
-                                              Image.file(
-                                                File(controller
-                                                    .selectedSelfieImagePath
-                                                    .value),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  GestureDetector(
+                                                  simpan
+                                                      ? Container(
+                                                          height: 160,
+                                                          child: Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Container(),
+                                                ]),
+                                                SizedBox(height: 10),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    GestureDetector(
                                                       onTap: () {
                                                         _bottomSheet(
                                                             context, 2);
                                                       },
-                                                      child:
-                                                          Text("Ambil ulang")),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      controller
-                                                          .uploadImage(
-                                                              controller
-                                                                  .selectedSelfieImagePath
-                                                                  .value,
-                                                              "ktp")
-                                                          .then((value) =>
-                                                              Get.snackbar(
-                                                                  "Success",
-                                                                  "Image saved successfully"));
-                                                    },
-                                                    child: Text("Simpan"),
-                                                  ),
-                                                ],
-                                              ),
-                                            ]),
-                                    ),
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 5,
+                                                                horizontal: 10),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.grey,
+                                                              width: 1),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: Text(
+                                                          "Ambil ulang",
+                                                          style: TextStyle(
+                                                              fontSize: 12),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          simpan = !simpan;
+                                                        });
+                                                        //   controller
+                                                        //       .uploadImage(
+                                                        //           controller
+                                                        //               .selectedSelfieImagePath
+                                                        //               .value,
+                                                        //           "ktp")
+                                                        //       .then((value) =>
+                                                        //           Get.snackbar(
+                                                        //               "Success",
+                                                        //               "Image saved successfully"));
+                                                      },
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                vertical: 5,
+                                                                horizontal: 10),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Color(0xffEE6A6A),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: Text(
+                                                          "Simpan",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ]),
                                   ),
                                 ),
                               ),
+                              Text(
+                                "Nama Atasan",
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                              TextFormField(
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                ),
+                                decoration: InputDecoration(
+                                  helperText: ' ',
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10.0, vertical: 0.0),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  labelText: 'Masukkan Nama Atasan',
+                                ),
+                                validator: (value) {
+                                  if (value == "") {
+                                    return 'Nama atasan tidak boleh kosong';
+                                  }
+                                  return null;
+                                },
+                              )
                             ],
                           ),
                         ),
                       ),
+                      Obx(() {
+                        if (controller.isDoubleApproval.value) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              ),
+                              padding: EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Bukti Approval",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: Obx(
+                                        () => controller.selectedSelfieImagePath
+                                                    .value ==
+                                                ""
+                                            ? GestureDetector(
+                                                onTap: () {
+                                                  _bottomSheet(context, 2);
+                                                },
+                                                child: Container(
+                                                  height: 160,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[350],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                  ),
+                                                  child: Center(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Icon(
+                                                            Icons
+                                                                .camera_alt_outlined,
+                                                            size: 50),
+                                                        Text("Ambil Foto")
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                    Stack(children: [
+                                                      Container(
+                                                        height: 160,
+                                                        width: double.infinity,
+                                                        child: Image.file(
+                                                          File(controller
+                                                              .selectedSelfieImagePath
+                                                              .value),
+                                                          fit: BoxFit.fitWidth,
+                                                        ),
+                                                      ),
+                                                      simpan
+                                                          ? Container(
+                                                              height: 160,
+                                                              child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Container(),
+                                                    ]),
+                                                    SizedBox(height: 10),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            _bottomSheet(
+                                                                context, 2);
+                                                          },
+                                                          child: Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical: 5,
+                                                                    horizontal:
+                                                                        10),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  width: 1),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            child: Text(
+                                                              "Ambil ulang",
+                                                              style: TextStyle(
+                                                                  fontSize: 12),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              simpan = !simpan;
+                                                            });
+                                                            //   controller
+                                                            //       .uploadImage(
+                                                            //           controller
+                                                            //               .selectedSelfieImagePath
+                                                            //               .value,
+                                                            //           "ktp")
+                                                            //       .then((value) =>
+                                                            //           Get.snackbar(
+                                                            //               "Success",
+                                                            //               "Image saved successfully"));
+                                                          },
+                                                          child: Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical: 5,
+                                                                    horizontal:
+                                                                        10),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Color(
+                                                                  0xffEE6A6A),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            child: Text(
+                                                              "Simpan",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 12),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ]),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Nama Atasan",
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                    decoration: InputDecoration(
+                                      helperText: ' ',
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 0.0),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.never,
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      labelText: 'Masukkan Nama Atasan',
+                                    ),
+                                    validator: (value) {
+                                      if (value == "") {
+                                        return 'Nama atasan tidak boleh kosong';
+                                      }
+                                      return null;
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return SizedBox(height: 0, width: 0);
+                        }
+                      }),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Container(

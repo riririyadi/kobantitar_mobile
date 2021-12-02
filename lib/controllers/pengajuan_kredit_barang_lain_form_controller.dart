@@ -17,6 +17,8 @@ class PengajuanKreditBarangFormController extends GetxController {
   var tglPembayaranController = TextEditingController();
   var dateController = TextEditingController();
   var keperluanController = TextEditingController();
+  var namaAtasanController = TextEditingController();
+  var namaAtasan2Controller = TextEditingController();
   final userData = GetStorage();
   late String token;
   var isLoading = false.obs;
@@ -26,10 +28,11 @@ class PengajuanKreditBarangFormController extends GetxController {
   List<TenorBarang>? tenors = <TenorBarang>[].obs;
   var detailKredit = <BarangLainCalculation>[].obs;
   int approvalFileId = 0;
+  int approvalFileId2 = 0;
+  bool? isDoubleApproval = false;
 
   @override
   void onInit() {
-    print(argumentData);
     token = userData.read("token");
     getTenor();
     super.onInit();
@@ -38,12 +41,9 @@ class PengajuanKreditBarangFormController extends GetxController {
   @override
   void onReady() {
     tenorController.addListener(() {
-      print(tenorController.text);
       getCalculation();
     });
-    dateController.addListener(() {
-      print(dateController.text);
-    });
+
     super.onReady();
   }
 
@@ -57,11 +57,9 @@ class PengajuanKreditBarangFormController extends GetxController {
       isLoading(true);
       final data = await Service.fetchPengajuanBarangLainConfig(token);
       if (data != null) {
-        // print(jsonEncode(data));
+        tenors = data.data!.tenors;
 
-        final tenor = data.data!.tenors;
-
-        tenors = tenor;
+        isDoubleApproval = data.data!.isDoubleApproval;
       }
     } finally {
       isLoading(false);
@@ -88,17 +86,27 @@ class PengajuanKreditBarangFormController extends GetxController {
 
   var selectedSelfieImagePath = "".obs;
   var selectedSelfieImageSize = "".obs;
+  var selectedSelfieImage2Path = "".obs;
+  var selectedSelfieImage2Size = "".obs;
 
-  void getSelfie(ImageSource imageSource) async {
+  void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
       final image = await ImagePicker().pickImage(source: imageSource);
 
       if (image != null) {
-        selectedSelfieImagePath.value = image.path;
-        selectedSelfieImageSize.value =
-            ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
-                    .toStringAsFixed(2) +
-                " Mb";
+        if (imageContext == "app1") {
+          selectedSelfieImagePath.value = image.path;
+          selectedSelfieImageSize.value =
+              ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
+                      .toStringAsFixed(2) +
+                  " Mb";
+        } else {
+          selectedSelfieImage2Path.value = image.path;
+          selectedSelfieImage2Size.value =
+              ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
+                      .toStringAsFixed(2) +
+                  " Mb";
+        }
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -110,7 +118,7 @@ class PengajuanKreditBarangFormController extends GetxController {
   Future<http.StreamedResponse> uploadImage(
       String file, String uploadContext) async {
     var uploadType = uploadContext;
-    var uri = Uri.parse("${config.BASE_URL}/upload");
+    var uri = Uri.parse("${config.baseURL}/upload");
     var request = http.MultipartRequest('POST', uri);
     request.files.add(await http.MultipartFile.fromPath("file", file));
     request.headers.addAll({"Content-type": "multipart/form-data"});
@@ -122,8 +130,12 @@ class PengajuanKreditBarangFormController extends GetxController {
       final json = jsonDecode(respStr.body);
       final fileId = json['data']['file_id'];
 
-      approvalFileId = fileId;
-      print(approvalFileId);
+      if (uploadType == "app1") {
+        approvalFileId = fileId;
+      } else {
+        approvalFileId2 = fileId;
+      }
+
       return response;
     } else {
       return Future.error(response);
@@ -136,13 +148,16 @@ class PengajuanKreditBarangFormController extends GetxController {
     print("jenis_barang: " + argumentData[0]['jenis_barang']);
     print("tipe_barang: " + argumentData[0]['tipe_barang']);
     print("start_date: " + dateController.text);
-    print("approval_file_id: " + approvalFileId.toString());
-    print("nama_atasan: Pak Jajang");
+    print("file_id: " + approvalFileId.toString());
+    print("nama atasan1:" + namaAtasanController.text);
+    print("file_id2: " + approvalFileId2.toString());
+
+    print("nama atasan2:" + namaAtasan2Controller.text);
   }
 
   Future<String?> sumbitPengajuanBarangLain() async {
     final response = await http.post(
-      Uri.parse("${config.BASE_URL}/pengajuan/kreditbarang"),
+      Uri.parse("${config.baseURL}/pengajuan/kreditbarang"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -154,8 +169,43 @@ class PengajuanKreditBarangFormController extends GetxController {
         "jenis_barang": argumentData[0]['jenis_barang'],
         "tipe_barang": argumentData[0]['tipe_barang'],
         "start_date": dateController.text,
-        "aprroval_file_id": approvalFileId,
-        "nama_atasan": "Pak jajang"
+        "approval": [
+          {"file_id": approvalFileId, "nama_atasan": namaAtasanController.text}
+        ]
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      print(response.statusCode);
+      return json["status"];
+    } else {
+      print(response.statusCode);
+      return null;
+    }
+  }
+
+  Future<String?> sumbitPengajuanBarangLain2() async {
+    final response = await http.post(
+      Uri.parse("${config.baseURL}/pengajuan/kreditbarang"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "tenor_id": tenorController.text,
+        "nominal": int.parse(argumentData[0]['nilai_barang']),
+        "jenis_barang": argumentData[0]['jenis_barang'],
+        "tipe_barang": argumentData[0]['tipe_barang'],
+        "start_date": dateController.text,
+        "approval": [
+          {"file_id": approvalFileId, "nama_atasan": namaAtasanController.text},
+          {
+            "file_id": approvalFileId2,
+            "nama_atasan": namaAtasan2Controller.text
+          },
+        ]
       }),
     );
 

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/models/nomor_anggota.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/daftar_akun_baru.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginController extends GetxController {
   var isLoading = false.obs;
@@ -17,6 +18,7 @@ class LoginController extends GetxController {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var nomorAnggotaController = TextEditingController();
+  final lupaPasswordUri = "https://backend.kobantitar.com/password/reset";
 
   @override
   void onInit() {
@@ -30,9 +32,16 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
+  Future openLink() async {
+    if (await canLaunch(lupaPasswordUri)) {
+      await launch(lupaPasswordUri,
+          forceWebView: true, forceSafariVC: true, enableJavaScript: true);
+    }
+  }
+
   Future<String?> checkUser(String email, String password) async {
     final response = await http.post(
-      Uri.parse("${config.BASE_URL}/login"),
+      Uri.parse("${config.baseURL}/login"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json"
@@ -54,7 +63,7 @@ class LoginController extends GetxController {
 
   Future<NomorAnggota?> checkNomorAnggota(int nomorAnggota) async {
     final response = await http.get(
-      Uri.parse("${config.BASE_URL}/register/nomor-anggota/${nomorAnggota}"),
+      Uri.parse("${config.baseURL}/register/nomor-anggota/${nomorAnggota}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
+import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_kredit_barang_list.dart';
 import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_list_widget.dart';
+import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_logam_mulia_list.dart';
 
 class TagihanWidget extends StatefulWidget {
   const TagihanWidget({Key? key}) : super(key: key);
@@ -287,11 +289,9 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                 child: IndexedStack(
                   index: _jenisTagihan,
                   children: [
-                    TagihanList(),
-                    Container(
-                        child: Center(child: Text('Tagihan Logam Mulia'))),
-                    Container(
-                        child: Center(child: Text('Tagihan Kredit Barang'))),
+                    AllTagihan(),
+                    TagihanLogamMulia(),
+                    TagihanKreditBarang(),
                   ],
                 ),
               ),
