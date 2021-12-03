@@ -4,12 +4,13 @@
 
 import 'dart:convert';
 
-Tagihan tagihanFromJson(String str) => Tagihan.fromJson(json.decode(str));
+TagihanList tagihanListFromJson(String str) =>
+    TagihanList.fromJson(json.decode(str));
 
-String tagihanToJson(Tagihan data) => json.encode(data.toJson());
+String tagihanListToJson(TagihanList data) => json.encode(data.toJson());
 
-class Tagihan {
-  Tagihan({
+class TagihanList {
+  TagihanList({
     this.success,
     this.status,
     this.data,
@@ -19,7 +20,7 @@ class Tagihan {
   String? status;
   List<DataTagihan>? data;
 
-  factory Tagihan.fromJson(Map<String, dynamic> json) => Tagihan(
+  factory TagihanList.fromJson(Map<String, dynamic> json) => TagihanList(
         success: json["success"],
         status: json["status"],
         data: List<DataTagihan>.from(

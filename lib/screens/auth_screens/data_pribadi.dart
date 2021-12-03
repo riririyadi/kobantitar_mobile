@@ -23,13 +23,6 @@ class _DataPribadiState extends State<DataPribadi> {
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         children: [
-          // Obx(() {
-          //   if (controller.isLoaded.value) {
-          //     return Text("${controller.instansi!.data[1].name}");
-          //   } else {
-          //     return Text("Hallo");
-          //   }
-          // }),
           Text(
             "Nama Lengkap",
             style: TextStyle(

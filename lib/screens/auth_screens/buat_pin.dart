@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/buat_pin_controller.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/verifikasi_pin.dart';
 
 class BuatPIN extends StatefulWidget {
@@ -10,6 +11,28 @@ class BuatPIN extends StatefulWidget {
 }
 
 class _BuatPINState extends State<BuatPIN> {
+  final BuatPINController controller = Get.put(BuatPINController());
+  late TextEditingController pinController;
+
+  @override
+  void initState() {
+    pinController = TextEditingController()
+      ..addListener(() {
+        if (pinController.text.length < 7) {
+          setState(() {});
+          print(pinController.text);
+          controller.pin = pinController.text;
+        }
+      });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +94,32 @@ class _BuatPINState extends State<BuatPIN> {
                 ),
                 child: Column(
                   children: [
+                    TextField(
+                      controller: pinController,
+                      autofocus: true,
+                      keyboardType: TextInputType.number,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              top: 72,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(24),
+                    topLeft: Radius.circular(24),
+                  ),
+                ),
+                child: Column(
+                  children: [
                     Text(
                       "Buat PIN untuk keamanan",
                       style: TextStyle(fontWeight: FontWeight.w600),
@@ -81,32 +130,44 @@ class _BuatPINState extends State<BuatPIN> {
                       children: [
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: Colors.grey,
+                          backgroundColor: pinController.text.length >= 1
+                              ? Colors.red
+                              : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: Colors.grey,
+                          backgroundColor: pinController.text.length >= 2
+                              ? Colors.red
+                              : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: Colors.grey,
+                          backgroundColor: pinController.text.length >= 3
+                              ? Colors.red
+                              : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: Colors.grey,
+                          backgroundColor: pinController.text.length >= 4
+                              ? Colors.red
+                              : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: Colors.grey,
+                          backgroundColor: pinController.text.length >= 5
+                              ? Colors.red
+                              : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: Colors.grey,
+                          backgroundColor: pinController.text.length >= 6
+                              ? Colors.red
+                              : Colors.grey,
                         ),
                       ],
                     )

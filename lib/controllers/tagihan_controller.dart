@@ -10,6 +10,8 @@ class TagihanController extends GetxController {
   List<DataTagihan>? tagihanList = [];
   List<DataTagihan>? tagihanLogamMulia = [];
   List<DataTagihan>? tagihanKreditBarang = [];
+  List<DataTagihan>? tagihanKreditKendaraan = [];
+  List<DataTagihan>? tagihanKobmart = [];
 
   @override
   void onInit() {
@@ -30,6 +32,12 @@ class TagihanController extends GetxController {
             .toList();
         tagihanKreditBarang = data.data!
             .where((tagihan) => tagihan.type!.endsWith("KB"))
+            .toList();
+        tagihanKreditKendaraan = data.data!
+            .where((tagihan) => tagihan.type!.endsWith("KK"))
+            .toList();
+        tagihanKobmart = data.data!
+            .where((tagihan) => tagihan.type!.endsWith("KM"))
             .toList();
       }
     } finally {

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/tagihan_controller.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
 
-class AllTagihan extends StatefulWidget {
-  const AllTagihan({Key? key}) : super(key: key);
+class TagihanKobmart extends StatefulWidget {
+  const TagihanKobmart({Key? key}) : super(key: key);
 
   @override
-  _AllTagihanState createState() => _AllTagihanState();
+  _TagihanKobmartState createState() => _TagihanKobmartState();
 }
 
-class _AllTagihanState extends State<AllTagihan> {
+class _TagihanKobmartState extends State<TagihanKobmart> {
   final TagihanController controller = Get.put(TagihanController());
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -20,9 +23,9 @@ class _AllTagihanState extends State<AllTagihan> {
       } else {
         return ListView.builder(
             padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-            itemCount: controller.tagihanList!.length,
+            itemCount: controller.tagihanKobmart!.length,
             itemBuilder: (context, index) {
-              final tagihan = controller.tagihanList![index];
+              final tagihan = controller.tagihanKobmart![index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: Container(
@@ -55,7 +58,7 @@ class _AllTagihanState extends State<AllTagihan> {
                                 width: 30,
                                 height: 30,
                                 child: Image(
-                                    image: AssetImage('assets/gold-ingots.png'),
+                                    image: AssetImage('assets/store.png'),
                                     fit: BoxFit.fill),
                               ),
                             ),
@@ -81,7 +84,7 @@ class _AllTagihanState extends State<AllTagihan> {
                             height: 5.0,
                           ),
                           Text(
-                            'Rp 3.289.500',
+                            'Rp ${currencyFormatter.format(tagihan.sisaTagihan)}',
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.w600),
                           )
@@ -96,7 +99,7 @@ class _AllTagihanState extends State<AllTagihan> {
                               style: TextStyle(fontSize: 12.0)),
                           Spacer(),
                           Text(
-                            'Rp 590.000',
+                            'Rp ${currencyFormatter.format(tagihan.tagihanHarusDibayar)}',
                             style: TextStyle(
                                 fontSize: 12.0, fontWeight: FontWeight.w600),
                           ),
@@ -108,7 +111,7 @@ class _AllTagihanState extends State<AllTagihan> {
                           Text('Jatuh Tempo', style: TextStyle(fontSize: 12.0)),
                           Spacer(),
                           Text(
-                            '26 Oktober 2021',
+                            '${tagihan.jatuhTempo}',
                             style: TextStyle(
                                 fontSize: 12.0, fontWeight: FontWeight.w600),
                           ),

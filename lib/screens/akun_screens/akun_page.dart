@@ -314,7 +314,14 @@ class _AkunWidgetState extends State<AkunWidget> {
                         ),
                         Spacer(),
                         GestureDetector(
-                            onTap: () => Get.offAll(() => LoginScreen()),
+                            onTap: () {
+                              controller.deleteLocalToken();
+                              controller
+                                  .deleteDevice()
+                                  .then((value) =>
+                                      Get.offAll(() => LoginScreen()))
+                                  .catchError((e) => print(e));
+                            },
                             child: Icon(Icons.login_outlined, size: 20.0)),
                       ],
                     ),

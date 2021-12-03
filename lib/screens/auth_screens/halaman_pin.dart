@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:kobantitar_mobile/controllers/halaman_pin_controller.dart';
+import 'package:kobantitar_mobile/screens/auth_screens/biometric_auth.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
+import 'package:kobantitar_mobile/screens/home_screen.dart';
 import 'dart:math';
+import 'package:local_auth/local_auth.dart';
 
 class HalamanPIN extends StatefulWidget {
   const HalamanPIN({Key? key}) : super(key: key);
@@ -16,17 +20,54 @@ class _HalamanPINState extends State<HalamanPIN> {
   var rng = Random();
   List<int> pin = [];
   void insertPIN(int digit) {
-    if (controller.listPin.isEmpty) {
-      setState(() {
-        pin = [];
-      });
-    }
     if (pin.length < 6) {
       setState(() {
         controller.listPin.add(digit);
         controller.pinController.text = (rng.nextInt(9999) * digit).toString();
         pin.add(digit);
       });
+    }
+  }
+
+  bool? _hasBioSensor;
+
+  LocalAuthentication authentication = LocalAuthentication();
+
+  Future<void> _checkBio() async {
+    try {
+      _hasBioSensor = await authentication.canCheckBiometrics;
+
+      print(_hasBioSensor);
+
+      if (_hasBioSensor!) {
+        _getAuth();
+      }
+    } on PlatformException catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _getAuth() async {
+    bool isAuth = false;
+
+    //loaded a dialog to scan fingerprint
+    try {
+      isAuth = await authentication.authenticate(
+          localizedReason: 'Scan your finger print to authenticate',
+          biometricOnly: true,
+          useErrorDialogs: true,
+          stickyAuth: true);
+
+      //if fingerprint scan match then
+      //isAuth = true
+      // therefore will navigate user to WelcomePage/HomePage of the App
+      if (isAuth) {
+        Get.to(() => HomeScreen());
+      }
+
+      print(isAuth);
+    } on PlatformException catch (e) {
+      print(e);
     }
   }
 
@@ -279,12 +320,15 @@ class _HalamanPINState extends State<HalamanPIN> {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width / 6,
-                                height: MediaQuery.of(context).size.width / 6,
-                                child: Center(
-                                  child: Icon(Icons.fingerprint,
-                                      color: Colors.white),
+                              GestureDetector(
+                                onTap: () => _checkBio(),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 6,
+                                  height: MediaQuery.of(context).size.width / 6,
+                                  child: Center(
+                                    child: Icon(Icons.fingerprint,
+                                        color: Colors.white),
+                                  ),
                                 ),
                               ),
                               GestureDetector(

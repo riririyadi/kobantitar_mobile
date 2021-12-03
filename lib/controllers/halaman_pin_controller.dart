@@ -23,19 +23,21 @@ class HalamanPINController extends GetxController {
       bool equality = dcEquality.equals(pin, listPin);
 
       if (equality) {
-        Get.defaultDialog(
-          title: "",
-          content: Column(
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 10),
-              Text("Please wait")
-            ],
-          ),
-          barrierDismissible: false,
-        );
+        Future.delayed(Duration(milliseconds: 500), () {
+          Get.defaultDialog(
+            title: "",
+            content: Column(
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 10),
+                Text("Please wait")
+              ],
+            ),
+            barrierDismissible: false,
+          );
+        });
         listPin = [];
-        print(listPin);
+
         Future.delayed(Duration(seconds: 2), () {
           Get.offAll(() => LoginScreen());
         });

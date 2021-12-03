@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/controllers/kobantitar_mart_list_produk_controller.dart';
 import 'package:kobantitar_mobile/models/product.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -18,6 +19,8 @@ class KobantitarMartListProduk extends StatefulWidget {
 }
 
 class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
+  final KobMartListProductController controller =
+      Get.put(KobMartListProductController());
   final userData = GetStorage();
   late String token;
 
@@ -147,10 +150,23 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
                           ],
                         ),
                       ),
-                      IconButton(
-                        onPressed: () => Get.to(() => Keranjang()),
-                        icon: Icon(Icons.shopping_cart,
-                            size: 20, color: Colors.white),
+                      GestureDetector(
+                        onTap: () => Get.to(() => Keranjang()),
+                        child: Container(
+                          child: Stack(
+                            children: [
+                              Icon(Icons.shopping_cart,
+                                  size: 24, color: Colors.white),
+                              Obx(
+                                () => CircleAvatar(
+                                  radius: 7,
+                                  child: Text("${controller.products.length}",
+                                      style: TextStyle(fontSize: 8.0)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -273,21 +289,27 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: [
-                                            Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.0,
-                                                    vertical: 5.0),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.blue,
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                                child: Text("+ Keranjang",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white,
-                                                        fontSize: 12)))
+                                            GestureDetector(
+                                              onTap: () {
+                                                controller.addProduct(product);
+                                              },
+                                              child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 5.0),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                  child: Text("+ Keranjang",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
+                                                          fontSize: 12))),
+                                            )
                                           ],
                                         )
                                       ],

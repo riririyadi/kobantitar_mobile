@@ -22,7 +22,7 @@ class _PengambilanState extends State<Pengambilan> {
   int _screen = 0;
   int currentPage = 1;
   late int totalPages;
-  int totalSimpananSukarela = 0;
+
   int numOfSimpananSukarela = 0;
   List<DataSimpananSukarela> simpananSukarelas = [];
   final currencyFormatter = NumberFormat('#,##0', 'ID');
@@ -61,7 +61,6 @@ class _PengambilanState extends State<Pengambilan> {
           (json['data']['list']['pagination']['object_count'] / 15).ceil();
       numOfSimpananSukarela =
           json['data']['list']['pagination']['object_count'];
-      totalSimpananSukarela = json['data']['total'];
 
       currentPage++;
       setState(() {});

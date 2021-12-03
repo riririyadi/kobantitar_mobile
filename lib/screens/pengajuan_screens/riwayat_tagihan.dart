@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/controllers/rincian_pengajuan_controller.dart';
+import 'package:kobantitar_mobile/models/detail_pengajuan.dart';
 
 class RiwayatTagihan extends StatefulWidget {
   const RiwayatTagihan({Key? key}) : super(key: key);
@@ -8,6 +12,8 @@ class RiwayatTagihan extends StatefulWidget {
 }
 
 class _RiwayatTagihanState extends State<RiwayatTagihan> {
+  final controller = Get.put(RincianPengajuanController());
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,148 +25,72 @@ class _RiwayatTagihanState extends State<RiwayatTagihan> {
             child: Text("Riwayat Tagihan",
                 style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600)),
           ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 5.0,
-                    spreadRadius: 1.0,
-                    offset: Offset(0.0, 5.0), // shadow direction: bottom
-                  )
-                ],
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text("Cicilan Ke-3",
-                          style: TextStyle(fontWeight: FontWeight.w600)),
-                      Spacer(),
-                      Text("20 Juni 2020",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text("Rp 297.451"),
-                      Spacer(),
-                      Text("UNPAID",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w600,
-                          )),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 5.0,
-                    spreadRadius: 1.0,
-                    offset: Offset(0.0, 5.0), // shadow direction: bottom
-                  )
-                ],
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text("Cicilan Ke-2",
-                          style: TextStyle(fontWeight: FontWeight.w600)),
-                      Spacer(),
-                      Text("20 Juni 2020",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text("Rp 297.451"),
-                      Spacer(),
-                      Text("UNPAID",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.red,
-                            fontWeight: FontWeight.w600,
-                          )),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 5.0,
-                    spreadRadius: 1.0,
-                    offset: Offset(0.0, 5.0), // shadow direction: bottom
-                  )
-                ],
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text("Cicilan Ke-1",
-                          style: TextStyle(fontWeight: FontWeight.w600)),
-                      Spacer(),
-                      Text("20 Juni 2020",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text("Rp 297.451",
-                          style: TextStyle(
-                            color: Colors.green,
-                          )),
-                      Spacer(),
-                      Text("PAID",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.green,
-                            fontWeight: FontWeight.w600,
-                          )),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          Column(
+            children: riwayatTagihan(),
+          )
         ],
       ),
     );
+  }
+
+  List<Widget> riwayatTagihan() {
+    List<Widget> list = [];
+    //i<5, pass your dynamic limit as per your requirment
+    for (int i = 0; i < controller.riwayatTagihan.length; i++) {
+      final riwayat = controller.riwayatTagihan[i];
+      list.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                  offset: Offset(0.0, 5.0), // shadow direction: bottom
+                )
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text("${riwayat.caption}",
+                        style: TextStyle(fontWeight: FontWeight.w600)),
+                    Spacer(),
+                    Text("${riwayat.date}",
+                        style: TextStyle(
+                          fontSize: 12.0,
+                        )),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text("Rp ${riwayat.amount}",
+                        style: TextStyle(
+                          color: Colors.green,
+                        )),
+                    Spacer(),
+                    Text(riwayat.status == Status.PAID ? "PAID" : "UNPAID",
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: riwayat.status == Status.PAID
+                              ? Colors.green
+                              : Colors.red,
+                          fontWeight: FontWeight.w600,
+                        )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ); //add any Widget in place of Text("Index $i")
+    }
+    return list; // all widget added now retrun the list here
   }
 }

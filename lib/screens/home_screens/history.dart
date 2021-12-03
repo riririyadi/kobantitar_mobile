@@ -19,9 +19,6 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
-  final SimpananSukarelaController controller =
-      Get.put(SimpananSukarelaController());
-
   final userData = GetStorage();
   late String token;
   int _screen = 0;
@@ -36,7 +33,6 @@ class _HistoryState extends State<History> {
       RefreshController(initialRefresh: true);
 
   Future<bool> getSimpananSukarelaData({bool isRefresh = false}) async {
-    controller.isLoading(true);
     if (isRefresh) {
       currentPage = 1;
     }
@@ -70,11 +66,9 @@ class _HistoryState extends State<History> {
 
       currentPage++;
       setState(() {});
-      controller.isLoading(false);
 
       return true;
     } else {
-      controller.isLoading(false);
       return false;
     }
   }

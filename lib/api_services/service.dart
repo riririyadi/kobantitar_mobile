@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:kobantitar_mobile/models/app_setting.dart';
 import 'package:kobantitar_mobile/models/bank.dart';
+import 'package:kobantitar_mobile/models/dashboard.dart';
+import 'package:kobantitar_mobile/models/detail_pengajuan.dart';
 import 'package:kobantitar_mobile/models/informasi.dart';
 import 'package:kobantitar_mobile/models/instansi.dart';
 import 'package:kobantitar_mobile/models/jenis_kendaraan.dart';
@@ -17,9 +19,15 @@ import 'package:kobantitar_mobile/models/kredit_kendaraan_configuration.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_calculation.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_configuration.dart';
 import 'package:kobantitar_mobile/models/me.dart';
+import 'package:kobantitar_mobile/models/notifikasi.dart';
+import 'package:kobantitar_mobile/models/pengajuan.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
 import 'package:kobantitar_mobile/models/tagihan.dart';
 import 'package:kobantitar_mobile/models/kontak.dart';
+import 'package:flutter/services.dart';
+import 'package:kobantitar_mobile/screens/pengajuan_screens/detail_pengajuan.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Service extends GetConnect {
   static var client = http.Client();
@@ -291,7 +299,7 @@ class Service extends GetConnect {
     }
   }
 
-  static Future<Tagihan?> fetchTagihan(String token) async {
+  static Future<TagihanList?> fetchTagihan(String token) async {
     final response = await client.get(
       Uri.parse("${config.baseURL}/tagihan"),
       headers: <String, String>{
@@ -301,7 +309,41 @@ class Service extends GetConnect {
       },
     );
     if (response.statusCode == 200) {
-      return tagihanFromJson(response.body);
+      return tagihanListFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<PengajuanList?> fetchPengajuan(String token) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/pengajuan"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return pengajuanListFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<DetailDataPengajuan?> fetchDetailPengajuan(
+      String token, int id) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/pengajuan/$id"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print("Detail Pengajuan " + response.statusCode.toString());
+      return detailDataPengajuanFromJson(response.body);
     } else {
       return null;
     }
@@ -323,6 +365,22 @@ class Service extends GetConnect {
     }
   }
 
+  static Future<Dashboard?> fetchDashboard(String token) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/dashboard"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return dashboardFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
   static Future<Kontak?> fetchKontak(String token) async {
     final response = await client.get(
       Uri.parse("${config.baseURL}/kontak"),
@@ -334,6 +392,38 @@ class Service extends GetConnect {
     );
     if (response.statusCode == 200) {
       return kontakFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<File> loadPdfNetwork(String url) async {
+    final response = await http.get(Uri.parse(url));
+    final bytes = response.bodyBytes;
+
+    return _storeFile(url, bytes);
+  }
+
+  static Future<File> _storeFile(String url, List<int> bytes) async {
+    final filename = basename(url);
+    final dir = await getApplicationDocumentsDirectory();
+
+    final file = File('${dir.path}/$filename');
+    await file.writeAsBytes(bytes, flush: true);
+    return file;
+  }
+
+  static Future<Notifikasi?> fetchNotifikasi(String token) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/notification"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return notifikasiFromJson(response.body);
     } else {
       return null;
     }

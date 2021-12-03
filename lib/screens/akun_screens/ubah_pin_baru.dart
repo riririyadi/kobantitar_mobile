@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/ubah_pin_controller.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/update_akun_sukses.dart';
 
 class UbahPINBaru extends StatefulWidget {
@@ -10,6 +11,37 @@ class UbahPINBaru extends StatefulWidget {
 }
 
 class _UbahPINBaruState extends State<UbahPINBaru> {
+  final controller = Get.put(UbahPINController());
+  late TextEditingController pinBaruController;
+  late TextEditingController konfirmPinBaruController;
+
+  @override
+  void initState() {
+    pinBaruController = TextEditingController()
+      ..addListener(() {
+        if (pinBaruController.text.length < 7) {
+          setState(() {});
+          print(pinBaruController.text);
+          controller.pin = pinBaruController.text;
+        }
+      });
+    konfirmPinBaruController = TextEditingController()
+      ..addListener(() {
+        if (konfirmPinBaruController.text.length < 7) {
+          setState(() {});
+          print(konfirmPinBaruController.text);
+          controller.konfirmPin = konfirmPinBaruController.text;
+        }
+      });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pinBaruController.dispose();
+    super.dispose();
+  }
+
   int _counter = 0;
   @override
   Widget build(BuildContext context) {
@@ -62,55 +94,166 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
                   decoration: BoxDecoration(
                     color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(24),
+                      topLeft: Radius.circular(24),
+                    ),
                   ),
                   child: Column(
                     children: [
-                      Container(
-                        child: _counter == 0
-                            ? Text(
-                                "Masukkan PIN Baru Anda",
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              )
-                            : Text(
+                      TextField(
+                        controller: _counter == 0
+                            ? pinBaruController
+                            : konfirmPinBaruController,
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                top: 60,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    children: [
+                      _counter == 0
+                          ? Container(
+                              child: Column(
+                              children: [
+                                Text(
+                                  "Masukkan PIN Baru Anda",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(height: 30),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor:
+                                          pinBaruController.text.length >= 1
+                                              ? Colors.red
+                                              : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor:
+                                          pinBaruController.text.length >= 2
+                                              ? Colors.red
+                                              : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor:
+                                          pinBaruController.text.length >= 3
+                                              ? Colors.red
+                                              : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor:
+                                          pinBaruController.text.length >= 4
+                                              ? Colors.red
+                                              : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor:
+                                          pinBaruController.text.length >= 5
+                                              ? Colors.red
+                                              : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor:
+                                          pinBaruController.text.length >= 6
+                                              ? Colors.red
+                                              : Colors.grey,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ))
+                          : Container(
+                              child: Column(children: [
+                              Text(
                                 "Ulang PIN Baru Anda",
                                 style: TextStyle(fontWeight: FontWeight.w600),
                               ),
-                      ),
-                      SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: Colors.grey,
-                          ),
-                        ],
-                      )
+                              SizedBox(height: 30),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor:
+                                        konfirmPinBaruController.text.length >=
+                                                1
+                                            ? Colors.red
+                                            : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor:
+                                        konfirmPinBaruController.text.length >=
+                                                2
+                                            ? Colors.red
+                                            : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor:
+                                        konfirmPinBaruController.text.length >=
+                                                3
+                                            ? Colors.red
+                                            : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor:
+                                        konfirmPinBaruController.text.length >=
+                                                4
+                                            ? Colors.red
+                                            : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor:
+                                        konfirmPinBaruController.text.length >=
+                                                5
+                                            ? Colors.red
+                                            : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor:
+                                        konfirmPinBaruController.text.length >=
+                                                6
+                                            ? Colors.red
+                                            : Colors.grey,
+                                  ),
+                                ],
+                              )
+                            ])),
                     ],
                   ),
                 ),
@@ -129,7 +272,12 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
                         }
                       });
                       if (_counter == 2) {
-                        Get.to(() => UpdateAkunSukses());
+                        if (pinBaruController == konfirmPinBaruController) {
+                          Get.to(() => UpdateAkunSukses());
+                        } else {
+                          Get.snackbar(
+                              "No Match", "konfirmasi pin harus cocok");
+                        }
                       }
                     },
                     child: Container(

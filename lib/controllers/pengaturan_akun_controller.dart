@@ -1,56 +1,66 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kobantitar_mobile/models/bank.dart';
-import 'package:kobantitar_mobile/models/instansi.dart';
-import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pendaftaran_sukses.dart';
 import 'package:kobantitar_mobile/api_services/service.dart';
+import 'package:kobantitar_mobile/models/app_setting.dart';
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/models/instansi.dart';
+import 'package:kobantitar_mobile/models/me.dart';
+import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
+import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/update_akun_sukses.dart';
 
-class SignUpController extends GetxController {
-  static var client = http.Client();
-  var ktpFileId = 0;
-  var selfieFileId = 0;
-
-  List<Instansi> instansis = [];
-  List<Bank> banks = [];
-  var isBankLoading = false.obs;
+class PengaturanAkunController extends GetxController {
+  var isSettingLoading = false.obs;
+  var isMeLoading = false.obs;
   var isInstansiLoading = false.obs;
+  List<Instansi> instansis = [];
 
-  final dataPribadiFormKey = GlobalKey<FormState>();
-  final detailBankFormKey = GlobalKey<FormState>();
-  final detailAkunFormKey = GlobalKey<FormState>();
+  String token = "";
+  final userData = GetStorage();
+
+  var setting = AppSetting();
+  var me = Me();
+
+  final mengundurkanDiriFormKey = GlobalKey<FormState>();
+  final passwordFormKey = GlobalKey<FormState>();
+  final ubahPasswordFormKey = GlobalKey<FormState>();
 
   var namaController = TextEditingController();
   var jenisKelaminController = TextEditingController();
-  var nikController = TextEditingController();
+  var nik = "";
   var alamatController = TextEditingController();
   var instansiController = TextEditingController();
   var jabatanController = TextEditingController();
   var nipController = TextEditingController();
-  var bankController = TextEditingController();
-  var noRekController = TextEditingController();
+  var passwordLamaController = TextEditingController();
+  var passwordBaruController = TextEditingController();
+  var konfirmPasswordController = TextEditingController();
+  var alasanPengunduranDiriController = TextEditingController();
+  var namaBankController = TextEditingController();
+  var nomorRekeningController = TextEditingController();
   var cabangController = TextEditingController();
   var emailController = TextEditingController();
-  var noHPController = TextEditingController();
+  var noHpController = TextEditingController();
+
   var passwordController = TextEditingController();
-  var confirmPasswordController = TextEditingController();
-
-  int step = 0;
-
-  dynamic argumentData = Get.arguments;
+  var selfiePath = "";
+  var idCardPath = "";
+  int? ktpFileId;
+  int? selfieFileId;
 
   @override
   void onInit() {
-    jenisKelaminController.text = "PRIA";
+    token = userData.read("token");
+    getMe();
     getInstansi();
-    getBank();
     super.onInit();
   }
 
@@ -63,18 +73,16 @@ class SignUpController extends GetxController {
   void onClose() {
     namaController.dispose();
     jenisKelaminController.dispose();
-    nikController.dispose();
+
     alamatController.dispose();
     instansiController.dispose();
     jabatanController.dispose();
     nipController.dispose();
-    bankController.dispose();
-    noRekController.dispose();
-    cabangController.dispose();
-    emailController.dispose();
-    noHPController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
+    passwordLamaController.dispose();
+    passwordBaruController.dispose();
+    konfirmPasswordController.dispose();
+    alasanPengunduranDiriController.dispose();
+
     super.onClose();
   }
 
@@ -90,21 +98,31 @@ class SignUpController extends GetxController {
     }
   }
 
-  void getBank() async {
+  void getMe() async {
     try {
-      isBankLoading(true);
-      var data = await Service.fetchBank();
+      isMeLoading(true);
+      final data = await Service.fetchMe(token);
       if (data != null) {
-        banks = data;
+        me = data;
+
+        namaController.text = me.nama!;
+        jenisKelaminController.text = me.jenisKelamin!;
+        nik = me.nik!;
+        alamatController.text = me.alamat!;
+        instansiController.text = me.instansi!;
+        jabatanController.text = me.jabatan!;
+        nipController.text = me.nip!;
+        nomorRekeningController.text = me.nomorRekening!;
+        cabangController.text = me.cabang!;
+        emailController.text = me.email!;
+        noHpController.text = me.noHp!;
+        selfiePath = me.photoUrl;
+        idCardPath = me.ktpUrl;
       }
     } finally {
-      isBankLoading(false);
+      isMeLoading(false);
+      // TODO
     }
-  }
-
-  void printFileId() {
-    print(ktpFileId);
-    print(selfieFileId);
   }
 
   var selectedSelfieImagePath = "".obs;
@@ -173,39 +191,37 @@ class SignUpController extends GetxController {
     }
   }
 
-  Future<String?> signUp() async {
-    final response = await http.post(
-      Uri.parse("${config.baseURL}/register"),
+  Future<String?> updateAkun() async {
+    var body = jsonEncode(<String, dynamic>{
+      "nama": namaController.text,
+      "jenis_kelamin": jenisKelaminController.text,
+      "alamat": alamatController.text,
+      "instansi_id": instansiController.text,
+      "jabatan": jabatanController.text,
+      "nip": nipController.text,
+      "bank_id": namaBankController.text,
+      "nomor_rekening": nomorRekeningController.text,
+      "cabang": cabangController.text,
+      "email": emailController.text,
+      "no_hp": noHpController.text,
+      if (selfieFileId != null) "photo_file_id": selfieFileId,
+      if (ktpFileId != null) "ktp_file_id": ktpFileId
+    });
+    print(body);
+    final response = await http.put(
+      Uri.parse("${config.baseURL}/account"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, dynamic>{
-        "jenis_pendaftaran": argumentData[1],
-        "nomor_anggota": argumentData[0],
-        "nama": namaController.text,
-        "jenis_kelamin": jenisKelaminController.text,
-        "nik": nikController.text,
-        "alamat": alamatController.text,
-        "instansi_id": instansiController.text,
-        "jabatan": jabatanController.text,
-        "nip": nipController.text,
-        "bank_id": bankController.text,
-        "nomor_rekening": noRekController.text,
-        "cabang": cabangController.text,
-        "email": emailController.text,
-        "no_hp": noHPController.text,
-        "password": confirmPasswordController.text,
-        "photo_file_id": selfieFileId,
-        "ktp_file_id": ktpFileId
-      }),
+      body: body,
     );
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      Get.off(() => PendaftaranSukses());
+      Get.off(() => UpdateAkunSukses());
       return "Success";
     } else {
-      Get.snackbar("Sign Up Failed", "Invalid data");
+      Get.snackbar("Update Failed", "Invalid data");
       return null;
     }
   }

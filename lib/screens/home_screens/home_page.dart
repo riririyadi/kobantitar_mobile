@@ -107,17 +107,18 @@ class _HomeWidgetState extends State<HomeWidget> {
                               ]),
                         ),
                         Obx(() {
-                          if (controller.isInformasiLoading.value) {
+                          if (controller.isDashboardLoading.value) {
                             return SizedBox(height: 100);
                           } else {
                             return SizedBox(
                               height: 100,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: controller.informasi.data!.length,
+                                itemCount: controller
+                                    .dashboard.data!.informasi!.length,
                                 itemBuilder: (context, index) {
-                                  final informasi =
-                                      controller.informasi.data![index];
+                                  final informasi = controller
+                                      .dashboard.data!.informasi![index];
                                   return Container(
                                     margin: EdgeInsets.only(
                                       /** @change left margin for first item only */
@@ -154,7 +155,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                   SizedBox(height: 26.0),
                   Obx(() {
-                    if (controller.isKobmartLoading.value) {
+                    if (controller.isDashboardLoading.value) {
                       return Container(
                           height: 400, child: Center(child: Text("loading..")));
                     } else {
@@ -817,8 +818,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   List<Widget> promoProducts() {
     List<Widget> list = [];
     //i<5, pass your dynamic limit as per your requirment
-    for (int i = 0; i < controller.kobmart.promoProducts!.length; i++) {
-      final product = controller.kobmart.promoProducts![i];
+    for (int i = 0; i < controller.dashboard.data!.promoProducts!.length; i++) {
+      final product = controller.dashboard.data!.promoProducts![i];
       list.add(Container(
         width: MediaQuery.of(context).size.width / 4.2,
         height: 150.0,

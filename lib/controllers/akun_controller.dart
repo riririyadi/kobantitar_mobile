@@ -7,11 +7,15 @@ import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/app_setting.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/models/instansi.dart';
 import 'package:kobantitar_mobile/models/me.dart';
 
 class AkunController extends GetxController {
   var isSettingLoading = false.obs;
   var isMeLoading = false.obs;
+  var isInstansiLoading = false.obs;
+  List<Instansi> instansis = [];
+
   String token = "";
   final userData = GetStorage();
 
@@ -38,10 +42,12 @@ class AkunController extends GetxController {
 
   @override
   void onInit() {
-    token = userData.read("token");
     super.onInit();
+    token = userData.read("token");
     getSetting();
     getMe();
+
+    // ignore: avoid_print
   }
 
   @override
@@ -86,6 +92,18 @@ class AkunController extends GetxController {
     }
   }
 
+  void getInstansi() async {
+    try {
+      isInstansiLoading(true);
+      var data = await Service.fetchInstansi();
+      if (data != null) {
+        instansis = data;
+      }
+    } finally {
+      isInstansiLoading(false);
+    }
+  }
+
   Future<String?> ajukanPengunduranDiri(String alasan, String password) async {
     final response = await http.post(
       Uri.parse("${config.baseURL}/account/pengunduran-diri"),
@@ -106,8 +124,8 @@ class AkunController extends GetxController {
   }
 
   Future<String?> ubahPassword(String passwordLama, String passwordBaru) async {
-    final response = await http.post(
-      Uri.parse("${config.baseURL}/account/pengunduran-diri"),
+    final response = await http.put(
+      Uri.parse("${config.baseURL}/account/password"),
       headers: <String, String>{
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -124,5 +142,24 @@ class AkunController extends GetxController {
     } else {
       return null;
     }
+  }
+
+  Future<String?> deleteDevice() async {
+    final response = await http.delete(
+      Uri.parse("${config.baseURL}/devices"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, String>{
+        'token': token,
+      }),
+    );
+  }
+
+  void deleteLocalToken() {
+    userData.remove("token");
+    userData.remove("anggota");
   }
 }

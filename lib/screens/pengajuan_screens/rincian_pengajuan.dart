@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/rincian_pengajuan_controller.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/detail_pengajuan.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/riwayat_tagihan.dart';
 
@@ -11,6 +12,7 @@ class RincianPengajuan extends StatefulWidget {
 }
 
 class _RincianPengajuanState extends State<RincianPengajuan> {
+  final controller = Get.put(RincianPengajuanController());
   int _jenisRincian = 0;
   @override
   Widget build(BuildContext context) {
@@ -41,13 +43,7 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
                         SizedBox(
                           width: 5.0,
                         ),
-                        Text(
-                          'Transaksi Logam Mulia',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
+                        textDetail(controller.argumentData['type'])
                       ],
                     ),
                   ),
@@ -177,5 +173,41 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
         ),
       ),
     );
+  }
+
+  Widget textDetail(String tipePengajuan) {
+    if (tipePengajuan == "LM") {
+      return Text(
+        'Transaksi Logam Mulia',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      );
+    } else if (tipePengajuan == "KB") {
+      return Text(
+        'Transaksi Kredit Barang',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      );
+    } else if (tipePengajuan == "KK") {
+      return Text(
+        'Transaksi Kredit Kendaraan',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      );
+    } else {
+      return Text(
+        'Transaksi Kobmart',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+      );
+    }
   }
 }

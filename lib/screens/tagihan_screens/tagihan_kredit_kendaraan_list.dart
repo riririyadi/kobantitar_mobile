@@ -4,15 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/tagihan_controller.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
 
-class TagihanKreditBarang extends StatefulWidget {
-  const TagihanKreditBarang({Key? key}) : super(key: key);
+class TagihanKreditKendaraan extends StatefulWidget {
+  const TagihanKreditKendaraan({Key? key}) : super(key: key);
 
   @override
-  _TagihanKreditBarangState createState() => _TagihanKreditBarangState();
+  _TagihanKreditKendaraanState createState() => _TagihanKreditKendaraanState();
 }
 
-class _TagihanKreditBarangState extends State<TagihanKreditBarang> {
+class _TagihanKreditKendaraanState extends State<TagihanKreditKendaraan> {
   final TagihanController controller = Get.put(TagihanController());
+
   final currencyFormatter = NumberFormat('#,##0', 'ID');
 
   @override
@@ -23,9 +24,9 @@ class _TagihanKreditBarangState extends State<TagihanKreditBarang> {
       } else {
         return ListView.builder(
             padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-            itemCount: controller.tagihanKreditBarang!.length,
+            itemCount: controller.tagihanKreditKendaraan!.length,
             itemBuilder: (context, index) {
-              final tagihan = controller.tagihanKreditBarang![index];
+              final tagihan = controller.tagihanKreditKendaraan![index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: Container(
@@ -58,7 +59,7 @@ class _TagihanKreditBarangState extends State<TagihanKreditBarang> {
                                 width: 30,
                                 height: 30,
                                 child: Image(
-                                    image: AssetImage('assets/device.png'),
+                                    image: AssetImage('assets/scooter.png'),
                                     fit: BoxFit.fill),
                               ),
                             ),

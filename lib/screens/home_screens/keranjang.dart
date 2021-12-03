@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/controllers/kobantitar_mart_list_produk_controller.dart';
+import 'package:kobantitar_mobile/models/product.dart';
 
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pesanan_sukses.dart';
 
@@ -12,6 +15,10 @@ class Keranjang extends StatefulWidget {
 }
 
 class _KeranjangState extends State<Keranjang> {
+  final KobMartListProductController controller = Get.find();
+  bool isProsesPesanan = false;
+
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,165 +65,27 @@ class _KeranjangState extends State<Keranjang> {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xfff8f8f8),
-                  ),
-                  child: ListView(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 5.0,
-                                spreadRadius: 1.0,
-                                offset: Offset(
-                                    0.0, 5.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Rebo Kuaci Biji Bunga Matahari Milk 150g"),
-                              Text("Rp. 15.000",
-                                  style: TextStyle(
-                                      color: Color(0xffF53131),
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "-",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Text("5",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600)),
-                                  SizedBox(width: 10.0),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "+",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 5.0,
-                                spreadRadius: 1.0,
-                                offset: Offset(
-                                    0.0, 5.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Rebo Kuaci Biji Bunga Matahari Milk 150g"),
-                              Text("Rp. 15.000",
-                                  style: TextStyle(
-                                      color: Color(0xffF53131),
-                                      fontWeight: FontWeight.w600)),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "-",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 10.0),
-                                  Text("5",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600)),
-                                  SizedBox(width: 10.0),
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "+",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                child: Obx(
+                  () => Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height -
+                          MediaQuery.of(context).size.height / 1.3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Color(0xfff8f8f8),
+                    ),
+                    child: ListView.builder(
+                        padding: EdgeInsets.only(top: 10, bottom: 20),
+                        itemCount: controller.products.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CartProductCard(
+                            controller: controller,
+                            product: controller.products.keys.toList()[index],
+                            quantity:
+                                controller.products.values.toList()[index],
+                            index: index,
+                          );
+                        }),
                   ),
                 ),
               ),
@@ -225,66 +94,143 @@ class _KeranjangState extends State<Keranjang> {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("*) Harga dapat berbeda pada toko",
-                          style: TextStyle(color: Colors.red, fontSize: 12.0)),
-                      SizedBox(height: 10.0),
-                      Row(
-                        children: [
-                          Text("Estimasi Harga Total",
-                              style: TextStyle(fontWeight: FontWeight.w600)),
-                          Spacer(),
-                          Text("Rp. 50.800",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w600))
-                        ],
+                child: Obx(() {
+                  if (controller.products.length == 0) {
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
                       ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          _dialog(context);
-                        },
-                        child: Container(
-                          height: 48.0,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Color(0xff851212), Color(0xffFF8A8A)]),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 1.0,
-                                spreadRadius: 0.0,
-                                offset: Offset(
-                                    0.0, 4.0), // shadow direction: bottom
-                              )
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("*) Harga dapat berbeda pada toko",
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 12.0)),
+                          SizedBox(height: 10.0),
+                          Row(
+                            children: [
+                              Text("Estimasi Harga Total",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w600)),
+                              Spacer(),
+                              Text("Rp. 0",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w600))
                             ],
                           ),
-                          child: Center(
-                            child: Text(
-                              'Pesan',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              Get.snackbar("Oops...", "Keranjang anda kosong");
+                            },
+                            child: Container(
+                              height: 48.0,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xff851212),
+                                      Color(0xffFF8A8A)
+                                    ]),
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 1.0,
+                                    spreadRadius: 0.0,
+                                    offset: Offset(
+                                        0.0, 4.0), // shadow direction: bottom
+                                  )
+                                ],
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Pesan',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    );
+                  } else {
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("*) Harga dapat berbeda pada toko",
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 12.0)),
+                          SizedBox(height: 10.0),
+                          Row(
+                            children: [
+                              Text("Estimasi Harga Total",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w600)),
+                              Spacer(),
+                              Text(
+                                  "Rp. ${currencyFormatter.format(controller.total)}",
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w600))
+                            ],
+                          ),
+                          Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              controller.getDataPesananFromMap();
+                              _dialog(context);
+                            },
+                            child: Container(
+                              height: 48.0,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xff851212),
+                                      Color(0xffFF8A8A)
+                                    ]),
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 1.0,
+                                    spreadRadius: 0.0,
+                                    offset: Offset(
+                                        0.0, 4.0), // shadow direction: bottom
+                                  )
+                                ],
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Pesan',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                }),
               ),
             ],
           ),
@@ -298,54 +244,175 @@ class _KeranjangState extends State<Keranjang> {
         context: context,
         builder: (BuildContext c) {
           return AlertDialog(
-            content: Text("Anda Yakin Ingin Kirim Pesanan?",
-                style: TextStyle(fontWeight: FontWeight.w600)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0))),
+            content: isProsesPesanan
+                ? CircularProgressIndicator()
+                : Text("Anda Yakin Ingin Kirim Pesanan?",
+                    style: TextStyle(fontWeight: FontWeight.w600)),
             actions: [
               Container(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(width: 1, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Center(child: Text("Batal"))),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => Get.to(() => PesananSukses()),
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xff851212),
-                                    Color(0xffFF8A8A)
-                                  ]),
-                              borderRadius: BorderRadius.circular(10),
+                child: isProsesPesanan
+                    ? Center(child: Text("Please wait"))
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                            Expanded(
+                              child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          width: 1, color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Center(child: Text("Batal"))),
                             ),
-                            child: Center(
-                              child: Text(
-                                "Pesan",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600),
+                            SizedBox(width: 10.0),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isProsesPesanan = true;
+                                  });
+                                  controller.kirimPesanan().then((value) {
+                                    setState(() {
+                                      isProsesPesanan = false;
+                                    });
+                                    Get.back();
+                                    Get.snackbar("title", value!);
+                                  }).catchError((e) {
+                                    print(e);
+                                  });
+                                  // Get.to(() => PesananSukses());
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(0xff851212),
+                                          Color(0xffFF8A8A)
+                                        ]),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Pesan",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ]),
+                          ]),
               ),
             ],
           );
         });
+  }
+}
+
+class CartProductCard extends StatelessWidget {
+  final KobMartListProductController controller;
+  final Product product;
+  final int quantity;
+  final int index;
+
+  const CartProductCard({
+    Key? key,
+    required this.controller,
+    required this.product,
+    required this.quantity,
+    required this.index,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 5.0,
+              spreadRadius: 1.0,
+              offset: Offset(0.0, 5.0), // shadow direction: bottom
+            )
+          ],
+        ),
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(product.name!),
+            Text("Rp. ${product.price}",
+                style: TextStyle(
+                    color: Color(0xffF53131), fontWeight: FontWeight.w600)),
+            SizedBox(
+              height: 10.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    controller.removeProduct(product);
+                  },
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "-",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Text("${quantity}",
+                    style: TextStyle(fontWeight: FontWeight.w600)),
+                SizedBox(width: 10.0),
+                GestureDetector(
+                  onTap: () => controller.addProduct(product),
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "+",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+    ;
   }
 }

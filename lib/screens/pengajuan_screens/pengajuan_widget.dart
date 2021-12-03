@@ -1,4 +1,9 @@
 import "package:flutter/material.dart";
+import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_merk_motor.dart';
+import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_kendaraan_list.dart';
+import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_kobmart_list.dart';
+import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_kredit_barang_list.dart';
+import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_logam_mulia_list.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/semua_pengajuan.dart';
 
 class PengajuanWidget extends StatefulWidget {
@@ -264,6 +269,116 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                         ),
                       ),
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _jenisPengajuan = 3;
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                        ),
+                        decoration: _jenisPengajuan == 3
+                            ? BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xffC30707),
+                                      Color(0xffEE6A6A)
+                                    ]),
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              )
+                            : BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              ),
+                        child: Center(
+                          child: Text('Pengajuan Kredit Kendaraan',
+                              style: TextStyle(
+                                  color: _jenisPengajuan == 3
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _jenisPengajuan = 4;
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                        ),
+                        decoration: _jenisPengajuan == 4
+                            ? BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xffC30707),
+                                      Color(0xffEE6A6A)
+                                    ]),
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              )
+                            : BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              ),
+                        child: Center(
+                          child: Text('Pengajuan Kredit Kobmart',
+                              style: TextStyle(
+                                  color: _jenisPengajuan == 4
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -288,10 +403,10 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                   index: _jenisPengajuan,
                   children: [
                     SemuaPengajuan(),
-                    Container(
-                        child: Center(child: Text('Pengajuan Logam Mulia'))),
-                    Container(
-                        child: Center(child: Text('Pengajuan Kredit Barang'))),
+                    PengajuanLogamMuliaList(),
+                    PengajuanKreditBarangList(),
+                    PengajuanKendaraanList(),
+                    PengajuanKobmartList(),
                   ],
                 ),
               ),

@@ -100,7 +100,7 @@ class _SimpananSukarelaState extends State<SimpananSukarela> {
                                 return Text("Loading");
                               } else {
                                 return Text(
-                                  '${currencyFormatter.format(controller.argumentData)}',
+                                  '${currencyFormatter.format(controller.simpanan.sukarela)}',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,

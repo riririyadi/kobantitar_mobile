@@ -1,10 +1,14 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:kobantitar_mobile/controllers/home_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/home_page.dart';
+import 'package:kobantitar_mobile/screens/home_screens/notifications.dart';
 import 'package:kobantitar_mobile/screens/kontak_screens/kontak_widget.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_widget.dart';
 import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_widget.dart';
+import '../main.dart';
 import 'akun_screens/akun_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _screenIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

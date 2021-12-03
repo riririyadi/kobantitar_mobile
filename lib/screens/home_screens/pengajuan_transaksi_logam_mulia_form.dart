@@ -417,7 +417,8 @@ class _PengajuanTransaksiLogamMuliaFormState
                                             ""
                                         ? GestureDetector(
                                             onTap: () {
-                                              _bottomSheet(context, "app1");
+                                              controller.getSelfie(
+                                                  ImageSource.camera, "app1");
                                             },
                                             child: Container(
                                               height: 160,
@@ -477,8 +478,9 @@ class _PengajuanTransaksiLogamMuliaFormState
                                                   children: [
                                                     GestureDetector(
                                                       onTap: () {
-                                                        _bottomSheet(
-                                                            context, "app1");
+                                                        controller.getSelfie(
+                                                            ImageSource.camera,
+                                                            "app1");
                                                       },
                                                       child: Container(
                                                         padding: EdgeInsets
@@ -647,8 +649,9 @@ class _PengajuanTransaksiLogamMuliaFormState
                                                   ""
                                               ? GestureDetector(
                                                   onTap: () {
-                                                    _bottomSheet(
-                                                        context, "app2");
+                                                    controller.getSelfie(
+                                                        ImageSource.camera,
+                                                        "app2");
                                                   },
                                                   child: Container(
                                                     height: 160,
@@ -893,14 +896,18 @@ class _PengajuanTransaksiLogamMuliaFormState
                                     .then((value) {
                                   print(value);
                                   Get.to(() => PengajuanSukses());
-                                }).catchError((e){print(e);});
+                                }).catchError((e) {
+                                  print(e);
+                                });
                               } else {
                                 controller
                                     .submitPengajuanLogamMulia()
                                     .then((value) {
                                   print(value);
                                   Get.to(() => PengajuanSukses());
-                                }).catchError((e){print(e);});
+                                }).catchError((e) {
+                                  print(e);
+                                });
                               }
                             }
                           },

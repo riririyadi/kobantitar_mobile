@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/app_setting.dart';
-import 'package:kobantitar_mobile/models/informasi.dart';
+import 'package:kobantitar_mobile/models/dashboard.dart';
+import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:kobantitar_mobile/models/kobmart.dart';
 import 'package:kobantitar_mobile/models/me.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
@@ -16,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 class HomeController extends GetxController {
   dynamic argumentData = Get.arguments;
   var me = Me();
-  var informasi = Informasi();
+  var dashboard = Dashboard();
   var setting = AppSetting();
   var kobmart = DataKobmart();
   var simpanan = Simpanan();
@@ -24,7 +26,7 @@ class HomeController extends GetxController {
   var isSimpananLoaded = false.obs;
   var isKobmartLoading = false.obs;
   var isSettingLoading = false.obs;
-  var isInformasiLoading = false.obs;
+  var isDashboardLoading = false.obs;
   final userData = GetStorage();
   String token = "";
   String role = "";
@@ -44,10 +46,8 @@ class HomeController extends GetxController {
     _initPackageInfo();
     getMe();
     getSimpanan();
-    getKobmart();
     getSetting();
-    getInformasi();
-
+    getDashboard();
     super.onInit();
   }
 
@@ -114,6 +114,7 @@ class HomeController extends GetxController {
     final data = await Service.fetchMe(token);
     if (data != null) {
       me = data;
+
       isLoaded(true);
     }
   }
@@ -126,28 +127,15 @@ class HomeController extends GetxController {
     }
   }
 
-  void getInformasi() async {
+  void getDashboard() async {
     try {
-      isInformasiLoading(true);
-      final data = await Service.fetchInformasi(token);
+      isDashboardLoading(true);
+      final data = await Service.fetchDashboard(token);
       if (data != null) {
-        informasi = data;
-        Get.snackbar("title", informasi.status!);
+        dashboard = data;
       }
     } finally {
-      isInformasiLoading(false);
-    }
-  }
-
-  void getKobmart() async {
-    try {
-      isKobmartLoading(true);
-      final data = await Service.fetchKobmart(token);
-      if (data != null) {
-        kobmart = data.data!;
-      }
-    } finally {
-      isKobmartLoading(false);
+      isDashboardLoading(false);
     }
   }
 }

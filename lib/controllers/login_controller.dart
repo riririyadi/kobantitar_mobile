@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/models/nomor_anggota.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/daftar_akun_baru.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginController extends GetxController {
@@ -55,6 +55,7 @@ class LoginController extends GetxController {
       final role = json['data']['role'];
       userData.write("token", token);
       userData.write("role", role);
+      postDevice(token);
       return token;
     } else {
       return null;
@@ -66,6 +67,7 @@ class LoginController extends GetxController {
       Uri.parse("${config.baseURL}/register/nomor-anggota/${nomorAnggota}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
       },
     );
     if (response.statusCode == 200) {
@@ -88,6 +90,24 @@ class LoginController extends GetxController {
       Get.back();
       Get.snackbar("Error", "Nomor Anggota tidak terdaftar");
       return null;
+    }
+  }
+
+  Future<String?> postDevice(String token) async {
+    final response = await http.post(Uri.parse("${config.baseURL}/devices"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(<String, String>{
+          'token': token,
+        }));
+    if (response.statusCode == 200) {
+      print("Post Device OK");
+      return "Post Device Ok";
+    } else {
+      return "";
     }
   }
 }

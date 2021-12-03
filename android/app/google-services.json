@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "452246297486",
+    "project_id": "kobantitar-mobile",
+    "storage_bucket": "kobantitar-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452246297486:android:a7c391d8bf915575da22df",
+        "android_client_info": {
+          "package_name": "com.brainy.kobantitar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452246297486-tcgb9fksg75ropc3196sat2dibt6oq0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo-b13gNHJdh2mUmaBHrU4cjdyBTRlQv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452246297486-tcgb9fksg75ropc3196sat2dibt6oq0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

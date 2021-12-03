@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
+import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_kobmart_list.dart';
 import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_kredit_barang_list.dart';
-import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_list_widget.dart';
+import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_kredit_kendaraan_list.dart';
+import 'package:kobantitar_mobile/screens/tagihan_screens/all_tagihan_list_widget.dart';
 import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_logam_mulia_list.dart';
 
 class TagihanWidget extends StatefulWidget {
@@ -266,6 +268,116 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                         ),
                       ),
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _jenisTagihan = 3;
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                        ),
+                        decoration: _jenisTagihan == 3
+                            ? BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xffC30707),
+                                      Color(0xffEE6A6A)
+                                    ]),
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              )
+                            : BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              ),
+                        child: Center(
+                          child: Text('Tagihan Kredit Kendaraan',
+                              style: TextStyle(
+                                  color: _jenisTagihan == 3
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _jenisTagihan = 4;
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                        ),
+                        decoration: _jenisTagihan == 4
+                            ? BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xffC30707),
+                                      Color(0xffEE6A6A)
+                                    ]),
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              )
+                            : BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 1.0,
+                                    offset: Offset(
+                                        0.0, 5.0), // shadow direction: bottom
+                                  )
+                                ],
+                              ),
+                        child: Center(
+                          child: Text('Tagihan Kobmart',
+                              style: TextStyle(
+                                  color: _jenisTagihan == 4
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -292,6 +404,8 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                     AllTagihan(),
                     TagihanLogamMulia(),
                     TagihanKreditBarang(),
+                    TagihanKreditKendaraan(),
+                    TagihanKobmart(),
                   ],
                 ),
               ),

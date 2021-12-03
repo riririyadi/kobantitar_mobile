@@ -165,7 +165,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
       },
       body: jsonEncode(<String, dynamic>{
         "tenor_id": tenorController.text,
-        "product_id": argumentData.id,
+        "amount_id": argumentData.id,
         "start_date": dateController.text,
         "keperluan": keperluanController.text,
         "approval": [
@@ -176,9 +176,11 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-
+      print(response.statusCode);
       return json["status"];
     } else {
+      print(response.statusCode);
+
       return null;
     }
   }
@@ -192,8 +194,8 @@ class PengajuanLogamMuliaFormController extends GetxController {
         'Authorization': 'Bearer $token',
       },
       body: jsonEncode(<String, dynamic>{
+        "amount_id": argumentData.id,
         "tenor_id": tenorController.text,
-        "product_id": argumentData.id,
         "start_date": dateController.text,
         "keperluan": keperluanController.text,
         "approval": [
@@ -208,7 +210,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-
+      print(response.statusCode);
       return json["status"];
     } else {
       print(response.statusCode);

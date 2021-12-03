@@ -4,15 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/tagihan_controller.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
 
-class TagihanKreditBarang extends StatefulWidget {
-  const TagihanKreditBarang({Key? key}) : super(key: key);
+class AllTagihan extends StatefulWidget {
+  const AllTagihan({Key? key}) : super(key: key);
 
   @override
-  _TagihanKreditBarangState createState() => _TagihanKreditBarangState();
+  _AllTagihanState createState() => _AllTagihanState();
 }
 
-class _TagihanKreditBarangState extends State<TagihanKreditBarang> {
+class _AllTagihanState extends State<AllTagihan> {
   final TagihanController controller = Get.put(TagihanController());
+
   final currencyFormatter = NumberFormat('#,##0', 'ID');
 
   @override
@@ -23,9 +24,9 @@ class _TagihanKreditBarangState extends State<TagihanKreditBarang> {
       } else {
         return ListView.builder(
             padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-            itemCount: controller.tagihanKreditBarang!.length,
+            itemCount: controller.tagihanList!.length,
             itemBuilder: (context, index) {
-              final tagihan = controller.tagihanKreditBarang![index];
+              final tagihan = controller.tagihanList![index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: Container(
@@ -53,15 +54,7 @@ class _TagihanKreditBarangState extends State<TagihanKreditBarang> {
                               color: Color(0xfff0f0f0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: Center(
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                child: Image(
-                                    image: AssetImage('assets/device.png'),
-                                    fit: BoxFit.fill),
-                              ),
-                            ),
+                            child: Center(child: imageContainer(tagihan.type!)),
                           ),
                           SizedBox(
                             width: 10.0,
@@ -140,5 +133,34 @@ class _TagihanKreditBarangState extends State<TagihanKreditBarang> {
             });
       }
     });
+  }
+
+  Widget imageContainer(String tipeTagihan) {
+    if (tipeTagihan == "LM") {
+      return Container(
+        width: 30,
+        height: 30,
+        child: Image(
+            image: AssetImage('assets/gold-ingots.png'), fit: BoxFit.fill),
+      );
+    } else if (tipeTagihan == "KB") {
+      return Container(
+        width: 30,
+        height: 30,
+        child: Image(image: AssetImage('assets/device.png'), fit: BoxFit.fill),
+      );
+    } else if (tipeTagihan == "KK") {
+      return Container(
+        width: 30,
+        height: 30,
+        child: Image(image: AssetImage('assets/scooter.png'), fit: BoxFit.fill),
+      );
+    } else {
+      return Container(
+        width: 30,
+        height: 30,
+        child: Image(image: AssetImage('assets/store.png'), fit: BoxFit.fill),
+      );
+    }
   }
 }

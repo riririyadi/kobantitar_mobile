@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/tagihan_controller.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
 
@@ -13,6 +14,9 @@ class TagihanLogamMulia extends StatefulWidget {
 class _TagihanLogamMuliaState extends State<TagihanLogamMulia> {
   final TagihanController controller = Get.put(TagihanController());
 
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoading.value) {
@@ -81,7 +85,7 @@ class _TagihanLogamMuliaState extends State<TagihanLogamMulia> {
                             height: 5.0,
                           ),
                           Text(
-                            'Rp 3.289.500',
+                            'Rp ${currencyFormatter.format(tagihan.sisaTagihan)}',
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.w600),
                           )
@@ -96,7 +100,7 @@ class _TagihanLogamMuliaState extends State<TagihanLogamMulia> {
                               style: TextStyle(fontSize: 12.0)),
                           Spacer(),
                           Text(
-                            'Rp 590.000',
+                            'Rp ${currencyFormatter.format(tagihan.tagihanHarusDibayar)}',
                             style: TextStyle(
                                 fontSize: 12.0, fontWeight: FontWeight.w600),
                           ),
@@ -108,7 +112,7 @@ class _TagihanLogamMuliaState extends State<TagihanLogamMulia> {
                           Text('Jatuh Tempo', style: TextStyle(fontSize: 12.0)),
                           Spacer(),
                           Text(
-                            '26 Oktober 2021',
+                            '${tagihan.jatuhTempo}',
                             style: TextStyle(
                                 fontSize: 12.0, fontWeight: FontWeight.w600),
                           ),

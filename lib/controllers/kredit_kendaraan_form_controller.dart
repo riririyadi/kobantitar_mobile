@@ -16,16 +16,19 @@ class KreditBarangFormController extends GetxController {
   var tenorController = TextEditingController();
   var tglPembayaranController = TextEditingController();
   var dateController = TextEditingController();
+  var namaAtasanController = TextEditingController();
+  var namaAtasan2Controller = TextEditingController();
   final userData = GetStorage();
   late String token;
   var isLoading = false.obs;
   var isLoading2 = false.obs;
   var isMounted = false.obs;
-  var isDoubleApproval = false.obs;
+  var isDoubleApproval = false;
   dynamic argumentData = Get.arguments;
   List<TenorConfig>? tenors = <TenorConfig>[].obs;
   var detailKredit = <KreditKendaraanCalculation>[].obs;
-  int approvalFileId = 0;
+  late int approvalFileId;
+  late int approvalFileId2;
 
   @override
   void onInit() {
@@ -54,7 +57,7 @@ class KreditBarangFormController extends GetxController {
       if (data != null) {
         final tenor = data.data!.tenors;
         tenors = tenor;
-        isDoubleApproval = data.data!.isDoubleApproval as RxBool;
+        isDoubleApproval = data.data!.isDoubleApproval!;
       }
     } finally {
       isLoading(false);
@@ -68,7 +71,6 @@ class KreditBarangFormController extends GetxController {
       final data = await Service.fetchKreditBarangCalculation(
           token, argumentData.id, tenorController.text);
       if (data != null) {
-        print(jsonEncode(data));
         detailKredit.add(data);
       }
     } finally {
@@ -80,17 +82,27 @@ class KreditBarangFormController extends GetxController {
 
   var selectedSelfieImagePath = "".obs;
   var selectedSelfieImageSize = "".obs;
+  var selectedSelfieImage2Path = "".obs;
+  var selectedSelfieImage2Size = "".obs;
 
-  void getSelfie(ImageSource imageSource) async {
+  void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
       final image = await ImagePicker().pickImage(source: imageSource);
 
       if (image != null) {
-        selectedSelfieImagePath.value = image.path;
-        selectedSelfieImageSize.value =
-            ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
-                    .toStringAsFixed(2) +
-                " Mb";
+        if (imageContext == "app1") {
+          selectedSelfieImagePath.value = image.path;
+          selectedSelfieImageSize.value =
+              ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
+                      .toStringAsFixed(2) +
+                  " Mb";
+        } else {
+          selectedSelfieImage2Path.value = image.path;
+          selectedSelfieImage2Size.value =
+              ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
+                      .toStringAsFixed(2) +
+                  " Mb";
+        }
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -114,8 +126,12 @@ class KreditBarangFormController extends GetxController {
       final json = jsonDecode(respStr.body);
       final fileId = json['data']['file_id'];
 
-      approvalFileId = fileId;
-      print(approvalFileId);
+      if (uploadType == "app1") {
+        approvalFileId = fileId;
+      } else {
+        approvalFileId2 = fileId;
+      }
+
       return response;
     } else {
       return Future.error(response);
@@ -142,8 +158,39 @@ class KreditBarangFormController extends GetxController {
         "tenor_id": tenorController.text,
         "product_id": argumentData.id,
         "start_date": dateController.text,
-        "aprroval_file_id": approvalFileId,
-        "nama_atasan": "nama atasan"
+        "approval": [
+          {"file_id": approvalFileId, "nama_atasan": namaAtasanController.text}
+        ],
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      return json["status"];
+    } else {
+      return Future.error(response);
+    }
+  }
+
+  Future<String?> submitPengajuanKreditKendaraan2() async {
+    final response = await http.post(
+      Uri.parse("${config.baseURL}/pengajuan/kreditkendaraan"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "tenor_id": tenorController.text,
+        "product_id": argumentData.id,
+        "start_date": dateController.text,
+        "approval": [
+          {"file_id": approvalFileId, "nama_atasan": namaAtasanController.text},
+          {
+            "file_id": approvalFileId2,
+            "nama_atasan": namaAtasan2Controller.text
+          }
+        ],
       }),
     );
 

@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/ubah_pin_controller.dart';
 import 'package:kobantitar_mobile/screens/akun_screens/ubah_pin_baru.dart';
 
 class UbahPINLama extends StatefulWidget {
@@ -10,6 +11,28 @@ class UbahPINLama extends StatefulWidget {
 }
 
 class _UbahPINLamaState extends State<UbahPINLama> {
+  final controller = Get.put(UbahPINController());
+  late TextEditingController pinController;
+
+  @override
+  void initState() {
+    pinController = TextEditingController()
+      ..addListener(() {
+        if (pinController.text.length < 7) {
+          setState(() {});
+          print(pinController.text);
+          controller.pin = pinController.text;
+        }
+      });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pinController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,6 +84,32 @@ class _UbahPINLamaState extends State<UbahPINLama> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
                   decoration: BoxDecoration(
                     color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(24),
+                      topLeft: Radius.circular(24),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: pinController,
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                top: 60,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
                   ),
                   child: Column(
                     children: [
@@ -74,32 +123,44 @@ class _UbahPINLamaState extends State<UbahPINLama> {
                         children: [
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: pinController.text.length >= 1
+                                ? Colors.red
+                                : Colors.grey,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: pinController.text.length >= 2
+                                ? Colors.red
+                                : Colors.grey,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: pinController.text.length >= 3
+                                ? Colors.red
+                                : Colors.grey,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: pinController.text.length >= 4
+                                ? Colors.red
+                                : Colors.grey,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: pinController.text.length >= 5
+                                ? Colors.red
+                                : Colors.grey,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: Colors.grey,
+                            backgroundColor: pinController.text.length >= 6
+                                ? Colors.red
+                                : Colors.grey,
                           ),
                         ],
                       )
