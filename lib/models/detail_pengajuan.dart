@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
 DetailDataPengajuan detailDataPengajuanFromJson(String str) =>
     DetailDataPengajuan.fromJson(json.decode(str));
 
@@ -43,7 +45,7 @@ class Data {
     this.tagihan,
   });
 
-  double? sisaTagihan;
+  int? sisaTagihan;
   Pengajuan? pengajuan;
   List<Riwayat>? riwayat;
   List<Tagihan>? tagihan;
@@ -80,7 +82,7 @@ class Pengajuan {
   int? id;
   String? caption;
   String? type;
-  double? totalAngsuran;
+  int? totalAngsuran;
   double? angsuranPerBulan;
   String? tenor;
   String? status;

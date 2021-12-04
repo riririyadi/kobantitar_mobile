@@ -135,7 +135,10 @@ class _PengajuanKendaraanListState extends State<PengajuanKendaraanList> {
                   ),
                   SizedBox(height: 10.0),
                   GestureDetector(
-                    onTap: () => Get.to(() => RincianPengajuan()),
+                    onTap: () => Get.to(() => RincianPengajuan(), arguments: {
+                      "id": pengajuan.id,
+                      "type": pengajuan.type
+                    }),
                     child: Column(children: [
                       Text(
                         'Lihat Rincian',

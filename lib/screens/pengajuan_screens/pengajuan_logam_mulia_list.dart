@@ -136,7 +136,10 @@ class _PengajuanLogamMuliaListState extends State<PengajuanLogamMuliaList> {
                   ),
                   SizedBox(height: 10.0),
                   GestureDetector(
-                    onTap: () => Get.to(() => RincianPengajuan()),
+                    onTap: () => Get.to(() => RincianPengajuan(), arguments: {
+                      "id": pengajuan.id,
+                      "type": pengajuan.type
+                    }),
                     child: Column(children: [
                       Text(
                         'Lihat Rincian',

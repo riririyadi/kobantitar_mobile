@@ -219,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller.passwordController.text)
               .then((value) {
             controller.isLoading(false);
-            Get.to(() => HomeScreen());
+            Get.offAll(() => BuatPIN());
           }).catchError((e) {
             print(e);
             controller.isLoading(false);

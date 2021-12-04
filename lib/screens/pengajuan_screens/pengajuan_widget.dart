@@ -1,10 +1,9 @@
 import "package:flutter/material.dart";
-import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_merk_motor.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_kendaraan_list.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_kobmart_list.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_kredit_barang_list.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_logam_mulia_list.dart';
-import 'package:kobantitar_mobile/screens/pengajuan_screens/semua_pengajuan.dart';
+import 'package:kobantitar_mobile/screens/pengajuan_screens/all_pengajuan.dart';
 
 class PengajuanWidget extends StatefulWidget {
   const PengajuanWidget({Key? key}) : super(key: key);
@@ -77,10 +76,11 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                       )
                     ],
                   ),
-                  child: TextField(
+                  child: TextFormField(
                     style: TextStyle(
                       fontSize: 14.0,
                     ),
+                    onChanged: (String) {},
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(10.0),
                         floatingLabelBehavior: FloatingLabelBehavior.never,

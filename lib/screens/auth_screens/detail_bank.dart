@@ -41,6 +41,7 @@ class _DetailBankState extends State<DetailBank> {
                 return DropdownButtonHideUnderline(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
+                        helperText: ' ',
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent))),
                     validator: (value) =>

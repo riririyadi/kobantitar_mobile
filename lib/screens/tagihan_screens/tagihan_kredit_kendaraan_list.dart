@@ -24,9 +24,9 @@ class _TagihanKreditKendaraanState extends State<TagihanKreditKendaraan> {
       } else {
         return ListView.builder(
             padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-            itemCount: controller.tagihanKreditKendaraan!.length,
+            itemCount: controller.tagihanKreditKendaraan.length,
             itemBuilder: (context, index) {
-              final tagihan = controller.tagihanKreditKendaraan![index];
+              final tagihan = controller.tagihanKreditKendaraan[index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: Container(

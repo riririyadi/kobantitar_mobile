@@ -62,6 +62,17 @@ class _HalamanPINState extends State<HalamanPIN> {
       //isAuth = true
       // therefore will navigate user to WelcomePage/HomePage of the App
       if (isAuth) {
+        Get.defaultDialog(
+          title: "",
+          content: Column(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 10),
+              Text("Please wait")
+            ],
+          ),
+          barrierDismissible: false,
+        );
         Get.to(() => HomeScreen());
       }
 
@@ -375,7 +386,7 @@ class _HalamanPINState extends State<HalamanPIN> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () => Get.off(() => LoginScreen()),
                     child: Container(
                       padding: EdgeInsets.all(16),
                       height: 48.0,

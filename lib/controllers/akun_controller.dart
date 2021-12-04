@@ -161,5 +161,6 @@ class AkunController extends GetxController {
   void deleteLocalToken() {
     userData.remove("token");
     userData.remove("anggota");
+    userData.remove("PIN");
   }
 }

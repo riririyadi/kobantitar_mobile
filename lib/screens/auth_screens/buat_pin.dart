@@ -20,17 +20,11 @@ class _BuatPINState extends State<BuatPIN> {
       ..addListener(() {
         if (pinController.text.length < 7) {
           setState(() {});
-          print(pinController.text);
+
           controller.pin = pinController.text;
         }
       });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -182,7 +176,14 @@ class _BuatPINState extends State<BuatPIN> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: GestureDetector(
-                  onTap: () => Get.to(() => VerifikasiPIN()),
+                  onTap: () {
+                    if (pinController.text.length >= 6) {
+                      Get.off(() => VerifikasiPIN());
+                    } else {
+                      Get.snackbar(
+                          "Format PIN Salah", "Masukkan PIN dengan benar");
+                    }
+                  },
                   child: Container(
                     height: 48.0,
                     width: double.infinity,

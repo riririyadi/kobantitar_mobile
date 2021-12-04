@@ -24,9 +24,9 @@ class _TagihanLogamMuliaState extends State<TagihanLogamMulia> {
       } else {
         return ListView.builder(
             padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-            itemCount: controller.tagihanLogamMulia!.length,
+            itemCount: controller.tagihanLogamMulia.length,
             itemBuilder: (context, index) {
-              final tagihan = controller.tagihanLogamMulia![index];
+              final tagihan = controller.tagihanLogamMulia[index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: Container(

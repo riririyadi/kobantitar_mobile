@@ -20,17 +20,10 @@ class _VerifikasiPINState extends State<VerifikasiPIN> {
       ..addListener(() {
         if (pinController.text.length < 7) {
           setState(() {});
-          print(pinController.text);
           controller.konfirmPin = pinController.text;
         }
       });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
   }
 
   @override

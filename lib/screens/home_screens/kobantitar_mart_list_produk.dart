@@ -29,6 +29,7 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
   int totalProducts = 0;
   int numOfproducts = 0;
   List<Product> products = [];
+  List<Product> filteredProducts = [];
   final currencyFormatter = NumberFormat('#,##0', 'ID');
 
   final RefreshController refreshController2 =
@@ -201,7 +202,7 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
                               )
                             ],
                           ),
-                          child: TextField(
+                          child: TextFormField(
                             style: TextStyle(
                               fontSize: 14.0,
                             ),

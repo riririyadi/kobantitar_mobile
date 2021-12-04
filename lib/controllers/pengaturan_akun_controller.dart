@@ -14,7 +14,6 @@ import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/models/instansi.dart';
 import 'package:kobantitar_mobile/models/me.dart';
-import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/update_akun_sukses.dart';
 
 class PengaturanAkunController extends GetxController {

@@ -3,11 +3,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/screens/home_screen.dart';
 
 class BuatPINController extends GetxController {
   var pin = "";
   var konfirmPin = "";
+  final userData = GetStorage();
 
   @override
   void onInit() {
@@ -21,9 +23,10 @@ class BuatPINController extends GetxController {
 
   void savePIN() {
     if (pin == konfirmPin) {
-      Get.to(() => HomeScreen());
+      userData.write("PIN", konfirmPin);
+      Get.offAll(() => HomeScreen());
     } else {
-      Get.snackbar("Error", "pin harus cocok");
+      Get.snackbar(pin, konfirmPin);
     }
   }
 }

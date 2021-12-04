@@ -40,15 +40,21 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
+    _initPackageInfo();
     token = userData.read("token");
     role = userData.read("role");
+    super.onInit();
 
-    _initPackageInfo();
     getMe();
     getSimpanan();
     getSetting();
     getDashboard();
-    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    checkVersion();
+    super.onReady();
   }
 
   @override
@@ -79,34 +85,6 @@ class HomeController extends GetxController {
     final info = await PackageInfo.fromPlatform();
     if (info.version != "Unknown") {
       _packageInfo = info;
-      if (_packageInfo.version != setting.appVersionName) {
-        Get.defaultDialog(
-            title: "Latest update is available",
-            titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            content: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                      "Your app version is not uptodate, this app version is ${_packageInfo.version}",
-                      style: TextStyle(fontSize: 14))
-                ]),
-            cancel: GestureDetector(
-              onTap: () => Get.back(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Later", style: TextStyle(fontSize: 14)),
-              ),
-            ),
-            confirm: GestureDetector(
-              onTap: () => Get.back(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Update Now", style: TextStyle(fontSize: 14)),
-              ),
-            ),
-            contentPadding: EdgeInsets.all(10),
-            titlePadding: EdgeInsets.all(10));
-      }
     }
   }
 
@@ -136,6 +114,36 @@ class HomeController extends GetxController {
       }
     } finally {
       isDashboardLoading(false);
+    }
+  }
+
+  void checkVersion() {
+    if (_packageInfo.version != setting.appVersionName) {
+      Get.defaultDialog(
+          title: "Latest update is available",
+          titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          content:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Text(
+                "Your app version is not uptodate, this app version is ${_packageInfo.version}",
+                style: TextStyle(fontSize: 14))
+          ]),
+          cancel: GestureDetector(
+            onTap: () => Get.back(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Later", style: TextStyle(fontSize: 14)),
+            ),
+          ),
+          confirm: GestureDetector(
+            onTap: () => Get.back(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Update Now", style: TextStyle(fontSize: 14)),
+            ),
+          ),
+          contentPadding: EdgeInsets.all(10),
+          titlePadding: EdgeInsets.all(10));
     }
   }
 }

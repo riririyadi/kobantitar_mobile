@@ -23,9 +23,9 @@ class _TagihanKobmartState extends State<TagihanKobmart> {
       } else {
         return ListView.builder(
             padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-            itemCount: controller.tagihanKobmart!.length,
+            itemCount: controller.tagihanKobmart.length,
             itemBuilder: (context, index) {
-              final tagihan = controller.tagihanKobmart![index];
+              final tagihan = controller.tagihanKobmart[index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: Container(

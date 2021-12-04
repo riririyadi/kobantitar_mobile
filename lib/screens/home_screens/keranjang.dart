@@ -278,8 +278,7 @@ class _KeranjangState extends State<Keranjang> {
                                     setState(() {
                                       isProsesPesanan = false;
                                     });
-                                    Get.back();
-                                    Get.snackbar("title", value!);
+                                    Get.to(() => PesananSukses());
                                   }).catchError((e) {
                                     print(e);
                                   });
@@ -315,6 +314,8 @@ class _KeranjangState extends State<Keranjang> {
         });
   }
 }
+
+final currencyFormatter = NumberFormat('#,##0', 'ID');
 
 class CartProductCard extends StatelessWidget {
   final KobMartListProductController controller;
@@ -352,7 +353,7 @@ class CartProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(product.name!),
-            Text("Rp. ${product.price}",
+            Text("Rp. ${currencyFormatter.format(product.price)}",
                 style: TextStyle(
                     color: Color(0xffF53131), fontWeight: FontWeight.w600)),
             SizedBox(
