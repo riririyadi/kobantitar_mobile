@@ -30,6 +30,7 @@ class _KobantitarMartSearchListProdukState
   int totalProducts = 0;
   int numOfproducts = 0;
   List<Product> products = [];
+  bool isLoading = true;
   List<Product> filteredProducts = [];
   final currencyFormatter = NumberFormat('#,##0', 'ID');
 
@@ -40,6 +41,9 @@ class _KobantitarMartSearchListProdukState
     final Uri uri = Uri.parse(
         "https://backend.kobantitar.com/api/kobmart/product?q=${controller.searchQueryController.text}");
 
+       setState(() {
+         isLoading = true;
+       });
     final response = await http.get(
       uri,
       headers: <String, String>{
@@ -58,7 +62,9 @@ class _KobantitarMartSearchListProdukState
       hasMoreItem = json['data']['pagination']['has_more_item'];
       products = list;
       currentPage++;
-      setState(() {});
+      setState(() {
+        isLoading = false;
+      });
 
       return true;
     } else {
@@ -77,6 +83,9 @@ class _KobantitarMartSearchListProdukState
           "https://backend.kobantitar.com/api/kobmart/product?page=$currentPage");
     }
 
+    setState(() {
+        isLoading = true;
+      });
     final response = await http.get(
       uri,
       headers: <String, String>{
@@ -100,7 +109,9 @@ class _KobantitarMartSearchListProdukState
       hasMoreItem = json['data']['pagination']['has_more_item'];
 
       currentPage++;
-      setState(() {});
+      setState(() {
+        isLoading = false;
+      });
 
       return true;
     } else {
@@ -239,6 +250,10 @@ class _KobantitarMartSearchListProdukState
                             ],
                           ),
                           child: TextFormField(
+                            textInputAction: TextInputAction.search,
+                            onFieldSubmitted: (value) {
+                              searchProducts();
+                            },
                             style: TextStyle(
                               fontSize: 14.0,
                             ),
@@ -365,6 +380,9 @@ class _KobantitarMartSearchListProdukState
                   ),
                 ),
               ),
+              isLoading ? Positioned.fill(
+                child: Container(child : Center(child : CircularProgressIndicator()))
+              ) : Container()
             ],
           ),
         ),

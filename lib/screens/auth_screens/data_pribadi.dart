@@ -34,6 +34,7 @@ class _DataPribadiState extends State<DataPribadi> {
             height: 65,
             child: TextFormField(
               controller: controller.namaController,
+              keyboardType: TextInputType.name,
               style: TextStyle(
                 fontSize: 12.0,
               ),
@@ -145,11 +146,13 @@ class _DataPribadiState extends State<DataPribadi> {
               style: TextStyle(
                 fontSize: 12.0,
               ),
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 helperText: ' ',
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
+
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -179,7 +182,7 @@ class _DataPribadiState extends State<DataPribadi> {
                 fontSize: 12.0,
               ),
               maxLines: 5,
-              keyboardType: TextInputType.multiline,
+              keyboardType: TextInputType.streetAddress,
               decoration: InputDecoration(
                 helperText: ' ',
                 contentPadding:
@@ -287,6 +290,7 @@ class _DataPribadiState extends State<DataPribadi> {
               style: TextStyle(
                 fontSize: 12.0,
               ),
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 helperText: ' ',
                 contentPadding:

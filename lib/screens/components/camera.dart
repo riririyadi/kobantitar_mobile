@@ -9,8 +9,9 @@ import 'package:kobantitar_mobile/main.dart';
 import 'package:kobantitar_mobile/screens/components/kobantitar_app_bar.dart';
 
 class CameraApp extends StatefulWidget {
-  final String keterangan;
-  const CameraApp({required this.keterangan, Key? key}) : super(key: key);
+  final String? keterangan;
+  final int cameraId;
+  const CameraApp({this.keterangan, this.cameraId = 0, Key? key}) : super(key: key);
   @override
   _CameraAppState createState() => _CameraAppState();
 }
@@ -18,14 +19,15 @@ class CameraApp extends StatefulWidget {
 class _CameraAppState extends State<CameraApp> {
   late CameraController controller;
 
-  int currentCamera = 0;
+  late int currentCamera;
   XFile? file = null;
   FlashMode currentFlashMode = FlashMode.off;
 
   @override
   void initState() {
     super.initState();
-    controller = CameraController(cameras[0], ResolutionPreset.medium);
+    currentCamera = widget.cameraId;
+    controller = CameraController(cameras[widget.cameraId], ResolutionPreset.medium);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
@@ -257,7 +259,8 @@ class _CameraAppState extends State<CameraApp> {
                 ),
               ),
             ),
-          ),
+          ), 
+          widget.keterangan != null ?
           Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -267,7 +270,7 @@ class _CameraAppState extends State<CameraApp> {
                 color: Colors.white54,
                 child: Center(
                   child: Text(
-                    widget.keterangan,
+                    widget.keterangan!,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 12,
@@ -275,7 +278,7 @@ class _CameraAppState extends State<CameraApp> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-              ))
+              )) : Container()
         ],
       ),
     );

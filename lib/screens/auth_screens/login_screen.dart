@@ -219,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller.passwordController.text)
               .then((value) {
             controller.isLoading(false);
-            Get.offAll(() => BuatPIN());
+           
           }).catchError((e) {
             print(e);
             controller.isLoading(false);
@@ -336,116 +336,118 @@ class _LoginScreenState extends State<LoginScreen> {
         return Padding(
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: SingleChildScrollView(
+          child: Container(
+            color: Color(0xff757575),
             child: Container(
-              color: Color(0xff757575),
-              child: Container(
-                padding: EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
                 ),
-                height: 200,
-                child: Center(
-                  child: Form(
-                    key: nomorAnggotaFormKey,
-                    child: Column(
-                      children: [
-                        Text(
-                          'Nomor Anggota',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
+              ),
+              height: 200,
+              child: Center(
+                child: Form(
+                  key: nomorAnggotaFormKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Nomor Anggota',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
                         ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 65,
-                          child: TextFormField(
-                            controller: controller.nomorAnggotaController,
-                            style: TextStyle(fontSize: 12.0),
-                            decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                helperText: ' ',
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10.0, vertical: 0.0),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                labelText: "Masukkan Nomor Anggota"),
-                            validator: (value) {
-                              if (value!.length < 4) {
-                                return 'Nomor must be at least 4 characters';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 5.0,
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            if (nomorAnggotaFormKey.currentState!.validate()) {
-                              print(controller.nomorAnggotaController.text);
-                              controller.isLoading2(true);
-                              controller
-                                  .checkNomorAnggota(int.parse(
-                                      controller.nomorAnggotaController.text))
-                                  .then((value) => controller.isLoading2(false))
-                                  .catchError((e) {
-                                print(e);
-                              });
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 65,
+                        child: TextFormField(
+                          controller: controller.nomorAnggotaController,
+                         keyboardType: TextInputType.numberWithOptions(
+                           signed: false, decimal: false
+                         ),
+                          style: TextStyle(fontSize: 12.0),
+                          decoration: InputDecoration(
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              helperText: ' ',
+                              
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 0.0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              labelText: "Masukkan Nomor Anggota"),
+                          validator: (value) {
+                            if (value!.length < 4) {
+                              return 'Nomor must be at least 4 characters';
                             }
+                            return null;
                           },
-                          child: Container(
-                            height: 48.0,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xff851212),
-                                    Color(0xffFF8A8A)
-                                  ]),
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 1.0,
-                                  spreadRadius: 0.0,
-                                  offset: Offset(
-                                      0.0, 4.0), // shadow direction: bottom
-                                )
-                              ],
-                            ),
-                            child: Center(child: Obx(() {
-                              if (controller.isLoading2.value) {
-                                return CircularProgressIndicator(
-                                  color: Colors.white,
-                                );
-                              } else {
-                                return Text(
-                                  'Selanjutnya',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                );
-                              }
-                            })),
-                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (nomorAnggotaFormKey.currentState!.validate()) {
+                            print(controller.nomorAnggotaController.text);
+                            controller.isLoading2(true);
+                            controller
+                                .checkNomorAnggota(int.parse(
+                                    controller.nomorAnggotaController.text))
+                                .then((value) => controller.isLoading2(false))
+                                .catchError((e) {
+                              print(e);
+                            });
+                          }
+                        },
+                        child: Container(
+                          height: 48.0,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Color(0xff851212),
+                                  Color(0xffFF8A8A)
+                                ]),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 1.0,
+                                spreadRadius: 0.0,
+                                offset: Offset(
+                                    0.0, 4.0), // shadow direction: bottom
+                              )
+                            ],
+                          ),
+                          child: Center(child: Obx(() {
+                            if (controller.isLoading2.value) {
+                              return CircularProgressIndicator(
+                                color: Colors.white,
+                              );
+                            } else {
+                              return Text(
+                                'Selanjutnya',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              );
+                            }
+                          })),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

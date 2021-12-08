@@ -55,7 +55,10 @@ class KobantitarApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme: ThemeData(fontFamily: 'Montserrat'),
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        fontFamily: 'Montserrat'
+        ),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
       // home: CameraApp(keterangan: "Foto ini akan digunakan untuk pengajuan Kredit Logam Mulia di Kobantitar",)

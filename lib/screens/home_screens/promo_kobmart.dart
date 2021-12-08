@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/api_config/config.dart';
 import 'package:kobantitar_mobile/controllers/promo_kobmart_controller.dart';
 
 class PromoKobmart extends StatefulWidget {
@@ -74,7 +75,7 @@ class _PromoKobmartState extends State<PromoKobmart> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     child: Image.network(
-                      controller.imageUrl,
+                     baseURI+controller.imageUrl,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
                         return Center(

@@ -26,7 +26,7 @@ class SplashScreenController extends GetxController {
 
   Future<void> loading() async {
     Timer(Duration(seconds: 2), () {
-      if (pin == null) {
+      if (token == null) {
         Get.off(() => LoginScreen());
       } else {
         Get.off(() => HalamanPIN());

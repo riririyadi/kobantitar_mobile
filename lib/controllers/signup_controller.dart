@@ -10,16 +10,23 @@ import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kobantitar_mobile/models/bank.dart';
 import 'package:kobantitar_mobile/models/instansi.dart';
+import 'package:kobantitar_mobile/models/nomor_anggota.dart';
+import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
+import 'package:kobantitar_mobile/screens/components/camera.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pendaftaran_sukses.dart';
 import 'package:kobantitar_mobile/api_services/service.dart';
 
+
+enum SignUpImage{
+  ktp, selfie
+}
+
+
 class SignUpController extends GetxController {
   static var client = http.Client();
-  var ktpFileId = 0;
-  var selfieFileId = 0;
-
   List<Instansi> instansis = [];
   List<Bank> banks = [];
+
   var isBankLoading = false.obs;
   var isInstansiLoading = false.obs;
 
@@ -42,13 +49,18 @@ class SignUpController extends GetxController {
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
 
-  int step = 3;
+  int step = 0;
 
   dynamic argumentData = Get.arguments;
 
   @override
   void onInit() {
     jenisKelaminController.text = "PRIA";
+    if(argumentData[1] == "LAMA"){
+      print("LAMA");
+      NomorAnggota nomorAnggota = argumentData[2];
+      namaController.text = nomorAnggota.nama!;
+    }
     getInstansi();
     getBank();
     super.onInit();
@@ -102,26 +114,39 @@ class SignUpController extends GetxController {
     }
   }
 
-  void printFileId() {
-    print(ktpFileId);
-    print(selfieFileId);
+
+
+  Map<SignUpImage, String> selectedImagePaths = {
+    SignUpImage.ktp: "",
+    SignUpImage.selfie : ""
+  }.obs;
+
+  Map<SignUpImage, int> fileIds = {
+    SignUpImage.ktp: 0,
+    SignUpImage.selfie : 0
+  }.obs;
+
+
+  bool checkIsImageFilled(){
+    bool flag = true;
+    fileIds.forEach((key, value) { 
+      if(value == 0){
+        flag = false;
+      }
+    });
+    return flag;
   }
-
-  var selectedSelfieImagePath = "".obs;
-  var selectedSelfieImageSize = "".obs;
-  var selectedKTPImagePath = "".obs;
-  var selectedKTPImageSize = "".obs;
-
-  void getSelfie(ImageSource imageSource) async {
+ 
+  void getImage(SignUpImage imageContext) async {
     try {
-      final image = await ImagePicker().pickImage(source: imageSource);
+
+      final image = await Get.to(CameraApp(cameraId: imageContext == SignUpImage.selfie ? 1 : 0, ));
 
       if (image != null) {
-        selectedSelfieImagePath.value = image.path;
-        selectedSelfieImageSize.value =
-            ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
-                    .toStringAsFixed(2) +
-                " Mb";
+        selectedImagePaths[imageContext] = "LOADING";
+        await uploadImage(image.path, imageContext);
+        selectedImagePaths[imageContext] = image.path;
+        
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -130,26 +155,9 @@ class SignUpController extends GetxController {
     }
   }
 
-  void getKTPImage(ImageSource imageSource) async {
-    try {
-      final image = await ImagePicker().pickImage(source: imageSource);
-
-      if (image != null) {
-        selectedKTPImagePath.value = image.path;
-        selectedKTPImageSize.value =
-            ((File(selectedKTPImagePath.value)).lengthSync() / 1024 / 1024)
-                    .toStringAsFixed(2) +
-                " Mb";
-      } else {
-        Get.snackbar("No Image Selected", "Please select an image");
-      }
-    } on PlatformException catch (e) {
-      print("Failed to pick image: $e");
-    }
-  }
 
   Future<http.StreamedResponse> uploadImage(
-      String file, String uploadContext) async {
+      String file, SignUpImage uploadContext) async {
     var uploadType = uploadContext;
     var uri = Uri.parse("${config.baseURL}/upload");
     var request = http.MultipartRequest('POST', uri);
@@ -162,11 +170,8 @@ class SignUpController extends GetxController {
       print(response.statusCode);
       final json = jsonDecode(respStr.body);
       final fileId = json['data']['file_id'];
-      if (uploadType == "ktp") {
-        ktpFileId = fileId;
-      } else {
-        selfieFileId = fileId;
-      }
+      print(json);
+      fileIds[uploadContext] = fileId;
       return response;
     } else {
       return Future.error(response);
@@ -178,6 +183,7 @@ class SignUpController extends GetxController {
       Uri.parse("${config.baseURL}/register"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept' : 'application/json'
       },
       body: jsonEncode(<String, dynamic>{
         "jenis_pendaftaran": argumentData[1],
@@ -195,8 +201,8 @@ class SignUpController extends GetxController {
         "email": emailController.text,
         "no_hp": noHPController.text,
         "password": confirmPasswordController.text,
-        "photo_file_id": selfieFileId,
-        "ktp_file_id": ktpFileId
+        "photo_file_id": fileIds[SignUpImage.selfie],
+        "ktp_file_id": fileIds[SignUpImage.ktp]
       }),
     );
 
@@ -204,7 +210,16 @@ class SignUpController extends GetxController {
       final json = jsonDecode(response.body);
       Get.off(() => PendaftaranSukses());
       return "Success";
-    } else {
+    } 
+    if (response.statusCode == 422) {
+      Get.offAll(()=> LoginScreen());
+      Get.snackbar("Sign Up Failed", "Email Anda Sudah digunakan silahkan login");
+
+    }
+    
+    else {
+      print(response.body);
+      print(response.statusCode);
       Get.snackbar("Sign Up Failed", "Invalid data");
       return null;
     }

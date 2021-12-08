@@ -5,9 +5,11 @@ class GradientButton extends StatelessWidget {
   final String text;
   final Function() onTap;
   final List<Color> gradientColors;
+  final bool isDisabled;
   const GradientButton({
     required this.text,
     required this.onTap,
+    this.isDisabled = false,
     this.gradientColors = const [Color(0xff851212), Color(0xffFF8A8A)],
     Key? key,
   }) : super(key: key);
@@ -22,7 +24,7 @@ class GradientButton extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: this.gradientColors),
+              colors: isDisabled ? [Colors.grey, Colors.grey] : this.gradientColors ),
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             text == "Non Anggota"

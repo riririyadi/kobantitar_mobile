@@ -18,6 +18,10 @@ class KobMartListProductController extends GetxController {
   void onInit() {
     token = userData.read("token");
     super.onInit();
+
+    searchQueryController.addListener(() {
+      
+    });
   }
 
   void addProduct(Product product) {

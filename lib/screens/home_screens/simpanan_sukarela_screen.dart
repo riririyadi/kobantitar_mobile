@@ -97,7 +97,10 @@ class _SimpananSukarelaState extends State<SimpananSukarela> {
                             ),
                             Obx(() {
                               if (controller.isLoading.value) {
-                                return Text("Loading");
+                                return Text("Loading", style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 24.0));
                               } else {
                                 return Text(
                                   '${currencyFormatter.format(controller.simpanan.sukarela)}',

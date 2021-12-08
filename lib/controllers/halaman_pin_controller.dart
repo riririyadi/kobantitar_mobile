@@ -23,8 +23,13 @@ class HalamanPINController extends GetxController {
 
   @override
   void onInit() {
-    token = userData.read("token");
-    savedPIN = userData.read("PIN");
+    try{
+      token = userData.read("token");
+      savedPIN = userData.read("PIN");
+    }catch(e,stt){
+      Get.offAll(()=> LoginScreen());
+    }
+
     if (savedPIN != null) {
       for (int i = 0; i < savedPIN!.length; i++) {
         var char = int.parse(savedPIN![i]);
@@ -68,7 +73,7 @@ class HalamanPINController extends GetxController {
         Get.snackbar(
           'Pin salah',
           "Pin yang anda masukkan salah",
-           snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.redAccent,
           borderRadius: 20,
           margin: EdgeInsets.all(15),
@@ -77,7 +82,6 @@ class HalamanPINController extends GetxController {
           isDismissible: true,
           dismissDirection: SnackDismissDirection.HORIZONTAL,
           forwardAnimationCurve: Curves.easeOutBack,
-
         );
       }
     });

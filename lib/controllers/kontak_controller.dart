@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/kontak.dart';
+import 'package:kobantitar_mobile/screens/components/webview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class KontakController extends GetxController {
@@ -33,8 +34,7 @@ class KontakController extends GetxController {
 
   Future openLink(String uri) async {
     if (await canLaunch(uri)) {
-      await launch(uri,
-          forceWebView: true, forceSafariVC: true, enableJavaScript: true);
+      Get.to(()=> KobantitarWebview(judul: "Frequently Asked Question", url: uri));
     }
   }
 }

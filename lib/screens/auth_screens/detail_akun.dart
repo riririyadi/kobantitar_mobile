@@ -33,6 +33,7 @@ class _DetailAkunState extends State<DetailAkun> {
               style: TextStyle(
                 fontSize: 12.0,
               ),
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                   helperText: ' ',
                   contentPadding: EdgeInsets.all(10.0),
@@ -52,6 +53,7 @@ class _DetailAkunState extends State<DetailAkun> {
           SizedBox(height: 5.0),
           Text(
             "No. HP (Whatsapp)",
+            
             style: TextStyle(
               fontSize: 12.0,
             ),
@@ -64,6 +66,7 @@ class _DetailAkunState extends State<DetailAkun> {
               style: TextStyle(
                 fontSize: 12.0,
               ),
+              keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 helperText: ' ',
                 contentPadding: EdgeInsets.all(10.0),
@@ -140,7 +143,7 @@ class _DetailAkunState extends State<DetailAkun> {
                 labelText: 'Masukkan konfirmasi password',
               ),
               validator: (value) {
-                if (value == "") {
+                if (value != controller.passwordController.text) {
                   return 'Konfirmasi password harus cocok';
                 }
                 return null;

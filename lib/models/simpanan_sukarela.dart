@@ -8,6 +8,11 @@ List<DataSimpananSukarela> dataSimpananSukarelaFromJson(String str) =>
     List<DataSimpananSukarela>.from(
         json.decode(str).map((x) => DataSimpananSukarela.fromJson(x)));
 
+
+List<DataSimpananSukarela> dataSimpananSukarelaFromMap(List<Map<String, dynamic>> json) =>
+    List<DataSimpananSukarela>.from(
+        json.map((x) => DataSimpananSukarela.fromJson(x)));
+
 String dataSimpananSukarelaToJson(List<DataSimpananSukarela> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 

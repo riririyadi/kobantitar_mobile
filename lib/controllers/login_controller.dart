@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/models/nomor_anggota.dart';
+import 'package:kobantitar_mobile/screens/auth_screens/buat_pin.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/daftar_akun_baru.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:http/http.dart' as http;
@@ -23,8 +24,6 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
-    emailController.text = "rizqymulyana@kobantitar.com";
-    passwordController.text = "rizqy1234";
     super.onInit();
   }
 
@@ -34,9 +33,8 @@ class LoginController extends GetxController {
   }
 
   Future openLink() async {
-
     if (await canLaunch(lupaPasswordUri)) {
-        Get.to(KobantitarWebview(judul: "Lupa Password", url: lupaPasswordUri));
+      Get.to(KobantitarWebview(judul: "Lupa Password", url: lupaPasswordUri));
     }
   }
 
@@ -50,15 +48,48 @@ class LoginController extends GetxController {
       body: jsonEncode(<String, String>{'email': email, 'password': password}),
     );
 
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
+      print(response.statusCode);
+
       final token = json['data']['token'];
       final role = json['data']['role'];
       userData.write("token", token);
       userData.write("role", role);
       postDevice(token);
+      Get.offAll(() => BuatPIN());
       return token;
+    } if(response.statusCode == 401){
+      final json = jsonDecode(response.body);
+       Get.snackbar(
+        'Tidak bisa masuk',
+        json["data"]["message"],
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.yellow.shade900,
+        borderRadius: 20,
+        margin: EdgeInsets.all(15),
+        colorText: Colors.white,
+        duration: Duration(seconds: 4),
+        isDismissible: true,
+        dismissDirection: SnackDismissDirection.HORIZONTAL,
+        forwardAnimationCurve: Curves.easeOutBack,
+      );
     } else {
+      Get.snackbar(
+        'Password Salah',
+        "Username / Password yang anda masukkan salah",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.redAccent,
+        borderRadius: 20,
+        margin: EdgeInsets.all(15),
+        colorText: Colors.white,
+        duration: Duration(seconds: 4),
+        isDismissible: true,
+        dismissDirection: SnackDismissDirection.HORIZONTAL,
+        forwardAnimationCurve: Curves.easeOutBack,
+      );
       return null;
     }
   }
@@ -75,17 +106,15 @@ class LoginController extends GetxController {
       final json = jsonDecode(response.body);
       final data = jsonEncode(json['data']);
 
-      return nomorAnggotaFromJson(data);
+      var nomorAnggotaData = nomorAnggotaFromJson(data);
+      Get.off(() => DaftarAkunBaru(),
+          arguments: [nomorAnggota.toString(), "LAMA", nomorAnggotaData]);
     } else if (response.statusCode == 401) {
       final json = jsonDecode(response.body);
       final data = json['data'];
-      Get.off(() => DaftarAkunBaru(),
-          arguments: [nomorAnggota.toString(), "LAMA"]);
-      return null;
-    } else if (response.statusCode == 402) {
-      final json = jsonDecode(response.body);
-      final data = json['data'];
-      Get.off(() => DaftarAkunBaru(), arguments: data);
+      print(data);
+      Get.back();
+      Get.snackbar("Error", data['message']);
       return null;
     } else {
       Get.back();

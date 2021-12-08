@@ -34,7 +34,7 @@ class _KobantitarWebviewState extends State<KobantitarWebview> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: false,
-        title: Text(widget.judul, style: TextStyle(fontSize: 14.0)),
+        title: Text(widget.judul, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
         flexibleSpace: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(

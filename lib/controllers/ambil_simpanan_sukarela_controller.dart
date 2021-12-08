@@ -12,10 +12,40 @@ class AmbilSimpananSukarelaController extends GetxController {
 
   final userData = GetStorage();
   late String token;
+  RxInt sisa = 0.obs;
 
   @override
   void onInit() {
+    sisa(argumenData);
     token = userData.read("token");
+    nominalController.addListener(() {
+      print(argumenData);
+     
+      var nominal = int.tryParse(nominalController.text.replaceAll(".", ""));
+      if(nominal != null){
+        var sisaNew = sisa.value - nominal;
+        if(sisaNew < 0){
+           Get.snackbar(
+              'Nominal Melebihi',
+              "Nominal yang anda masukkan melebihi simpanan anda",
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.redAccent,
+              borderRadius: 20,
+              margin: EdgeInsets.all(15),
+              colorText: Colors.white,
+              duration: Duration(seconds: 4),
+              isDismissible: true,
+              dismissDirection: SnackDismissDirection.HORIZONTAL,
+              forwardAnimationCurve: Curves.easeOutBack,
+            );
+            sisa(argumenData);
+            nominalController.text = "";
+        }else{
+          sisa(sisaNew);
+
+        }
+      }
+    });
     super.onInit();
   }
 

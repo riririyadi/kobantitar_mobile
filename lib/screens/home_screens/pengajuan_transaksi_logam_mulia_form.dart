@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import 'package:kobantitar_mobile/controllers/pengajuan_logam_mulia_form_controller.dart';
 import 'package:kobantitar_mobile/screens/components/gradient_button.dart';
+import 'package:kobantitar_mobile/screens/components/image_picker.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
 class PengajuanTransaksiLogamMuliaForm extends StatefulWidget {
@@ -438,10 +439,10 @@ class _PengajuanTransaksiLogamMuliaFormState
                                 Future.delayed(Duration.zero, () async {
                                   checkIsAvailable();
                                 });
-                                return buildImagePicker(
-                                    imageContext: "app1",
-                                    selectedImagePath: controller
-                                        .selectedSelfieImagePath.value);
+                                return KobantitarImagePicker(
+                                          onChangeImage: () =>  controller.getSelfie(ImageSource.camera, "app2"),
+                                          selectedImagePath: controller
+                                              .selectedSelfieImagePath.value);
                               }),
                               Text(
                                 "Nama Atasan",
@@ -516,8 +517,8 @@ class _PengajuanTransaksiLogamMuliaFormState
                                       Future.delayed(Duration.zero, () async {
                                         checkIsAvailable();
                                       });
-                                      return buildImagePicker(
-                                          imageContext: "app2",
+                                      return KobantitarImagePicker(
+                                          onChangeImage: () =>  controller.getSelfie(ImageSource.camera, "app2"),
                                           selectedImagePath: controller
                                               .selectedSelfieImage2Path.value);
                                     }),
@@ -625,98 +626,6 @@ class _PengajuanTransaksiLogamMuliaFormState
     );
   }
 
-  Padding buildImagePicker(
-      {String? selectedImagePath, required String imageContext}) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: selectedImagePath == ""
-            ? buildImagePickBox(imageContext)
-            : selectedImagePath == "LOADING"
-                ? buildImageLoading()
-                : buildImageSelectedBox(selectedImagePath!, imageContext),
-      ),
-    );
-  }
-
-  Column buildImageSelectedBox(String selectedImagePath, String imageContext) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Stack(children: [
-        Container(
-          height: 160,
-          width: double.infinity,
-          child: Image.file(
-            File(selectedImagePath),
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        simpanGambar1
-            ? Container(
-                height: 160,
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            : Container(),
-      ]),
-      SizedBox(height: 10),
-      GestureDetector(
-        onTap: () {
-          controller.getSelfie(ImageSource.camera, "app1");
-        },
-        child: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.grey[400],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Text("Ambil ulang", style: TextStyle(color: Colors.white)),
-          ),
-        ),
-      ),
-    ]);
-  }
-
-  GestureDetector buildImagePickBox(String imageContext) {
-    return GestureDetector(
-      onTap: () {
-        controller.getSelfie(ImageSource.camera, imageContext);
-      },
-      child: Container(
-        height: 160,
-        decoration: BoxDecoration(
-          color: Colors.grey[350],
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.camera_alt_outlined, size: 50),
-              Text("Ambil Foto")
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildImageLoading() {
-    return Container(
-      height: 160,
-      decoration: BoxDecoration(
-        color: Colors.grey[350],
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Center(child: CircularProgressIndicator()),
-    );
-  }
 
   bool checkIsAvailable() {
     bool hasil = (checkBoxValue == true) &&

@@ -375,7 +375,10 @@ class Service extends GetConnect {
       },
     );
     if (response.statusCode == 200) {
-      return dashboardFromJson(response.body);
+      var das = dashboardFromJson(response.body);
+      print(response.body);
+      print(das.data?.promoImageUrl);
+      return das;
     } else {
       return null;
     }

@@ -1,8 +1,13 @@
+import 'package:flutter/gestures.dart';
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/api_config/config.dart';
 import 'package:kobantitar_mobile/controllers/signup_controller.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/data_pribadi.dart';
+import 'package:kobantitar_mobile/screens/components/gradient_button.dart';
+import 'package:kobantitar_mobile/screens/components/webview.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pendaftaran_sukses.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'data_pribadi.dart';
 import 'detail_akun.dart';
@@ -189,7 +194,7 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: GestureDetector(
+                      child: GradientButton(
                         onTap: () {
                           if (controller.step == 0) {
                             if (controller.dataPribadiFormKey.currentState!
@@ -213,39 +218,17 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                                 controller.step += 1;
                               });
                             }
-                          } else {
-                            _dialog(context);
-                            // controller.signUp().then((value) => print(value));
+                          }  else if (controller.step == 3) {
+                            if (controller.checkIsImageFilled()) {
+                              _dialog(context);
+
+                            }else{
+                              Get.snackbar("Mohon Upload Foto", "Mohon Upload Foto KTP dan Selfie anda");
+                             return;
+                            }
                           }
                         },
-                        child: Container(
-                          height: 48.0,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Color(0xff851212), Color(0xffFF8A8A)]),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 1.0,
-                                spreadRadius: 0.0,
-                                offset: Offset(
-                                    0.0, 4.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Selanjutnya",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+                        text: "Selanjutnya"
                       ),
                     ),
                   ],
@@ -287,27 +270,36 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text.rich(
-                                      TextSpan(
-                                        text: 'Dengan ini saya menyetujui ',
-                                        style: const TextStyle(
-                                            fontSize: 12, color: Colors.black),
-                                        children: <InlineSpan>[
-                                          const TextSpan(
-                                              text: 'Syarat & Ketentuan',
-                                              style: TextStyle(
+                                    Flexible(
+                                      child: Text.rich(
+                                        TextSpan(
+                                          text: 'Dengan ini saya menyetujui ',
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black),
+                                          children: <InlineSpan>[
+                                            TextSpan(
+                                                text: 'Syarat & Ketentuan',
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = (){
+                                                        Get.to(()=>KobantitarWebview(judul: "Terms & Condition Pendaftaran", url: baseURI+"/informasi/1"));
+                                                      },
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    color: Color(0xffEE6A6A))),
+                                            const TextSpan(
+                                                text:
+                                                    ' menjadi Anggota Koperasi Banten Tiga Lontar',
+                                                style: TextStyle(
                                                   fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  color: Color(0xffEE6A6A))),
-                                          const TextSpan(
-                                              text:
-                                                  ' menjadi Anggota Koperasi Banten Tiga Lontar',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              )),
-                                        ],
+                                                )),
+                                          ],
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ]),
@@ -337,7 +329,20 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                                     SizedBox(width: 10.0),
                                     Expanded(
                                       child: GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                           Get.defaultDialog(
+                                            title: "",
+                                            content: Column(
+                                              children: [
+                                                CircularProgressIndicator(),
+                                                SizedBox(height: 10),
+                                                Text("Please wait")
+                                              ],
+                                            ),
+                                            barrierDismissible: false,
+                                          );
+                                          controller.signUp();
+                                        },
                                         child: Container(
                                           padding: EdgeInsets.all(10),
                                           decoration: BoxDecoration(

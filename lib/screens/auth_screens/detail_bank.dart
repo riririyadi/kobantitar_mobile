@@ -77,8 +77,10 @@ class _DetailBankState extends State<DetailBank> {
                 fontSize: 12.0,
               ),
               controller: controller.noRekController,
+              keyboardType: TextInputType.name,
               decoration: InputDecoration(
                 helperText: ' ',
+
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                 floatingLabelBehavior: FloatingLabelBehavior.never,

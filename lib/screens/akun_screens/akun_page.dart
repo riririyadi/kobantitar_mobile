@@ -50,138 +50,9 @@ class _AkunWidgetState extends State<AkunWidget> {
         ListView(
           padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 80.0),
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xff9A3A3A),
-                  borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0,
-                      offset: Offset(0.0, 5.0), // shadow direction: bottom
-                    )
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 36,
-                            width: 70,
-                            child: Image(
-                                image: AssetImage('assets/kobantitar-logo.png'),
-                                fit: BoxFit.fill),
-                          ),
-                          Text(
-                            'KARTU ANGGOTA',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12.0,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              _bottomSheetQRCode(context);
-                            },
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: Center(
-                                child: Container(
-                                  height: 45,
-                                  width: 45,
-                                  child: Image(
-                                    image: AssetImage(
-                                        'assets/kartu-anggota-qr.png'),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10.0),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Obx(
-                            () {
-                              if (controller.isMeLoaded.value) {
-                                return Text(
-                                  "${controller.me.nama!.toUpperCase()}",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                );
-                              } else {
-                                return Text("Loading");
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Obx(() {
-                            if (controller.isMeLoaded.value) {
-                              return Text(
-                                '${controller.me.nomorAnggota}',
-                                style: TextStyle(
-                                  color: Colors.grey[400],
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              );
-                            } else {
-                              return Text("Loading");
-                            }
-                          }),
-                          GestureDetector(
-                            onTap: () {
-                              _bottomSheetBarCode(context);
-                            },
-                            child: Container(
-                              height: 50,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: Center(
-                                child: Container(
-                                  height: 45,
-                                  width: 65,
-                                  child: Image(
-                                    image: AssetImage(
-                                        'assets/kartu-anggota-bar.png'),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            controller.me.role == 'ANGGOTA'
+                ? buildKartuAnggota(context)
+                : buildKartuNonAnggota(context),
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
               child: GestureDetector(
@@ -388,6 +259,207 @@ class _AkunWidgetState extends State<AkunWidget> {
           ],
         ),
       ],
+    );
+  }
+
+
+  Widget buildKartuNonAnggota(BuildContext context){
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xff9A3A3A),
+          borderRadius: BorderRadius.circular(12.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 5.0,
+              spreadRadius: 1.0,
+              offset: Offset(0.0, 5.0), // shadow direction: bottom
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child:  Column(
+            children: [
+              Obx(
+                        () {
+                          if (controller.isMeLoaded.value) {
+                            return Text(
+                              "${controller.me.nama!.toUpperCase()}",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            );
+                          } else {
+                            return Text("Loading", style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),);
+                          }
+                        },
+                      ),
+                      Padding(padding: EdgeInsets.only(bottom:12.0)),
+                       Obx(
+                        () {
+                          if (controller.isMeLoaded.value) {
+                            return Text(
+                              "${controller.me.instansi!.toUpperCase()}",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w200,
+                              ),
+                            );
+                          } else {
+                            return Text("Loading", style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),);
+                          }
+                        },
+                      ),
+            ],
+          ),
+        )
+      )
+    );
+  }
+  Padding buildKartuAnggota(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0xff9A3A3A),
+          borderRadius: BorderRadius.circular(12.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 5.0,
+              spreadRadius: 1.0,
+              offset: Offset(0.0, 5.0), // shadow direction: bottom
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: 36,
+                    width: 70,
+                    child: Image(
+                        image: AssetImage('assets/kobantitar-logo.png'),
+                        fit: BoxFit.fill),
+                  ),
+                  Text(
+                    'KARTU ANGGOTA',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _bottomSheetQRCode(context);
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Container(
+                          height: 45,
+                          width: 45,
+                          child: Image(
+                            image: AssetImage('assets/kartu-anggota-qr.png'),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(
+                    () {
+                      if (controller.isMeLoaded.value) {
+                        return Text(
+                          "${controller.me.nama!.toUpperCase()}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      } else {
+                        return Text("Loading", style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),);
+                      }
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(() {
+                    if (controller.isMeLoaded.value) {
+                      return Text(
+                        '${controller.me.nomorAnggota}',
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontWeight: FontWeight.w600,
+                        ),
+                      );
+                    } else {
+                      return Text("Loading");
+                    }
+                  }),
+                  GestureDetector(
+                    onTap: () {
+                      _bottomSheetBarCode(context);
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 70,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Center(
+                        child: Container(
+                          height: 45,
+                          width: 65,
+                          child: Image(
+                            image: AssetImage('assets/kartu-anggota-bar.png'),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

@@ -12,6 +12,7 @@ import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:kobantitar_mobile/models/kobmart.dart';
 import 'package:kobantitar_mobile/models/me.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
+import 'package:kobantitar_mobile/screens/components/webview.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -72,8 +73,7 @@ class HomeController extends GetxController {
 
   Future openLink(String uri) async {
     if (await canLaunch(uri)) {
-      await launch(uri,
-          forceWebView: true, forceSafariVC: true, enableJavaScript: true);
+     Get.to(()=> KobantitarWebview(judul: "Informasi Terbaru", url: uri));
     }
   }
 

@@ -160,13 +160,17 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                                         fontSize: 10.0,
                                       )),
                                   Spacer(),
-                                  Text(
-                                    'Rp ${currencyFormatter.format(controller.argumenData)}',
-                                    style: TextStyle(
-                                      color: Color(0xff7C0A0A),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 10.0,
-                                    ),
+                                  Obx(
+                                    () {
+                                      return Text(
+                                        'Rp ${currencyFormatter.format(controller.sisa.value)}',
+                                        style: TextStyle(
+                                          color: Color(0xff7C0A0A),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 10.0,
+                                        ),
+                                      );
+                                    }
                                   )
                                 ],
                               )

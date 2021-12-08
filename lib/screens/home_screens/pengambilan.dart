@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/models/simpanan_sukarela.dart';
 import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
 import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/screens/home_screens/simpanan_sukarela_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Pengambilan extends StatefulWidget {
@@ -41,27 +42,38 @@ class _PengambilanState extends State<Pengambilan> {
     final response = await http.get(
       uri,
       headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        'Content-Type': 'application/jsonData',
+        'Accept': 'application/jsonData',
         'Authorization': 'Bearer $token',
       },
     );
 
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final list = dataSimpananSukarelaFromJson(
-          jsonEncode(json['data']['list']['data']));
+      var jsonData = jsonDecode(response.body);
+      // print(jsonData["data"]["list"]["data"]);
+
+
+
+    
+
+      jsonData = jsonDecode(response.body);
+          totalPages =
+          (jsonData['data']['list']['pagination']['object_count'] / 15).ceil();
+      numOfSimpananSukarela =
+          jsonData['data']['list']['pagination']['object_count'];
+
+      final jso = jsonData['data']['list']['data'];
+
+      List<DataSimpananSukarela> list = List.generate(jso.length, (index) => DataSimpananSukarela.fromJson(jso[index])); 
+
       if (isRefresh) {
         simpananSukarelas = list;
       } else {
         simpananSukarelas.addAll(list);
       }
 
-      totalPages =
-          (json['data']['list']['pagination']['object_count'] / 15).ceil();
-      numOfSimpananSukarela =
-          json['data']['list']['pagination']['object_count'];
 
+  
       currentPage++;
       setState(() {});
 
@@ -177,6 +189,7 @@ class _PengambilanState extends State<Pengambilan> {
                 itemCount: simpananSukarelas.length,
                 itemBuilder: (context, index) {
                   final simpananSukarela = simpananSukarelas[index];
+                  return Text("Cak");
                   return Container(
                     padding: EdgeInsets.all(10.0),
                     child: Row(children: [

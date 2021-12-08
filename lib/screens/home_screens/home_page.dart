@@ -3,6 +3,7 @@ import 'package:kobantitar_mobile/api_config/config.dart' as config;
 
 import 'package:kobantitar_mobile/controllers/home_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart_list_produk.dart';
+import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart_search_list_produk.dart';
 import 'package:kobantitar_mobile/screens/home_screens/laporan_keuangan.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_merk_motor.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_lain.dart';
@@ -233,9 +234,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
+                                          print(controller
+                                                  .dashboard.data?.promoImageUrl);
+                                              // return;
                                           Get.to(() => PromoKobmart(),
                                               arguments: controller
-                                                  .kobmart.promoImageUrl);
+                                                  .dashboard.data?.promoImageUrl);
                                         },
                                         child: Text(
                                           'Lihat Semua',
@@ -820,7 +824,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: GestureDetector(
-            onTap: () => Get.to(() => KobantitarMartListProduk()),
+            onTap: () => Get.to(() => KobantitarMartSearchListProduk()),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
