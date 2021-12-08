@@ -95,22 +95,32 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
-      final XFile image = await Get.to(CameraApp(keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
+      final XFile? image = await Get.to(CameraApp(keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
       print(image);
       if (image != null) {
         if (imageContext == "app1") {
+          print(image.path);
+          selectedSelfieImagePath.value = "LOADING";
+          await uploadImage(image.path, imageContext);
           selectedSelfieImagePath.value = image.path;
+
           selectedSelfieImageSize.value =
               ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
                       .toStringAsFixed(2) +
                   " Mb";
+          
         } else {
+          selectedSelfieImage2Path.value = "LOADING";
+          await uploadImage(image.path, imageContext);
+
           selectedSelfieImage2Path.value = image.path;
           selectedSelfieImage2Size.value =
               ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
                       .toStringAsFixed(2) +
                   " Mb";
         }
+
+
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -158,7 +168,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
     bool isDateEmpty = dateController.text.isNotEmpty;
     bool isKeperluanEmpty = keperluanController.text.isNotEmpty;
     bool isNamaAtasanEmtpty = namaAtasanController.text.isNotEmpty;
-    bool approvalFileIdEmpty = !(approvalFileId == null);
+    bool approvalFileIdEmpty = !(approvalFileId == null || approvalFileId == "LOADING");
     return isTenorEmpty && isDateEmpty && isKeperluanEmpty && isNamaAtasanEmtpty && approvalFileIdEmpty;
   }
 

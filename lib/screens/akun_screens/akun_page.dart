@@ -298,56 +298,56 @@ class _AkunWidgetState extends State<AkunWidget> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-              child: Container(
-                padding: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 20.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(
-                    10.0,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0,
-                      offset: Offset(0.0, 5.0), // shadow direction: bottom
-                    )
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
+              child: GestureDetector(
+                onTap: () {
+                  Get.defaultDialog(
+                    title: "",
+                    content: Column(
                       children: [
-                        Text(
-                          'Logout',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                            onTap: () {
-                              Get.defaultDialog(
-                                title: "",
-                                content: Column(
-                                  children: [
-                                    CircularProgressIndicator(),
-                                    SizedBox(height: 10),
-                                    Text("Please wait")
-                                  ],
-                                ),
-                                barrierDismissible: false,
-                              );
-
-                              controller.deleteLocalToken();
-                              controller
-                                  .deleteDevice()
-                                  .then((value) =>
-                                      Get.offAll(() => LoginScreen()))
-                                  .catchError((e) => print(e));
-                            },
-                            child: Icon(Icons.login_outlined, size: 20.0)),
+                        CircularProgressIndicator(),
+                        SizedBox(height: 10),
+                        Text("Please wait")
                       ],
                     ),
-                  ],
+                    barrierDismissible: false,
+                  );
+
+                  controller.deleteLocalToken();
+                  controller
+                      .deleteDevice()
+                      .then((value) => Get.offAll(() => LoginScreen()))
+                      .catchError((e) => print(e));
+                },
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 20.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(
+                      10.0,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 5.0,
+                        spreadRadius: 1.0,
+                        offset: Offset(0.0, 5.0), // shadow direction: bottom
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Logout',
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          Spacer(),
+                          Icon(Icons.login_outlined, size: 20.0),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

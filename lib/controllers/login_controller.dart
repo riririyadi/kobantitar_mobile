@@ -7,6 +7,7 @@ import 'package:kobantitar_mobile/models/nomor_anggota.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/daftar_akun_baru.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/screens/components/webview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginController extends GetxController {
@@ -33,9 +34,9 @@ class LoginController extends GetxController {
   }
 
   Future openLink() async {
+
     if (await canLaunch(lupaPasswordUri)) {
-      await launch(lupaPasswordUri,
-          forceWebView: true, forceSafariVC: true, enableJavaScript: true);
+        Get.to(KobantitarWebview(judul: "Lupa Password", url: lupaPasswordUri));
     }
   }
 

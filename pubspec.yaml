@@ -53,6 +53,7 @@ dependencies:
   flutter_local_notifications: ^9.1.4
   money_formatter: ^0.0.3
   money_input_formatter: ^1.0.1
+  webview_flutter: ^3.0.0
 
 
 dev_dependencies:

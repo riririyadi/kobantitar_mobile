@@ -15,9 +15,11 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
   late TextEditingController pinBaruController;
   late TextEditingController konfirmPinBaruController;
   FocusNode focusNode = FocusNode();
+  FocusNode focusNodeConfirm = FocusNode();
 
   @override
   void initState() {
+    focusNode.requestFocus();
     pinBaruController = TextEditingController()
       ..addListener(() {
         if (pinBaruController.text.length < 7) {
@@ -103,9 +105,14 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
                       TextField(
                         focusNode: focusNode,
                         maxLength: 6,
-                        controller: _counter == 0
-                            ? pinBaruController
-                            : konfirmPinBaruController,
+                        controller: pinBaruController,
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                      ),
+                        TextField(
+                        focusNode: focusNodeConfirm,
+                        maxLength: 6,
+                        controller:  konfirmPinBaruController,
                         autofocus: true,
                         keyboardType: TextInputType.number,
                       ),
@@ -273,13 +280,16 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
                   padding: const EdgeInsets.all(16.0),
                   child: GestureDetector(
                     onTap: () {
-                      if (_counter == 2) {
+                      print(_counter);
+                      if (_counter == 1) {
                         controller.savePIN();
                       }
-                      if (_counter < 2) {
+                      if (_counter == 0) {
                         setState(() {
-                          _counter += 1;
+                          _counter = 1;
                         });
+                        focusNodeConfirm.requestFocus();
+
                       }
                     },
                     child: Container(
