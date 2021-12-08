@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kobantitar_mobile/controllers/akun_controller.dart';
+import 'package:kobantitar_mobile/controllers/pengunduran_diri_controller.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
 class PengunduranDiriAnggota extends StatefulWidget {
@@ -11,7 +12,8 @@ class PengunduranDiriAnggota extends StatefulWidget {
 }
 
 class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
-  final AkunController controller = Get.put(AkunController());
+  final PengunduranDiriController controller =
+      Get.put(PengunduranDiriController());
 
   bool isSubmitting = false;
 
@@ -204,6 +206,7 @@ class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
                                 "Saya Ingin Mengundurkan Diri",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),

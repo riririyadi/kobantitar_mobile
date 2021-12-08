@@ -184,24 +184,28 @@ class _PengambilanState extends State<Pengambilan> {
                       SizedBox(
                         width: 10.0,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${simpananSukarela.text}",
-                            style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500,
+                      Container(
+                        width: 200,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${simpananSukarela.text}",
+                              maxLines: 2,
+                              style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "${simpananSukarela.date}",
-                            style: TextStyle(
-                              fontSize: 10.0,
-                            ),
-                          )
-                        ],
+                            Text(
+                              "${simpananSukarela.date}",
+                              style: TextStyle(
+                                fontSize: 10.0,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       Spacer(),
                       if (simpananSukarela.isPositive ?? true)
@@ -216,9 +220,9 @@ class _PengambilanState extends State<Pengambilan> {
                         Text(
                           "-Rp${currencyFormatter.format(simpananSukarela.amount!.abs())}",
                           style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w600,
-                          ),
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red),
                         ),
                     ]),
                   );

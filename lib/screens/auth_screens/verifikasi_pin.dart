@@ -12,18 +12,24 @@ class VerifikasiPIN extends StatefulWidget {
 
 class _VerifikasiPINState extends State<VerifikasiPIN> {
   final BuatPINController controller = Get.put(BuatPINController());
-  late TextEditingController pinController;
+  late TextEditingController konfirmPin;
 
   @override
   void initState() {
-    pinController = TextEditingController()
+    konfirmPin = TextEditingController()
       ..addListener(() {
-        if (pinController.text.length < 7) {
+        if (konfirmPin.text.length < 7) {
           setState(() {});
-          controller.konfirmPin = pinController.text;
+          controller.konfirmPin.text = konfirmPin.text;
         }
       });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    konfirmPin.dispose();
+    super.dispose();
   }
 
   @override
@@ -88,7 +94,7 @@ class _VerifikasiPINState extends State<VerifikasiPIN> {
                 child: Column(
                   children: [
                     TextField(
-                      controller: pinController,
+                      controller: konfirmPin,
                       autofocus: true,
                       keyboardType: TextInputType.number,
                     ),
@@ -123,42 +129,42 @@ class _VerifikasiPINState extends State<VerifikasiPIN> {
                       children: [
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: pinController.text.length >= 1
+                          backgroundColor: konfirmPin.text.length >= 1
                               ? Colors.red
                               : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: pinController.text.length >= 2
+                          backgroundColor: konfirmPin.text.length >= 2
                               ? Colors.red
                               : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: pinController.text.length >= 3
+                          backgroundColor: konfirmPin.text.length >= 3
                               ? Colors.red
                               : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: pinController.text.length >= 4
+                          backgroundColor: konfirmPin.text.length >= 4
                               ? Colors.red
                               : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: pinController.text.length >= 5
+                          backgroundColor: konfirmPin.text.length >= 5
                               ? Colors.red
                               : Colors.grey,
                         ),
                         SizedBox(width: 10),
                         CircleAvatar(
                           radius: 8,
-                          backgroundColor: pinController.text.length >= 6
+                          backgroundColor: konfirmPin.text.length >= 6
                               ? Colors.red
                               : Colors.grey,
                         ),

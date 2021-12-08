@@ -88,7 +88,7 @@ class PengajuanSukses extends StatelessWidget {
               left: 20,
               right: 20,
               child: GestureDetector(
-                onTap: () => Get.to(() => HomeScreen()),
+                onTap: () => Get.offAll(() => HomeScreen()),
                 child: Container(
                   height: 48.0,
                   decoration: BoxDecoration(

@@ -435,9 +435,10 @@ class _PengajuanTransaksiLogamMuliaState
                         GestureDetector(
                           onTap: () {
                             if (controller.amountIdController.text == "") {
-                              Get.snackbar("err", "message");
+                              Get.snackbar(
+                                  "Oops", "Masukkan nominal transaksi");
                             } else {
-                              Get.off(() => PengajuanTransaksiLogamMuliaForm(),
+                              Get.to(() => PengajuanTransaksiLogamMuliaForm(),
                                   arguments: controller.amountList![int.parse(
                                           controller.amountIdController.text) -
                                       1]);

@@ -1,15 +1,20 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
 import 'package:kobantitar_mobile/screens/home_screen.dart';
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:http/http.dart' as http;
 
 class HalamanPINController extends GetxController {
   final pinController = TextEditingController();
 
-  String? pinToken;
+  String? savedPIN;
   final userData = GetStorage();
+  String token = "";
 
   var pinDefault = [1, 1, 1, 1, 1, 1];
   var listPin = <int>[];
@@ -18,10 +23,11 @@ class HalamanPINController extends GetxController {
 
   @override
   void onInit() {
-    pinToken = userData.read("PIN");
-    if (pinToken != null) {
-      for (int i = 0; i < pinToken!.length; i++) {
-        var char = int.parse(pinToken![i]);
+    token = userData.read("token");
+    savedPIN = userData.read("PIN");
+    if (savedPIN != null) {
+      for (int i = 0; i < savedPIN!.length; i++) {
+        var char = int.parse(savedPIN![i]);
         pin.add(char);
       }
     }
@@ -37,7 +43,7 @@ class HalamanPINController extends GetxController {
       bool equality = dcEquality.equals(pin, listPin);
 
       if (equality) {
-        Future.delayed(Duration(milliseconds: 500), () {
+        Future.delayed(Duration(milliseconds: 200), () {
           Get.defaultDialog(
             title: "",
             content: Column(
@@ -64,5 +70,25 @@ class HalamanPINController extends GetxController {
     super.onClose();
     pinController.dispose();
     listPin.clear();
+  }
+
+  Future<String?> deleteDevice() async {
+    final response = await http.delete(
+      Uri.parse("${config.baseURL}/devices"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, String>{
+        'token': token,
+      }),
+    );
+  }
+
+  void deleteLocalToken() {
+    userData.remove("token");
+    userData.remove("anggota");
+    userData.remove("PIN");
   }
 }

@@ -115,8 +115,8 @@ class _SimpananSukarelaState extends State<SimpananSukarela> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             GestureDetector(
-                              onTap: () =>
-                                  Get.to(() => AmbilSimpananSukarela()),
+                              onTap: () => Get.to(() => AmbilSimpananSukarela(),
+                                  arguments: controller.simpanan.sukarela),
                               child: Container(
                                 padding: EdgeInsets.all(10.0),
                                 decoration: BoxDecoration(

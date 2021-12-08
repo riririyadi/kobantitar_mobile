@@ -90,7 +90,7 @@ class PendaftaranSukses extends StatelessWidget {
               left: 20,
               right: 20,
               child: GestureDetector(
-                onTap: () => Get.to(() => LoginScreen()),
+                onTap: () => Get.offAll(() => LoginScreen()),
                 child: Container(
                   height: 48.0,
                   decoration: BoxDecoration(

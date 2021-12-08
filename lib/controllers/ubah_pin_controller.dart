@@ -3,14 +3,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/screens/home_screen.dart';
+import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/update_akun_sukses.dart';
 
 class UbahPINController extends GetxController {
-  var pin = "";
-  var konfirmPin = "";
+  String pinLama = "";
+  String pinBaru = "";
+  String konfirmPinBaru = "";
+  String? savedPIN;
+  final userData = GetStorage();
 
   @override
   void onInit() {
+    savedPIN = userData.read("PIN");
     super.onInit();
   }
 
@@ -20,10 +26,11 @@ class UbahPINController extends GetxController {
   }
 
   void savePIN() {
-    if (pin == konfirmPin) {
-      Get.to(() => HomeScreen());
+    if (konfirmPinBaru == pinBaru) {
+      userData.write("PIN", konfirmPinBaru);
+      Get.offAll(() => UpdateAkunSukses());
     } else {
-      Get.snackbar("Error", "pin harus cocok");
+      Get.snackbar("Oops", "Konfirmasi PIN harus sesuai");
     }
   }
 }

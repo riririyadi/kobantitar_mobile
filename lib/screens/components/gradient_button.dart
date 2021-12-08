@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
- /** @Change New Widget: Gradient Button */
+/** @Change New Widget: Gradient Button */
 class GradientButton extends StatelessWidget {
   final String text;
   final Function() onTap;
@@ -25,13 +25,19 @@ class GradientButton extends StatelessWidget {
               colors: this.gradientColors),
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 1.0,
-              spreadRadius: 0.0,
-              offset: Offset(
-                  0.0, 4.0), // shadow direction: bottom
-            )
+            this.text == "Non Anggota"
+                ? BoxShadow(
+                    color: Colors.black.withOpacity(0.0),
+                    blurRadius: 0.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0.0, 0.0), // shadow direction: bottom
+                  )
+                : BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 1.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0.0, 4.0), // shadow direction: bottom
+                  )
           ],
         ),
         child: Center(

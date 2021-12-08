@@ -303,6 +303,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+  money_formatter:
+    dependency: "direct main"
+    description:
+      name: money_formatter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
+  money_input_formatter:
+    dependency: "direct main"
+    description:
+      name: money_input_formatter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   package_info_plus:
     dependency: "direct main"
     description:

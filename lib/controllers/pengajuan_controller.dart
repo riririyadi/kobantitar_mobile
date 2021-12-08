@@ -8,11 +8,11 @@ class PengajuanController extends GetxController {
   var isLoading = false.obs;
   final userData = GetStorage();
   String token = "";
-  List<DataPengajuan>? pengajuanList = [];
-  List<DataPengajuan>? pengajuanLogamMulia = [];
-  List<DataPengajuan>? pengajuanKreditBarang = [];
-  List<DataPengajuan>? pengajuanKreditKendaraan = [];
-  List<DataPengajuan>? pengajuanKobmart = [];
+  List<DataPengajuan> pengajuanList = [];
+  List<DataPengajuan> pengajuanLogamMulia = [];
+  List<DataPengajuan> pengajuanKreditBarang = [];
+  List<DataPengajuan> pengajuanKreditKendaraan = [];
+  List<DataPengajuan> pengajuanKobmart = [];
 
   @override
   void onInit() {
@@ -26,7 +26,7 @@ class PengajuanController extends GetxController {
       isLoading(true);
       final data = await Service.fetchPengajuan(token);
       if (data != null) {
-        pengajuanList = data.data;
+        pengajuanList = data.data!;
 
         pengajuanLogamMulia = data.data!
             .where((pengajuan) => pengajuan.type!.endsWith("LM"))

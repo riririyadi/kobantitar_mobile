@@ -51,23 +51,40 @@ class _DokumenState extends State<Dokumen> {
                     ),
                   ),
                 )
-              : Column(children: [
-                  Container(
-                    height: 160,
-                    width: double.infinity,
-                    child: Image.file(
-                        File(controller.selectedSelfieImagePath.value),
-                        fit: BoxFit.fitWidth),
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              : Column(
+                  children: [
+                    Container(
+                      height: 160,
+                      width: double.infinity,
+                      child: Image.file(
+                          File(controller.selectedSelfieImagePath.value),
+                          fit: BoxFit.fitWidth),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        Expanded(
+                          child: GestureDetector(
                             onTap: () {
                               _bottomSheet(context, 1);
                             },
-                            child: Text("Ambil ulang")),
-                        GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[400],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text("Ambil ulang",
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: GestureDetector(
                             onTap: () {
                               controller
                                   .uploadImage(
@@ -76,9 +93,23 @@ class _DokumenState extends State<Dokumen> {
                                   .then((value) => Get.snackbar(
                                       "Success", "Image saved successfully"));
                             },
-                            child: Text("Simpan"))
-                      ])
-                ]),
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Color(0xff851212),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text("Simpan",
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
         ),
         SizedBox(height: 20.0),
         Text(
@@ -119,23 +150,51 @@ class _DokumenState extends State<Dokumen> {
                         File(controller.selectedKTPImagePath.value),
                         fit: BoxFit.fitWidth),
                   ),
+                  SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
+                      Expanded(
+                        child: GestureDetector(
                           onTap: () {
                             _bottomSheet(context, 2);
                           },
-                          child: Text("Ambil ulang")),
-                      GestureDetector(
-                        onTap: () {
-                          controller
-                              .uploadImage(
-                                  controller.selectedKTPImagePath.value, "ktp")
-                              .then((value) => Get.snackbar(
-                                  "Success", "Image saved successfully"));
-                        },
-                        child: Text("Simpan"),
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text("Ambil ulang",
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            controller
+                                .uploadImage(
+                                    controller.selectedKTPImagePath.value,
+                                    "ktp")
+                                .then((value) => Get.snackbar(
+                                    "Success", "Image saved successfully"));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Color(0xff851212),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text("Simpan",
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/ambil_simpanan_sukarela_controller.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
@@ -13,6 +15,7 @@ class AmbilSimpananSukarela extends StatefulWidget {
 class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
   final AmbilSimpananSukarelaController controller =
       Get.put(AmbilSimpananSukarelaController());
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +100,7 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                               children: [
                                 Text("Total Simpanan Sukarela"),
                                 Text(
-                                  "Rp 90.000.000",
+                                  'Rp ${currencyFormatter.format(controller.argumenData)}',
                                   style: TextStyle(
                                     color: Color(0xff7C0A0A),
                                     fontWeight: FontWeight.w600,
@@ -133,6 +136,9 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                             children: [
                               Text("Nominal Pengambilan"),
                               TextFormField(
+                                  inputFormatters: [
+                                    ThousandsSeparatorInputFormatter()
+                                  ],
                                   controller: controller.nominalController,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
@@ -155,7 +161,7 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                                       )),
                                   Spacer(),
                                   Text(
-                                    'Rp 70.000.000',
+                                    'Rp ${currencyFormatter.format(controller.argumenData)}',
                                     style: TextStyle(
                                       color: Color(0xff7C0A0A),
                                       fontWeight: FontWeight.w600,
@@ -180,8 +186,9 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                   onTap: () {
                     if (controller.nominalFormKey.currentState!.validate()) {
                       controller
-                          .postAjukanPengambilan(
-                              int.parse(controller.nominalController.text))
+                          .postAjukanPengambilan(int.parse(controller
+                              .nominalController.text
+                              .replaceAll(".", "")))
                           .then((value) {
                         print(value);
                         Get.to(() => PengajuanSukses());
@@ -222,5 +229,51 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
         ),
       ),
     );
+  }
+}
+
+class ThousandsSeparatorInputFormatter extends TextInputFormatter {
+  static const separator = '.'; // Change this to '.' for other locales
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    // Short-circuit if the new value is empty
+    if (newValue.text.length == 0) {
+      return newValue.copyWith(text: '');
+    }
+
+    // Handle "deletion" of separator character
+    String oldValueText = oldValue.text.replaceAll(separator, '');
+    String newValueText = newValue.text.replaceAll(separator, '');
+
+    if (oldValue.text.endsWith(separator) &&
+        oldValue.text.length == newValue.text.length + 1) {
+      newValueText = newValueText.substring(0, newValueText.length - 1);
+    }
+
+    // Only process if the old value and new value are different
+    if (oldValueText != newValueText) {
+      int selectionIndex =
+          newValue.text.length - newValue.selection.extentOffset;
+      final chars = newValueText.split('');
+
+      String newString = '';
+      for (int i = chars.length - 1; i >= 0; i--) {
+        if ((chars.length - 1 - i) % 3 == 0 && i != chars.length - 1)
+          newString = separator + newString;
+        newString = chars[i] + newString;
+      }
+
+      return TextEditingValue(
+        text: newString.toString(),
+        selection: TextSelection.collapsed(
+          offset: newString.length - selectionIndex,
+        ),
+      );
+    }
+
+    // If the new value and old value are the same, just return as-is
+    return newValue;
   }
 }

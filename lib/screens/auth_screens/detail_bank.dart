@@ -41,7 +41,6 @@ class _DetailBankState extends State<DetailBank> {
                 return DropdownButtonHideUnderline(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
-                        helperText: ' ',
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent))),
                     validator: (value) =>
@@ -112,7 +111,6 @@ class _DetailBankState extends State<DetailBank> {
                 fontSize: 12.0,
               ),
               decoration: InputDecoration(
-                helperText: ' ',
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                 floatingLabelBehavior: FloatingLabelBehavior.never,

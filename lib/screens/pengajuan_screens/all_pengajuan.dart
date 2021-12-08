@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kobantitar_mobile/controllers/pegajuan_controller.dart';
+import 'package:kobantitar_mobile/controllers/pengajuan_controller.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
 
 class SemuaPengajuan extends StatefulWidget {
@@ -25,9 +25,9 @@ class _SemuaPengajuanState extends State<SemuaPengajuan> {
       } else {
         return ListView.builder(
             padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-            itemCount: controller.pengajuanList!.length,
+            itemCount: controller.pengajuanList.length,
             itemBuilder: (context, index) {
-              final pengajuan = controller.pengajuanList![index];
+              final pengajuan = controller.pengajuanList[index];
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                 child: Container(

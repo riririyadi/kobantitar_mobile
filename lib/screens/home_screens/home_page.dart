@@ -93,23 +93,28 @@ class _HomeWidgetState extends State<HomeWidget> {
                         /** @change Added horiontal padding for header */
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Informasi terbaru'),
-                                Text(
-                                  'Lihat Semua',
-                                  style: TextStyle(
-                                    color: Color(0xff9A3A3A),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ]),
+                          child: Obx(() {
+                            if (controller.isDashboardLoaded.value) {
+                              return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Informasi terbaru'),
+                                    Text(
+                                      'Lihat Semua',
+                                      style: TextStyle(
+                                        color: Color(0xff9A3A3A),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ]);
+                            } else {
+                              return Text("");
+                            }
+                          }),
                         ),
                         Obx(() {
-                          if (controller.isDashboardLoading.value) {
-                            return SizedBox(height: 100);
-                          } else {
+                          if (controller.isDashboardLoaded.value) {
                             return SizedBox(
                               height: 100,
                               child: ListView.builder(
@@ -148,6 +153,30 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 },
                               ),
                             );
+                          } else {
+                            return SizedBox(
+                              height: 100,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 3,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: EdgeInsets.only(
+                                      /** @change left margin for first item only */
+                                      left: index == 0 ? 16 : 0,
+                                      top: 8,
+                                      bottom: 8,
+                                      right: 10,
+                                    ),
+                                    width: 240,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
                           }
                         })
                       ],
@@ -155,10 +184,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                   SizedBox(height: 26.0),
                   Obx(() {
-                    if (controller.isDashboardLoading.value) {
-                      return Container(
-                          height: 400, child: Center(child: Text("loading..")));
-                    } else {
+                    if (controller.isDashboardLoaded.value) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(
@@ -236,6 +262,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                           ],
                         ),
                       );
+                    } else {
+                      return Container(
+                          height: 400, child: Center(child: Text("")));
                     }
                   }),
                 ],
@@ -437,23 +466,28 @@ class _HomeWidgetState extends State<HomeWidget> {
                       }),
                     ],
                   ),
-                  Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Center(
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          child: Image(
-                            image: AssetImage('assets/kartu-anggota-qr.png'),
-                            fit: BoxFit.fill,
-                          ),
+                  GestureDetector(
+                    onTap: () {
+                      _bottomSheetQRCode(context);
+                    },
+                    child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                      )),
+                        child: Center(
+                          child: Container(
+                            height: 45,
+                            width: 45,
+                            child: Image(
+                              image: AssetImage('assets/kartu-anggota-qr.png'),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        )),
+                  ),
                 ],
               ),
               SizedBox(height: 10.0),
@@ -817,7 +851,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   List<Widget> promoProducts() {
     List<Widget> list = [];
-    //i<5, pass your dynamic limit as per your requirment
+
     for (int i = 0; i < controller.dashboard.data!.promoProducts!.length; i++) {
       final product = controller.dashboard.data!.promoProducts![i];
       list.add(Container(
@@ -854,5 +888,36 @@ class _HomeWidgetState extends State<HomeWidget> {
       )); //add any Widget in place of Text("Index $i")
     }
     return list; // all widget added now retrun the list here
+  }
+
+  _bottomSheetQRCode(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext c) {
+          return Container(
+            color: Color(0xff757575),
+            child: Container(
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+              ),
+              height: 180,
+              child: Center(
+                child: Container(
+                  height: 120,
+                  width: 120,
+                  child: Image(
+                    image: AssetImage('assets/kartu-anggota-qr.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

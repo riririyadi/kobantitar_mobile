@@ -42,7 +42,7 @@ class SignUpController extends GetxController {
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
 
-  int step = 0;
+  int step = 3;
 
   dynamic argumentData = Get.arguments;
 

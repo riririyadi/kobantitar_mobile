@@ -7,8 +7,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/screens/home_screen.dart';
 
 class BuatPINController extends GetxController {
-  var pin = "";
-  var konfirmPin = "";
+  final pinBaru = TextEditingController();
+  final konfirmPin = TextEditingController();
   final userData = GetStorage();
 
   @override
@@ -22,11 +22,12 @@ class BuatPINController extends GetxController {
   }
 
   void savePIN() {
-    if (pin == konfirmPin) {
-      userData.write("PIN", konfirmPin);
+    if (konfirmPin.text == pinBaru.text) {
+      userData.write("PIN", konfirmPin.text);
       Get.offAll(() => HomeScreen());
     } else {
-      Get.snackbar(pin, konfirmPin);
+      Get.snackbar(
+          "Ini PIN BARU ${pinBaru.text}", "Konfirmasi pin ${konfirmPin.text}");
     }
   }
 }

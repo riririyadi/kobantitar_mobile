@@ -274,26 +274,32 @@ class _KontakWidgetState extends State<KontakWidget> {
                         onTap: () {
                           controller.openLink(controller.faq!.logamMulia!);
                         },
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 30.0,
-                              width: 30.0,
-                              child: Image(
-                                  image: AssetImage('assets/gold-ingots.png'),
-                                  fit: BoxFit.fill),
-                            ),
-                            SizedBox(
-                              width: 16.0,
-                            ),
-                            Text(
-                              'Transaksi Logam Mulia',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 12.0),
-                            ),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, size: 16.0),
-                          ],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 30.0,
+                                width: 30.0,
+                                child: Image(
+                                    image: AssetImage('assets/gold-ingots.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                              SizedBox(
+                                width: 16.0,
+                              ),
+                              Text(
+                                'Transaksi Logam Mulia',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.0),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios, size: 16.0),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -303,26 +309,32 @@ class _KontakWidgetState extends State<KontakWidget> {
                         onTap: () {
                           controller.openLink(controller.faq!.kreditBarang!);
                         },
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 30.0,
-                              width: 30.0,
-                              child: Image(
-                                  image: AssetImage('assets/wallet.png'),
-                                  fit: BoxFit.fill),
-                            ),
-                            SizedBox(
-                              width: 16.0,
-                            ),
-                            Text(
-                              'Kredit Barang',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 12.0),
-                            ),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, size: 16.0),
-                          ],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 30.0,
+                                width: 30.0,
+                                child: Image(
+                                    image: AssetImage('assets/wallet.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                              SizedBox(
+                                width: 16.0,
+                              ),
+                              Text(
+                                'Kredit Barang',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.0),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios, size: 16.0),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -332,27 +344,33 @@ class _KontakWidgetState extends State<KontakWidget> {
                         onTap: () {
                           controller.openLink(controller.faq!.simulasiShu!);
                         },
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 30.0,
-                              width: 30.0,
-                              child: Image(
-                                  image:
-                                      AssetImage('assets/point-of-service.png'),
-                                  fit: BoxFit.fill),
-                            ),
-                            SizedBox(
-                              width: 16.0,
-                            ),
-                            Text(
-                              'Simulasi SHU',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 12.0),
-                            ),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, size: 16.0),
-                          ],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 30.0,
+                                width: 30.0,
+                                child: Image(
+                                    image: AssetImage(
+                                        'assets/point-of-service.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                              SizedBox(
+                                width: 16.0,
+                              ),
+                              Text(
+                                'Simulasi SHU',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.0),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios, size: 16.0),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -362,26 +380,33 @@ class _KontakWidgetState extends State<KontakWidget> {
                         onTap: () {
                           controller.openLink(controller.faq!.laporanKeuangan!);
                         },
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 30.0,
-                              width: 30.0,
-                              child: Image(
-                                  image: AssetImage('assets/presentation.png'),
-                                  fit: BoxFit.fill),
-                            ),
-                            SizedBox(
-                              width: 16.0,
-                            ),
-                            Text(
-                              'Laporan Keuangan',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 12.0),
-                            ),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, size: 16.0),
-                          ],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 30.0,
+                                width: 30.0,
+                                child: Image(
+                                    image:
+                                        AssetImage('assets/presentation.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                              SizedBox(
+                                width: 16.0,
+                              ),
+                              Text(
+                                'Laporan Keuangan',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.0),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios, size: 16.0),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -391,26 +416,32 @@ class _KontakWidgetState extends State<KontakWidget> {
                         onTap: () {
                           controller.openLink(controller.faq!.kobantitarMart!);
                         },
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 30.0,
-                              width: 30.0,
-                              child: Image(
-                                  image: AssetImage('assets/store.png'),
-                                  fit: BoxFit.fill),
-                            ),
-                            SizedBox(
-                              width: 16.0,
-                            ),
-                            Text(
-                              'Kobantitar Mart',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 12.0),
-                            ),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, size: 16.0),
-                          ],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 30.0,
+                                width: 30.0,
+                                child: Image(
+                                    image: AssetImage('assets/store.png'),
+                                    fit: BoxFit.fill),
+                              ),
+                              SizedBox(
+                                width: 16.0,
+                              ),
+                              Text(
+                                'Kobantitar Mart',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.0),
+                              ),
+                              Spacer(),
+                              Icon(Icons.arrow_forward_ios, size: 16.0),
+                            ],
+                          ),
                         ),
                       ),
                     ],

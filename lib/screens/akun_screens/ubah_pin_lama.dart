@@ -13,6 +13,7 @@ class UbahPINLama extends StatefulWidget {
 class _UbahPINLamaState extends State<UbahPINLama> {
   final controller = Get.put(UbahPINController());
   late TextEditingController pinController;
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -20,8 +21,7 @@ class _UbahPINLamaState extends State<UbahPINLama> {
       ..addListener(() {
         if (pinController.text.length < 7) {
           setState(() {});
-          print(pinController.text);
-          controller.pin = pinController.text;
+          controller.pinLama = pinController.text;
         }
       });
     super.initState();
@@ -92,6 +92,8 @@ class _UbahPINLamaState extends State<UbahPINLama> {
                   child: Column(
                     children: [
                       TextField(
+                        focusNode: focusNode,
+                        maxLength: 6,
                         controller: pinController,
                         autofocus: true,
                         keyboardType: TextInputType.number,
@@ -118,51 +120,54 @@ class _UbahPINLamaState extends State<UbahPINLama> {
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                       SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: pinController.text.length >= 1
-                                ? Colors.red
-                                : Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: pinController.text.length >= 2
-                                ? Colors.red
-                                : Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: pinController.text.length >= 3
-                                ? Colors.red
-                                : Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: pinController.text.length >= 4
-                                ? Colors.red
-                                : Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: pinController.text.length >= 5
-                                ? Colors.red
-                                : Colors.grey,
-                          ),
-                          SizedBox(width: 10),
-                          CircleAvatar(
-                            radius: 8,
-                            backgroundColor: pinController.text.length >= 6
-                                ? Colors.red
-                                : Colors.grey,
-                          ),
-                        ],
+                      GestureDetector(
+                        onTap: () => focusNode.requestFocus(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 8,
+                              backgroundColor: pinController.text.length >= 1
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              radius: 8,
+                              backgroundColor: pinController.text.length >= 2
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              radius: 8,
+                              backgroundColor: pinController.text.length >= 3
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              radius: 8,
+                              backgroundColor: pinController.text.length >= 4
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              radius: 8,
+                              backgroundColor: pinController.text.length >= 5
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              radius: 8,
+                              backgroundColor: pinController.text.length >= 6
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),
@@ -175,7 +180,13 @@ class _UbahPINLamaState extends State<UbahPINLama> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: GestureDetector(
-                    onTap: () => Get.to(() => UbahPINBaru()),
+                    onTap: () {
+                      if (controller.pinLama == controller.savedPIN) {
+                        Get.off(() => UbahPINBaru());
+                      } else {
+                        Get.snackbar("Oops", "PIN tidak sesuai");
+                      }
+                    },
                     child: Container(
                       height: 48.0,
                       width: double.infinity,

@@ -186,24 +186,28 @@ class _HistoryState extends State<History> {
                       SizedBox(
                         width: 10.0,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${simpananSukarela.text}",
-                            style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500,
+                      Container(
+                        width: 200,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${simpananSukarela.text}",
+                              maxLines: 2,
+                              style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "${simpananSukarela.date}",
-                            style: TextStyle(
-                              fontSize: 10.0,
-                            ),
-                          )
-                        ],
+                            Text(
+                              "${simpananSukarela.date}",
+                              style: TextStyle(
+                                fontSize: 10.0,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       Spacer(),
                       if (simpananSukarela.isPositive ?? true)
@@ -220,6 +224,7 @@ class _HistoryState extends State<History> {
                           style: TextStyle(
                             fontSize: 14.0,
                             fontWeight: FontWeight.w600,
+                            color: Colors.red,
                           ),
                         ),
                     ]),

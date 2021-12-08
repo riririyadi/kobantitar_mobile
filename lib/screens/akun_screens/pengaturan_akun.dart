@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kobantitar_mobile/controllers/akun_controller.dart';
 import 'package:kobantitar_mobile/controllers/pengaturan_akun_controller.dart';
+import 'package:kobantitar_mobile/models/bank.dart';
+import 'package:kobantitar_mobile/models/instansi.dart';
 
 class PengaturanAkun extends StatefulWidget {
   const PengaturanAkun({Key? key}) : super(key: key);
@@ -17,12 +19,12 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
   final PengaturanAkunController controller =
       Get.put(PengaturanAkunController());
 
-  dynamic instansiValue;
+  int instansiValue = 4;
+  int bankValue = 5;
 
   @override
   void initState() {
     super.initState();
-    instansiValue = controller.instansiController.text;
   }
 
   @override
@@ -156,7 +158,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                     ),
                                     SizedBox(height: 5.0),
                                     Obx(() {
-                                      if (controller.isMeLoading.value) {
+                                      if (controller.isMeLoaded.value) {
                                         return Row(
                                           children: [
                                             Expanded(
@@ -256,6 +258,9 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                             ),
                                           ],
                                         );
+
+                                        ///
+
                                       } else {
                                         return Row(
                                           children: [
@@ -367,15 +372,15 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                     ),
                                     SizedBox(height: 5.0),
                                     Obx(() {
-                                      if (controller.isMeLoading.value) {
-                                        return Text("");
-                                      } else {
+                                      if (controller.isMeLoaded.value) {
                                         return Text(
-                                          "${controller.nik}",
+                                          "${controller.nikController.text}",
                                           style: TextStyle(
                                               fontSize: 12.0,
                                               fontWeight: FontWeight.w600),
                                         );
+                                      } else {
+                                        return Text("");
                                       }
                                     }),
                                     SizedBox(height: 20.0),
@@ -418,6 +423,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                     SizedBox(height: 5.0),
                                     Container(
                                       height: 50,
+                                      width: double.infinity,
                                       padding:
                                           EdgeInsets.fromLTRB(10, 0, 10, 5),
                                       decoration: BoxDecoration(
@@ -427,11 +433,10 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                       ),
                                       child: Obx(() {
                                         if (controller
-                                            .isInstansiLoading.value) {
-                                          return Text("");
-                                        } else {
+                                            .isDataInstansiLoaded.value) {
                                           return DropdownButtonHideUnderline(
                                             child: DropdownButtonFormField(
+                                              isExpanded: true,
                                               decoration: InputDecoration(
                                                   enabledBorder:
                                                       UnderlineInputBorder(
@@ -442,11 +447,15 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                       null
                                                   ? 'Instansi tidak boleh kosong'
                                                   : null,
+                                              value: controller
+                                                  .instansis[(controller
+                                                          .dataInstansi.id! -
+                                                      1)]
+                                                  .id,
                                               onChanged: (value) =>
                                                   setState(() {
                                                 controller.instansiController
                                                     .text = value.toString();
-                                                instansiValue = value;
                                               }),
                                               items: controller.instansis
                                                   .map((item) {
@@ -459,6 +468,8 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                               }).toList(),
                                             ),
                                           );
+                                        } else {
+                                          return Text("");
                                         }
                                       }),
                                     ),
@@ -559,6 +570,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                     SizedBox(height: 5.0),
                                     Container(
                                       height: 50,
+                                      width: double.infinity,
                                       padding:
                                           EdgeInsets.fromLTRB(10, 0, 10, 5),
                                       decoration: BoxDecoration(
@@ -567,12 +579,10 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Obx(() {
-                                        if (controller
-                                            .isInstansiLoading.value) {
-                                          return Text("");
-                                        } else {
+                                        if (controller.isDataBankLoaded.value) {
                                           return DropdownButtonHideUnderline(
                                             child: DropdownButtonFormField(
+                                              isExpanded: true,
                                               decoration: InputDecoration(
                                                   enabledBorder:
                                                       UnderlineInputBorder(
@@ -581,16 +591,20 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                                   .transparent))),
                                               validator: (value) => value ==
                                                       null
-                                                  ? 'Instansi tidak boleh kosong'
+                                                  ? 'Bank tidak boleh kosong'
                                                   : null,
+                                              value: controller
+                                                  .banks[
+                                                      controller.dataBank.id! -
+                                                          1]
+                                                  .id,
                                               onChanged: (value) =>
                                                   setState(() {
-                                                controller.namaBankController
-                                                    .text = value.toString();
-                                                instansiValue = value;
+                                                controller.bankController.text =
+                                                    value.toString();
                                               }),
-                                              items: controller.instansis
-                                                  .map((item) {
+                                              items:
+                                                  controller.banks.map((item) {
                                                 return DropdownMenuItem(
                                                     value: item.id,
                                                     child: Text(item.name!,
@@ -600,6 +614,8 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                               }).toList(),
                                             ),
                                           );
+                                        } else {
+                                          return Text("");
                                         }
                                       }),
                                     ),
@@ -782,16 +798,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                     ),
                                     SizedBox(height: 5.0),
                                     Obx(() {
-                                      if (controller.isMeLoading.value) {
-                                        return Container(
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                        );
-                                      } else {
+                                      if (controller.isMeLoaded.value) {
                                         return GestureDetector(
                                           onTap: () {},
                                           child: Obx(
@@ -839,35 +846,93 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                               .value),
                                                           fit: BoxFit.fitWidth),
                                                     ),
+                                                    SizedBox(height: 10),
                                                     Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: [
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                _bottomSheet(
-                                                                    context, 1);
-                                                              },
-                                                              child: Text(
-                                                                  "Ambil ulang")),
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                controller
-                                                                    .uploadImage(
-                                                                        controller
-                                                                            .selectedSelfieImagePath
-                                                                            .value,
-                                                                        "selfie")
-                                                                    .then((value) =>
-                                                                        Get.snackbar(
-                                                                            "Success",
-                                                                            "Image saved successfully"));
-                                                              },
-                                                              child: Text(
-                                                                  "Simpan"))
-                                                        ])
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              _bottomSheet(
+                                                                  context, 2);
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .grey[400],
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                    "Ambil ulang",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white)),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 10),
+                                                        Expanded(
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              controller
+                                                                  .uploadImage(
+                                                                      controller
+                                                                          .selectedKTPImagePath
+                                                                          .value,
+                                                                      "ktp")
+                                                                  .then((value) =>
+                                                                      Get.snackbar(
+                                                                          "Success",
+                                                                          "Image saved successfully"));
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Color(
+                                                                    0xff851212),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                    "Simpan",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white)),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ]),
+                                          ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
                                           ),
                                         );
                                       }
@@ -881,16 +946,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                     ),
                                     SizedBox(height: 5.0),
                                     Obx(() {
-                                      if (controller.isMeLoading.value) {
-                                        return Container(
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                        );
-                                      } else {
+                                      if (controller.isMeLoaded.value) {
                                         return GestureDetector(
                                           onTap: () {},
                                           child: Obx(
@@ -938,35 +994,93 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                               .value),
                                                           fit: BoxFit.fitWidth),
                                                     ),
+                                                    SizedBox(height: 10),
                                                     Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: [
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                _bottomSheet(
-                                                                    context, 2);
-                                                              },
-                                                              child: Text(
-                                                                  "Ambil ulang")),
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                controller
-                                                                    .uploadImage(
-                                                                        controller
-                                                                            .selectedKTPImagePath
-                                                                            .value,
-                                                                        "ktp")
-                                                                    .then((value) =>
-                                                                        Get.snackbar(
-                                                                            "Success",
-                                                                            "Image saved successfully"));
-                                                              },
-                                                              child: Text(
-                                                                  "Simpan"))
-                                                        ])
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              _bottomSheet(
+                                                                  context, 2);
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .grey[400],
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                    "Ambil ulang",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white)),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 10),
+                                                        Expanded(
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () {
+                                                              controller
+                                                                  .uploadImage(
+                                                                      controller
+                                                                          .selectedKTPImagePath
+                                                                          .value,
+                                                                      "ktp")
+                                                                  .then((value) =>
+                                                                      Get.snackbar(
+                                                                          "Success",
+                                                                          "Image saved successfully"));
+                                                            },
+                                                            child: Container(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Color(
+                                                                    0xff851212),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                    "Simpan",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white)),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ]),
+                                          ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
                                           ),
                                         );
                                       }

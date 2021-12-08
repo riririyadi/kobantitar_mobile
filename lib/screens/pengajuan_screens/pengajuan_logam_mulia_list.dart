@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:kobantitar_mobile/controllers/pegajuan_controller.dart';
+import 'package:kobantitar_mobile/controllers/pengajuan_controller.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
 
 class PengajuanLogamMuliaList extends StatefulWidget {
@@ -20,9 +20,9 @@ class _PengajuanLogamMuliaListState extends State<PengajuanLogamMuliaList> {
   Widget build(BuildContext context) {
     return ListView.builder(
         padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-        itemCount: controller.pengajuanLogamMulia!.length,
+        itemCount: controller.pengajuanLogamMulia.length,
         itemBuilder: (context, index) {
-          final pengajuan = controller.pengajuanLogamMulia![index];
+          final pengajuan = controller.pengajuanLogamMulia[index];
           return Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
             child: Container(

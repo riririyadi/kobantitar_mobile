@@ -12,15 +12,22 @@ import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/app_setting.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/models/bank.dart';
 import 'package:kobantitar_mobile/models/instansi.dart';
 import 'package:kobantitar_mobile/models/me.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/update_akun_sukses.dart';
 
 class PengaturanAkunController extends GetxController {
-  var isSettingLoading = false.obs;
-  var isMeLoading = false.obs;
-  var isInstansiLoading = false.obs;
+  var isSettingLoaded = false.obs;
+  var isMeLoaded = false.obs;
+  var isInstansiLoaded = false.obs;
+  var isBankLoaded = false.obs;
+  var isDataBankLoaded = false.obs;
+  var isDataInstansiLoaded = false.obs;
   List<Instansi> instansis = [];
+  Instansi dataInstansi = Instansi();
+  Bank dataBank = Bank();
+  List<Bank> banks = [];
 
   String token = "";
   final userData = GetStorage();
@@ -34,7 +41,7 @@ class PengaturanAkunController extends GetxController {
 
   var namaController = TextEditingController();
   var jenisKelaminController = TextEditingController();
-  var nik = "";
+  var nikController = TextEditingController();
   var alamatController = TextEditingController();
   var instansiController = TextEditingController();
   var jabatanController = TextEditingController();
@@ -43,7 +50,7 @@ class PengaturanAkunController extends GetxController {
   var passwordBaruController = TextEditingController();
   var konfirmPasswordController = TextEditingController();
   var alasanPengunduranDiriController = TextEditingController();
-  var namaBankController = TextEditingController();
+  var bankController = TextEditingController();
   var nomorRekeningController = TextEditingController();
   var cabangController = TextEditingController();
   var emailController = TextEditingController();
@@ -58,8 +65,22 @@ class PengaturanAkunController extends GetxController {
   @override
   void onInit() {
     token = userData.read("token");
-    getMe();
     getInstansi();
+    getBank();
+    getMe();
+
+    Future.delayed(const Duration(seconds: 4), () {
+      dataBank =
+          banks.firstWhere((element) => element.name == bankController.text);
+      dataInstansi = instansis
+          .firstWhere((element) => element.name == instansiController.text);
+      if (dataInstansi != null) {
+        isDataInstansiLoaded(true);
+      }
+      if (dataBank != null) {
+        isDataBankLoaded(true);
+      }
+    });
     super.onInit();
   }
 
@@ -70,59 +91,50 @@ class PengaturanAkunController extends GetxController {
 
   @override
   void onClose() {
-    namaController.dispose();
-    jenisKelaminController.dispose();
-
-    alamatController.dispose();
-    instansiController.dispose();
-    jabatanController.dispose();
-    nipController.dispose();
-    passwordLamaController.dispose();
-    passwordBaruController.dispose();
-    konfirmPasswordController.dispose();
-    alasanPengunduranDiriController.dispose();
-
     super.onClose();
   }
 
   void getInstansi() async {
-    try {
-      isInstansiLoading(true);
-      var data = await Service.fetchInstansi();
-      if (data != null) {
-        instansis = data;
-      }
-    } finally {
-      isInstansiLoading(false);
+    final data = await Service.fetchInstansi();
+    if (data != null) {
+      instansis = data;
+      isInstansiLoaded(true);
+    }
+  }
+
+  void getBank() async {
+    final data = await Service.fetchBank();
+    if (data != null) {
+      banks = data;
+      isBankLoaded(true);
     }
   }
 
   void getMe() async {
-    try {
-      isMeLoading(true);
-      final data = await Service.fetchMe(token);
-      if (data != null) {
-        me = data;
+    final data = await Service.fetchMe(token);
+    if (data != null) {
+      me = data;
 
-        namaController.text = me.nama!;
-        jenisKelaminController.text = me.jenisKelamin!;
-        nik = me.nik!;
-        alamatController.text = me.alamat!;
-        instansiController.text = me.instansi!;
-        jabatanController.text = me.jabatan!;
-        nipController.text = me.nip!;
-        nomorRekeningController.text = me.nomorRekening!;
-        cabangController.text = me.cabang!;
-        emailController.text = me.email!;
-        noHpController.text = me.noHp!;
-        selfiePath = me.photoUrl;
-        idCardPath = me.ktpUrl;
-      }
-    } finally {
-      isMeLoading(false);
-      // TODO
+      namaController.text = me.nama!;
+      jenisKelaminController.text = me.jenisKelamin!;
+      nikController.text = me.nik!;
+      alamatController.text = me.alamat!;
+      instansiController.text = me.instansi!;
+      jabatanController.text = me.jabatan!;
+      nipController.text = me.nip!;
+      bankController.text = me.bank!;
+      nomorRekeningController.text = me.nomorRekening!;
+      cabangController.text = me.cabang!;
+      emailController.text = me.email!;
+      noHpController.text = me.noHp!;
+      selfiePath = me.photoUrl;
+      idCardPath = me.ktpUrl;
+
+      isMeLoaded(true);
     }
   }
+
+  void getInfo() {}
 
   var selectedSelfieImagePath = "".obs;
   var selectedSelfieImageSize = "".obs;
@@ -198,7 +210,7 @@ class PengaturanAkunController extends GetxController {
       "instansi_id": instansiController.text,
       "jabatan": jabatanController.text,
       "nip": nipController.text,
-      "bank_id": namaBankController.text,
+      "bank_id": bankController.text,
       "nomor_rekening": nomorRekeningController.text,
       "cabang": cabangController.text,
       "email": emailController.text,

@@ -73,7 +73,7 @@ class _HalamanPINState extends State<HalamanPIN> {
           ),
           barrierDismissible: false,
         );
-        Get.to(() => HomeScreen());
+        Get.offAll(() => HomeScreen());
       }
 
       print(isAuth);
@@ -132,52 +132,55 @@ class _HalamanPINState extends State<HalamanPIN> {
                         children: [
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: pin.length >= 1
-                                ? Colors.white
-                                : Colors.grey[400],
+                            backgroundColor:
+                                pin.length >= 1 ? Colors.white : Colors.white30,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: pin.length >= 2
-                                ? Colors.white
-                                : Colors.grey[400],
+                            backgroundColor:
+                                pin.length >= 2 ? Colors.white : Colors.white30,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: pin.length >= 3
-                                ? Colors.white
-                                : Colors.grey[400],
+                            backgroundColor:
+                                pin.length >= 3 ? Colors.white : Colors.white30,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: pin.length >= 4
-                                ? Colors.white
-                                : Colors.grey[400],
+                            backgroundColor:
+                                pin.length >= 4 ? Colors.white : Colors.white30,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: pin.length >= 5
-                                ? Colors.white
-                                : Colors.grey[400],
+                            backgroundColor:
+                                pin.length >= 5 ? Colors.white : Colors.white30,
                           ),
                           SizedBox(width: 10),
                           CircleAvatar(
                             radius: 8,
-                            backgroundColor: pin.length >= 6
-                                ? Colors.white
-                                : Colors.grey[400],
+                            backgroundColor:
+                                pin.length >= 6 ? Colors.white : Colors.white30,
                           ),
                         ],
                       ),
                       SizedBox(height: 20.0),
-                      Text("Lupa pin?",
-                          style: TextStyle(
-                            color: Colors.white,
-                          )),
+                      GestureDetector(
+                        onTap: () {
+                          controller.deleteLocalToken();
+                          controller
+                              .deleteDevice()
+                              .then((value) => Get.offAll(() => LoginScreen()))
+                              .catchError((e) => print(e));
+                        },
+                        child: Text("Lupa pin?",
+                            style: TextStyle(
+                              color: Colors.white,
+                            )),
+                      ),
                       SizedBox(height: 20.0),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -187,6 +190,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(1),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -201,6 +207,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(2),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -215,6 +224,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(3),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -236,6 +248,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(4),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -250,6 +265,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(5),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -264,6 +282,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(6),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -285,6 +306,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(7),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -299,6 +323,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(8),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -313,6 +340,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(9),
                                 child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
                                     width:
                                         MediaQuery.of(context).size.width / 6,
                                     height:
@@ -334,6 +364,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => _checkBio(),
                                 child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
                                   width: MediaQuery.of(context).size.width / 6,
                                   height: MediaQuery.of(context).size.width / 6,
                                   child: Center(
@@ -345,6 +378,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                               GestureDetector(
                                 onTap: () => insertPIN(0),
                                 child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
                                   width: MediaQuery.of(context).size.width / 6,
                                   height: MediaQuery.of(context).size.width / 6,
                                   child: Center(
@@ -369,6 +405,9 @@ class _HalamanPINState extends State<HalamanPIN> {
                                   }
                                 },
                                 child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
                                   width: MediaQuery.of(context).size.width / 6,
                                   height: MediaQuery.of(context).size.width / 6,
                                   child: Center(
@@ -383,26 +422,7 @@ class _HalamanPINState extends State<HalamanPIN> {
                   ),
                 ),
                 Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: GestureDetector(
-                    onTap: () => Get.off(() => LoginScreen()),
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      height: 48.0,
-                      child: Center(
-                        child: Text(
-                          "Ke Halaman Login",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                SizedBox(height: 5)
               ]),
         ),
       ),

@@ -141,7 +141,7 @@ class _DetailAkunState extends State<DetailAkun> {
               ),
               validator: (value) {
                 if (value == "") {
-                  return 'Konfirmasi password tidak boleh kosong';
+                  return 'Konfirmasi password harus cocok';
                 }
                 return null;
               },

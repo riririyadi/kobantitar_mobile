@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/models/product.dart';
@@ -11,6 +12,7 @@ class KobMartListProductController extends GetxController {
   var _products = {}.obs;
   String token = "";
   final userData = GetStorage();
+  final searchQueryController = TextEditingController();
 
   @override
   void onInit() {
@@ -47,11 +49,8 @@ class KobMartListProductController extends GetxController {
       .reduce((value, element) => value + element);
 
   List<dynamic> getDataPesananFromMap() {
-    // Get all keys and values at the same time using entries
-    print('----------');
-    print('Get keys and values using entries:');
     List<dynamic> data = [];
-    // ignore: avoid_function_literals_in_foreach_calls
+
     _products.entries.forEach((entry) {
       Map<String, int> dataProduct = {
         "product_id": entry.key.id,

@@ -220,7 +220,6 @@ class _DataPribadiState extends State<DataPribadi> {
                 return DropdownButtonHideUnderline(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
-                        helperText: ' ',
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent))),
                     validator: (value) =>

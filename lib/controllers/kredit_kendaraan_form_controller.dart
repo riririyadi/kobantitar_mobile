@@ -27,8 +27,8 @@ class KreditBarangFormController extends GetxController {
   dynamic argumentData = Get.arguments;
   List<TenorConfig>? tenors = <TenorConfig>[].obs;
   var detailKredit = <KreditKendaraanCalculation>[].obs;
-  late int approvalFileId;
-  late int approvalFileId2;
+  int? approvalFileId;
+  int? approvalFileId2;
 
   @override
   void onInit() {
@@ -47,7 +47,12 @@ class KreditBarangFormController extends GetxController {
 
   @override
   void onClose() {
-    super.onInit();
+    tenorController.dispose();
+    tglPembayaranController.dispose();
+    dateController.dispose();
+    namaAtasanController.dispose();
+    namaAtasan2Controller.dispose();
+    super.onClose();
   }
 
   void getTenor() async {

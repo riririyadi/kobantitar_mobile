@@ -49,8 +49,6 @@ class PengajuanKreditBarangLainController extends GetxController {
           print(tenor.caption);
         }
       }
-      print(nilaiMinimal.toString());
-      Get.snackbar("totot", nilaiMinimal.toString());
     } finally {
       isLoading(false);
     }

@@ -3,12 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/tagihan_controller.dart';
 import 'package:kobantitar_mobile/models/tagihan.dart';
-import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
-import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_kobmart_list.dart';
-import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_kredit_barang_list.dart';
-import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_kredit_kendaraan_list.dart';
-import 'package:kobantitar_mobile/screens/tagihan_screens/all_tagihan_list_widget.dart';
-import 'package:kobantitar_mobile/screens/tagihan_screens/tagihan_logam_mulia_list.dart';
 
 class TagihanWidget extends StatefulWidget {
   const TagihanWidget({Key? key}) : super(key: key);
@@ -20,13 +14,13 @@ class TagihanWidget extends StatefulWidget {
 class _TagihanWidgetState extends State<TagihanWidget> {
   final TagihanController controller = Get.put(TagihanController());
 
-  String? _jenisTagihan;
+  String _jenisTagihan = "ALL";
   @override
+  List<DataTagihan> dataTagihan = [];
   List<DataTagihan> dataTagihanFiltered = [];
   final currencyFormatter = NumberFormat('#,##0', 'ID');
   final searchController = TextEditingController();
 
-  List<DataTagihan> dataTagihan = [];
   @override
   Widget build(BuildContext context) {
     dataTagihan = controller.tagihanList;
@@ -147,7 +141,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          _jenisTagihan = "all";
+                          _jenisTagihan = "ALL";
                         });
                       },
                       child: Container(
@@ -155,7 +149,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                         padding: EdgeInsets.symmetric(
                           horizontal: 10.0,
                         ),
-                        decoration: _jenisTagihan == "all"
+                        decoration: _jenisTagihan == "ALL"
                             ? BoxDecoration(
                                 gradient: LinearGradient(
                                     begin: Alignment.centerLeft,
@@ -191,7 +185,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                         child: Center(
                           child: Text('Semua Tagihan',
                               style: TextStyle(
-                                  color: _jenisTagihan == "all"
+                                  color: _jenisTagihan == "ALL"
                                       ? Colors.white
                                       : Colors.black,
                                   fontSize: 12.0,
@@ -561,16 +555,6 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                         ),
                       );
                     }),
-                // child: IndexedStack(
-                //   index: _jenisTagihan,
-                //   children: [
-                //     AllTagihan(),
-                //     TagihanLogamMulia(),
-                //     TagihanKreditBarang(),
-                //     TagihanKreditKendaraan(),
-                //     TagihanKobmart(),
-                //   ],
-                // ),
               ),
             ],
           ),

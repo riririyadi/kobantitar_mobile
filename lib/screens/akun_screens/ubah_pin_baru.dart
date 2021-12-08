@@ -14,6 +14,7 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
   final controller = Get.put(UbahPINController());
   late TextEditingController pinBaruController;
   late TextEditingController konfirmPinBaruController;
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -21,16 +22,14 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
       ..addListener(() {
         if (pinBaruController.text.length < 7) {
           setState(() {});
-          print(pinBaruController.text);
-          controller.pin = pinBaruController.text;
+          controller.pinBaru = pinBaruController.text;
         }
       });
     konfirmPinBaruController = TextEditingController()
       ..addListener(() {
         if (konfirmPinBaruController.text.length < 7) {
           setState(() {});
-          print(konfirmPinBaruController.text);
-          controller.konfirmPin = konfirmPinBaruController.text;
+          controller.konfirmPinBaru = konfirmPinBaruController.text;
         }
       });
     super.initState();
@@ -102,6 +101,8 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
                   child: Column(
                     children: [
                       TextField(
+                        focusNode: focusNode,
+                        maxLength: 6,
                         controller: _counter == 0
                             ? pinBaruController
                             : konfirmPinBaruController,
@@ -134,57 +135,60 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
                                   style: TextStyle(fontWeight: FontWeight.w600),
                                 ),
                                 SizedBox(height: 30),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundColor:
-                                          pinBaruController.text.length >= 1
-                                              ? Colors.red
-                                              : Colors.grey,
-                                    ),
-                                    SizedBox(width: 10),
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundColor:
-                                          pinBaruController.text.length >= 2
-                                              ? Colors.red
-                                              : Colors.grey,
-                                    ),
-                                    SizedBox(width: 10),
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundColor:
-                                          pinBaruController.text.length >= 3
-                                              ? Colors.red
-                                              : Colors.grey,
-                                    ),
-                                    SizedBox(width: 10),
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundColor:
-                                          pinBaruController.text.length >= 4
-                                              ? Colors.red
-                                              : Colors.grey,
-                                    ),
-                                    SizedBox(width: 10),
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundColor:
-                                          pinBaruController.text.length >= 5
-                                              ? Colors.red
-                                              : Colors.grey,
-                                    ),
-                                    SizedBox(width: 10),
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundColor:
-                                          pinBaruController.text.length >= 6
-                                              ? Colors.red
-                                              : Colors.grey,
-                                    ),
-                                  ],
+                                GestureDetector(
+                                  onTap: () => focusNode.requestFocus(),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 8,
+                                        backgroundColor:
+                                            pinBaruController.text.length >= 1
+                                                ? Colors.red
+                                                : Colors.grey,
+                                      ),
+                                      SizedBox(width: 10),
+                                      CircleAvatar(
+                                        radius: 8,
+                                        backgroundColor:
+                                            pinBaruController.text.length >= 2
+                                                ? Colors.red
+                                                : Colors.grey,
+                                      ),
+                                      SizedBox(width: 10),
+                                      CircleAvatar(
+                                        radius: 8,
+                                        backgroundColor:
+                                            pinBaruController.text.length >= 3
+                                                ? Colors.red
+                                                : Colors.grey,
+                                      ),
+                                      SizedBox(width: 10),
+                                      CircleAvatar(
+                                        radius: 8,
+                                        backgroundColor:
+                                            pinBaruController.text.length >= 4
+                                                ? Colors.red
+                                                : Colors.grey,
+                                      ),
+                                      SizedBox(width: 10),
+                                      CircleAvatar(
+                                        radius: 8,
+                                        backgroundColor:
+                                            pinBaruController.text.length >= 5
+                                                ? Colors.red
+                                                : Colors.grey,
+                                      ),
+                                      SizedBox(width: 10),
+                                      CircleAvatar(
+                                        radius: 8,
+                                        backgroundColor:
+                                            pinBaruController.text.length >= 6
+                                                ? Colors.red
+                                                : Colors.grey,
+                                      ),
+                                    ],
+                                  ),
                                 )
                               ],
                             ))
@@ -195,63 +199,66 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
                                 style: TextStyle(fontWeight: FontWeight.w600),
                               ),
                               SizedBox(height: 30),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor:
-                                        konfirmPinBaruController.text.length >=
-                                                1
-                                            ? Colors.red
-                                            : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor:
-                                        konfirmPinBaruController.text.length >=
-                                                2
-                                            ? Colors.red
-                                            : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor:
-                                        konfirmPinBaruController.text.length >=
-                                                3
-                                            ? Colors.red
-                                            : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor:
-                                        konfirmPinBaruController.text.length >=
-                                                4
-                                            ? Colors.red
-                                            : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor:
-                                        konfirmPinBaruController.text.length >=
-                                                5
-                                            ? Colors.red
-                                            : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor:
-                                        konfirmPinBaruController.text.length >=
-                                                6
-                                            ? Colors.red
-                                            : Colors.grey,
-                                  ),
-                                ],
+                              GestureDetector(
+                                onTap: () => focusNode.requestFocus(),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: konfirmPinBaruController
+                                                  .text.length >=
+                                              1
+                                          ? Colors.red
+                                          : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: konfirmPinBaruController
+                                                  .text.length >=
+                                              2
+                                          ? Colors.red
+                                          : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: konfirmPinBaruController
+                                                  .text.length >=
+                                              3
+                                          ? Colors.red
+                                          : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: konfirmPinBaruController
+                                                  .text.length >=
+                                              4
+                                          ? Colors.red
+                                          : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: konfirmPinBaruController
+                                                  .text.length >=
+                                              5
+                                          ? Colors.red
+                                          : Colors.grey,
+                                    ),
+                                    SizedBox(width: 10),
+                                    CircleAvatar(
+                                      radius: 8,
+                                      backgroundColor: konfirmPinBaruController
+                                                  .text.length >=
+                                              6
+                                          ? Colors.red
+                                          : Colors.grey,
+                                    ),
+                                  ],
+                                ),
                               )
                             ])),
                     ],
@@ -266,18 +273,13 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
                   padding: const EdgeInsets.all(16.0),
                   child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        if (_counter < 2) {
-                          _counter += 1;
-                        }
-                      });
                       if (_counter == 2) {
-                        if (pinBaruController == konfirmPinBaruController) {
-                          Get.to(() => UpdateAkunSukses());
-                        } else {
-                          Get.snackbar(
-                              "No Match", "konfirmasi pin harus cocok");
-                        }
+                        controller.savePIN();
+                      }
+                      if (_counter < 2) {
+                        setState(() {
+                          _counter += 1;
+                        });
                       }
                     },
                     child: Container(

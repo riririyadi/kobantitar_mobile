@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/pengajuan_kredit_barang_lain_controller.dart';
+import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_form.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_lain_form.dart';
 
@@ -174,9 +175,14 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                       style: TextStyle(
                                         fontSize: 12.0,
                                       ),
+                                      inputFormatters: [
+                                        ThousandsSeparatorInputFormatter()
+                                      ],
                                       controller:
                                           controller.nilaiBarangController,
+                                      keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
+                                        prefixText: 'Rp ',
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 10.0, vertical: 0.0),
                                         helperText: ' ',
@@ -188,9 +194,10 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                         ),
                                       ),
                                       validator: (value) {
+                                        value = value!.replaceAll(".", "");
                                         if (value == "") {
                                           return 'Nilai barang tidak boleh kosong';
-                                        } else if (int.parse(value!) <
+                                        } else if (int.parse(value) <
                                             controller.nilaiMinimal) {
                                           return 'Nilai barang minimal Rp ${currencyFormatter.format(controller.nilaiMinimal)}';
                                         }
@@ -216,6 +223,9 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: GestureDetector(
                     onTap: () {
+                      controller.nilaiBarangController.text = controller
+                          .nilaiBarangController.text
+                          .replaceAll(".", "");
                       if (controller.dataBarangFormKey.currentState!
                           .validate()) {
                         Get.to(() => PengajuanKreditBarangLainForm(),

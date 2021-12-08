@@ -6,25 +6,25 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/controllers/kobantitar_mart_list_produk_controller.dart';
 import 'package:kobantitar_mobile/models/product.dart';
-import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart_search_list_produk.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'keranjang.dart';
 
-class KobantitarMartListProduk extends StatefulWidget {
-  const KobantitarMartListProduk({Key? key}) : super(key: key);
+class KobantitarMartSearchListProduk extends StatefulWidget {
+  const KobantitarMartSearchListProduk({Key? key}) : super(key: key);
 
   @override
-  _KobantitarMartListProdukState createState() =>
-      _KobantitarMartListProdukState();
+  _KobantitarMartSearchListProdukState createState() =>
+      _KobantitarMartSearchListProdukState();
 }
 
-class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
+class _KobantitarMartSearchListProdukState
+    extends State<KobantitarMartSearchListProduk> {
   final KobMartListProductController controller =
       Get.put(KobMartListProductController());
   final userData = GetStorage();
   late String token;
-
+  bool hasMoreItem = false;
   int currentPage = 1;
   late int totalPages;
   int totalProducts = 0;
@@ -34,15 +34,48 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
   final currencyFormatter = NumberFormat('#,##0', 'ID');
 
   final RefreshController refreshController2 =
-      RefreshController(initialRefresh: true);
+      RefreshController(initialRefresh: false);
 
+  Future<bool> searchProducts() async {
+    final Uri uri = Uri.parse(
+        "https://backend.kobantitar.com/api/kobmart/product?q=${controller.searchQueryController.text}");
+
+    final response = await http.get(
+      uri,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      final list = productFromJson(jsonEncode(json['data']['data']));
+
+      totalPages = (json['data']['pagination']['object_count'] / 15).ceil();
+      numOfproducts = json['data']['pagination']['object_count'];
+      hasMoreItem = json['data']['pagination']['has_more_item'];
+      products = list;
+      currentPage++;
+      setState(() {});
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  late Uri uri;
   Future<bool> getProducts({bool isRefresh = false}) async {
     if (isRefresh) {
       currentPage = 1;
+      uri = Uri.parse(
+          "https://backend.kobantitar.com/api/kobmart/product?q=${controller.searchQueryController.text}");
+    } else {
+      uri = Uri.parse(
+          "https://backend.kobantitar.com/api/kobmart/product?page=$currentPage");
     }
-
-    final Uri uri = Uri.parse(
-        "https://backend.kobantitar.com/api/kobmart/product?page=$currentPage");
 
     final response = await http.get(
       uri,
@@ -64,6 +97,7 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
 
       totalPages = (json['data']['pagination']['object_count'] / 15).ceil();
       numOfproducts = json['data']['pagination']['object_count'];
+      hasMoreItem = json['data']['pagination']['has_more_item'];
 
       currentPage++;
       setState(() {});
@@ -88,7 +122,7 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
     try {
       await getProducts();
 
-      if (products.length >= numOfproducts) {
+      if (!hasMoreItem) {
         refreshController2.loadNoData();
       } else {
         setState(() {});
@@ -103,6 +137,7 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
   void initState() {
     super.initState();
     token = userData.read('token');
+    searchProducts();
   }
 
   @override
@@ -204,10 +239,10 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
                             ],
                           ),
                           child: TextFormField(
-                            controller: controller.searchQueryController,
                             style: TextStyle(
                               fontSize: 14.0,
                             ),
+                            controller: controller.searchQueryController,
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(10.0),
                                 floatingLabelBehavior:
@@ -221,8 +256,7 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
                                   ),
                                 ),
                                 prefixIcon: IconButton(
-                                    onPressed: () => Get.to(
-                                        () => KobantitarMartSearchListProduk()),
+                                    onPressed: () => searchProducts(),
                                     icon: Icon(Icons.search)),
                                 fillColor: Colors.white,
                                 filled: true),
@@ -234,7 +268,9 @@ class _KobantitarMartListProdukState extends State<KobantitarMartListProduk> {
                           controller: refreshController2,
                           enablePullUp: true,
                           onRefresh: refreshData,
-                          onLoading: loadData,
+                          onLoading: hasMoreItem
+                              ? () => loadData()
+                              : () => refreshController2.loadNoData(),
                           footer: CustomFooter(
                             height: 30,
                             builder: (context, mode) {

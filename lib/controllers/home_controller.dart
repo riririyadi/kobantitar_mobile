@@ -24,9 +24,9 @@ class HomeController extends GetxController {
   var simpanan = Simpanan();
   var isLoaded = false.obs;
   var isSimpananLoaded = false.obs;
-  var isKobmartLoading = false.obs;
-  var isSettingLoading = false.obs;
-  var isDashboardLoading = false.obs;
+  var isKobmartLoaded = false.obs;
+  var isSettingLoaded = false.obs;
+  var isDashboardLoaded = false.obs;
   final userData = GetStorage();
   String token = "";
   String role = "";
@@ -63,14 +63,10 @@ class HomeController extends GetxController {
   }
 
   void getSetting() async {
-    try {
-      isSettingLoading(true);
-      final data = await Service.fetchSetting();
-      if (data != null) {
-        setting = data;
-      }
-    } finally {
-      isSettingLoading(false);
+    final data = await Service.fetchSetting();
+    if (data != null) {
+      setting = data;
+      isSettingLoaded(true);
     }
   }
 
@@ -106,14 +102,10 @@ class HomeController extends GetxController {
   }
 
   void getDashboard() async {
-    try {
-      isDashboardLoading(true);
-      final data = await Service.fetchDashboard(token);
-      if (data != null) {
-        dashboard = data;
-      }
-    } finally {
-      isDashboardLoading(false);
+    final data = await Service.fetchDashboard(token);
+    if (data != null) {
+      dashboard = data;
+      isDashboardLoaded(true);
     }
   }
 

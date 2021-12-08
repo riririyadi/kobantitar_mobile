@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/controllers/buat_pin_controller.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/verifikasi_pin.dart';
+import 'package:kobantitar_mobile/screens/home_screen.dart';
 
 class BuatPIN extends StatefulWidget {
   const BuatPIN({Key? key}) : super(key: key);
@@ -12,19 +14,36 @@ class BuatPIN extends StatefulWidget {
 
 class _BuatPINState extends State<BuatPIN> {
   final BuatPINController controller = Get.put(BuatPINController());
-  late TextEditingController pinController;
+  late TextEditingController pinBaru;
+  late TextEditingController konfirmPin;
+  int counter = 0;
+  final userData = GetStorage();
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
-    pinController = TextEditingController()
+    pinBaru = TextEditingController()
       ..addListener(() {
-        if (pinController.text.length < 7) {
+        if (pinBaru.text.length < 7) {
           setState(() {});
-
-          controller.pin = pinController.text;
+          controller.pinBaru.text = pinBaru.text;
+        }
+      });
+    konfirmPin = TextEditingController()
+      ..addListener(() {
+        if (konfirmPin.text.length < 7) {
+          setState(() {});
+          controller.konfirmPin.text = konfirmPin.text;
         }
       });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    pinBaru.dispose();
+    konfirmPin.dispose();
+    super.dispose();
   }
 
   @override
@@ -89,7 +108,9 @@ class _BuatPINState extends State<BuatPIN> {
                 child: Column(
                   children: [
                     TextField(
-                      controller: pinController,
+                      maxLength: 6,
+                      focusNode: focusNode,
+                      controller: counter == 0 ? pinBaru : konfirmPin,
                       autofocus: true,
                       keyboardType: TextInputType.number,
                     ),
@@ -103,6 +124,7 @@ class _BuatPINState extends State<BuatPIN> {
               right: 0,
               top: 72,
               child: Container(
+                height: double.infinity,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
                 decoration: BoxDecoration(
@@ -112,61 +134,126 @@ class _BuatPINState extends State<BuatPIN> {
                     topLeft: Radius.circular(24),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Text(
-                      "Buat PIN untuk keamanan",
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: pinController.text.length >= 1
-                              ? Colors.red
-                              : Colors.grey,
+                child: counter == 0
+                    ? Column(
+                        children: [
+                          Text(
+                            "Buat PIN untuk keamanan",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(height: 30),
+                          GestureDetector(
+                            onTap: () => focusNode.requestFocus(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: pinBaru.text.length >= 1
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: pinBaru.text.length >= 2
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: pinBaru.text.length >= 3
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: pinBaru.text.length >= 4
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: pinBaru.text.length >= 5
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: pinBaru.text.length >= 6
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 60),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Verifikasi PIN untuk keamanan",
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(height: 30),
+                            GestureDetector(
+                              onTap: () => focusNode.requestFocus(),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: konfirmPin.text.length >= 1
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: konfirmPin.text.length >= 2
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: konfirmPin.text.length >= 3
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: konfirmPin.text.length >= 4
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: konfirmPin.text.length >= 5
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                  SizedBox(width: 10),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: konfirmPin.text.length >= 6
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 10),
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: pinController.text.length >= 2
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
-                        SizedBox(width: 10),
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: pinController.text.length >= 3
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
-                        SizedBox(width: 10),
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: pinController.text.length >= 4
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
-                        SizedBox(width: 10),
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: pinController.text.length >= 5
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
-                        SizedBox(width: 10),
-                        CircleAvatar(
-                          radius: 8,
-                          backgroundColor: pinController.text.length >= 6
-                              ? Colors.red
-                              : Colors.grey,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+                      ),
               ),
             ),
             Positioned(
@@ -177,11 +264,21 @@ class _BuatPINState extends State<BuatPIN> {
                 padding: const EdgeInsets.all(16.0),
                 child: GestureDetector(
                   onTap: () {
-                    if (pinController.text.length >= 6) {
-                      Get.off(() => VerifikasiPIN());
-                    } else {
-                      Get.snackbar(
-                          "Format PIN Salah", "Masukkan PIN dengan benar");
+                    if (counter == 0) {
+                      if (pinBaru.text.length >= 6) {
+                        setState(() {
+                          counter += 1;
+                        });
+                      } else {
+                        Get.snackbar("Oops", "PIN tidak sesuai");
+                      }
+                    } else if (counter == 1) {
+                      if (konfirmPin.text == pinBaru.text) {
+                        userData.write("PIN", konfirmPin.text);
+                        Get.offAll(() => HomeScreen());
+                      } else {
+                        Get.snackbar("Oops", "PIN tidak sesuai");
+                      }
                     }
                   },
                   child: Container(

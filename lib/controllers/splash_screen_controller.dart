@@ -7,6 +7,7 @@ import 'package:kobantitar_mobile/screens/auth_screens/halaman_pin.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
 
 class SplashScreenController extends GetxController {
+  String? pin;
   String? token;
   final userData = GetStorage();
 
@@ -19,12 +20,13 @@ class SplashScreenController extends GetxController {
   void onReady() {
     super.onReady();
     token = userData.read("token");
+    pin = userData.read("PIN");
     loading();
   }
 
   Future<void> loading() async {
     Timer(Duration(seconds: 2), () {
-      if (token == null) {
+      if (pin == null) {
         Get.off(() => LoginScreen());
       } else {
         Get.off(() => HalamanPIN());

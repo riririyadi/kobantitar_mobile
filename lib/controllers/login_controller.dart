@@ -79,7 +79,7 @@ class LoginController extends GetxController {
       final json = jsonDecode(response.body);
       final data = json['data'];
       Get.off(() => DaftarAkunBaru(),
-          arguments: [nomorAnggota.toString(), "Anggota lama"]);
+          arguments: [nomorAnggota.toString(), "LAMA"]);
       return null;
     } else if (response.statusCode == 402) {
       final json = jsonDecode(response.body);

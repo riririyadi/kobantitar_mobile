@@ -27,8 +27,8 @@ class PengajuanKreditBarangFormController extends GetxController {
   dynamic argumentData = Get.arguments;
   List<TenorBarang>? tenors = <TenorBarang>[].obs;
   var detailKredit = <BarangLainCalculation>[].obs;
-  int approvalFileId = 0;
-  int approvalFileId2 = 0;
+  int? approvalFileId;
+  int? approvalFileId2;
   bool? isDoubleApproval = false;
 
   @override
@@ -49,7 +49,13 @@ class PengajuanKreditBarangFormController extends GetxController {
 
   @override
   void onClose() {
-    super.onInit();
+    tenorController.dispose();
+    tglPembayaranController.dispose();
+    dateController.dispose();
+    keperluanController.dispose();
+    namaAtasanController.dispose();
+    namaAtasan2Controller.dispose();
+    super.onClose();
   }
 
   void getTenor() async {

@@ -25,8 +25,8 @@ class PengajuanLogamMuliaFormController extends GetxController {
   dynamic argumentData = Get.arguments;
   List<TenorLogamMulia>? tenors = <TenorLogamMulia>[].obs;
   var detailKredit = <LogamMuliaCalculation>[].obs;
-  int approvalFileId = 0;
-  int approvalFileId2 = 0;
+  int? approvalFileId;
+  int? approvalFileId2;
   var isDoubleApproval = false;
   var namaAtasanController = TextEditingController();
   var namaAtasan2Controller = TextEditingController();
@@ -53,7 +53,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
     keperluanController.dispose();
     namaAtasanController.dispose();
     namaAtasan2Controller.dispose();
-    super.onInit();
+    super.onClose();
   }
 
   void getTenor() async {
@@ -140,6 +140,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
       }
       return response;
     } else {
+      Get.snackbar("Opps", "error");
       return Future.error(response);
     }
   }

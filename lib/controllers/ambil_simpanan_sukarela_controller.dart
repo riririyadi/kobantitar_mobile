@@ -8,6 +8,7 @@ import 'package:kobantitar_mobile/api_config/config.dart' as config;
 class AmbilSimpananSukarelaController extends GetxController {
   var nominalController = TextEditingController();
   final nominalFormKey = GlobalKey<FormState>();
+  dynamic argumenData = Get.arguments;
 
   final userData = GetStorage();
   late String token;

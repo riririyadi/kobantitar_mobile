@@ -11,10 +11,8 @@ import 'package:kobantitar_mobile/models/instansi.dart';
 import 'package:kobantitar_mobile/models/me.dart';
 
 class AkunController extends GetxController {
-  var isSettingLoading = false.obs;
-  var isMeLoading = false.obs;
-  var isInstansiLoading = false.obs;
-  List<Instansi> instansis = [];
+  var isSettingLoaded = false.obs;
+  var isMeLoaded = false.obs;
 
   String token = "";
   final userData = GetStorage();
@@ -22,23 +20,11 @@ class AkunController extends GetxController {
   var setting = AppSetting();
   var me = Me();
 
-  final mengundurkanDiriFormKey = GlobalKey<FormState>();
-  final passwordFormKey = GlobalKey<FormState>();
   final ubahPasswordFormKey = GlobalKey<FormState>();
 
-  var namaController = TextEditingController();
-  var jenisKelaminController = TextEditingController();
-  var nikController = TextEditingController();
-  var alamatController = TextEditingController();
-  var instansiController = TextEditingController();
-  var jabatanController = TextEditingController();
-  var nipController = TextEditingController();
   var passwordLamaController = TextEditingController();
   var passwordBaruController = TextEditingController();
   var konfirmPasswordController = TextEditingController();
-  var alasanPengunduranDiriController = TextEditingController();
-
-  var passwordController = TextEditingController();
 
   @override
   void onInit() {
@@ -52,74 +38,26 @@ class AkunController extends GetxController {
 
   @override
   void onClose() {
-    namaController.dispose();
-    jenisKelaminController.dispose();
-    nikController.dispose();
-    alamatController.dispose();
-    instansiController.dispose();
-    jabatanController.dispose();
-    nipController.dispose();
     passwordLamaController.dispose();
     passwordBaruController.dispose();
     konfirmPasswordController.dispose();
-    alasanPengunduranDiriController.dispose();
 
     super.onClose();
   }
 
-  void getSetting() async {
-    try {
-      isSettingLoading(true);
-      final data = await Service.fetchSetting();
-      if (data != null) {
-        setting = data;
-      }
-    } finally {
-      isSettingLoading(false);
-    }
-  }
-
   void getMe() async {
-    try {
-      isMeLoading(true);
-
-      final data = await Service.fetchMe(token);
-      if (data != null) {
-        me = data;
-      }
-    } finally {
-      isMeLoading(false);
+    final data = await Service.fetchMe(token);
+    if (data != null) {
+      me = data;
+      isMeLoaded(true);
     }
   }
 
-  void getInstansi() async {
-    try {
-      isInstansiLoading(true);
-      var data = await Service.fetchInstansi();
-      if (data != null) {
-        instansis = data;
-      }
-    } finally {
-      isInstansiLoading(false);
-    }
-  }
-
-  Future<String?> ajukanPengunduranDiri(String alasan, String password) async {
-    final response = await http.post(
-      Uri.parse("${config.baseURL}/account/pengunduran-diri"),
-      headers: <String, String>{
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': 'Bearer $token',
-      },
-      body:
-          jsonEncode(<String, String>{'alasan': alasan, 'password': password}),
-    );
-
-    if (response.statusCode == 200) {
-      return "ok";
-    } else {
-      return null;
+  void getSetting() async {
+    final data = await Service.fetchSetting();
+    if (data != null) {
+      setting = data;
+      isSettingLoaded(true);
     }
   }
 

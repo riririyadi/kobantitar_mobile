@@ -18,6 +18,14 @@ class DaftarAkunBaru extends StatefulWidget {
 
 class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
   final SignUpController controller = Get.put(SignUpController());
+  final scrollController = ScrollController();
+
+  void scrollToEnd() {
+    final double end = scrollController.position.maxScrollExtent;
+    scrollController.jumpTo(end);
+  }
+
+  bool isSubmitting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +94,7 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                     SizedBox(
                       height: 50.0,
                       child: ListView(
+                        controller: scrollController,
                         scrollDirection: Axis.horizontal,
                         padding:
                             const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 10.0),
@@ -199,12 +208,14 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                           } else if (controller.step == 2) {
                             if (controller.detailAkunFormKey.currentState!
                                 .validate()) {
+                              scrollToEnd();
                               setState(() {
                                 controller.step += 1;
                               });
                             }
                           } else {
-                            controller.signUp().then((value) => print(value));
+                            _dialog(context);
+                            // controller.signUp().then((value) => print(value));
                           }
                         },
                         child: Container(
@@ -245,5 +256,118 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
         ),
       ),
     );
+  }
+
+  _dialog(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext c) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.all(20),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(16.0))),
+            actions: [
+              Container(
+                padding: EdgeInsets.all(10),
+                child: isSubmitting
+                    ? Center(child: Text("Please wait"))
+                    : Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                  "Anda Setuju Untuk Menjadi Anggota Kobantitar?",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                  )),
+                              SizedBox(height: 20),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text.rich(
+                                      TextSpan(
+                                        text: 'Dengan ini saya menyetujui ',
+                                        style: const TextStyle(
+                                            fontSize: 12, color: Colors.black),
+                                        children: <InlineSpan>[
+                                          const TextSpan(
+                                              text: 'Syarat & Ketentuan',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  color: Color(0xffEE6A6A))),
+                                          const TextSpan(
+                                              text:
+                                                  ' menjadi Anggota Koperasi Banten Tiga Lontar',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                        ],
+                                      ),
+                                    ),
+                                  ]),
+                              SizedBox(height: 20),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.back();
+                                        },
+                                        child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    width: 1,
+                                                    color: Colors.grey),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child:
+                                                Center(child: Text("Batal"))),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10.0),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {},
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                colors: [
+                                                  Color(0xff851212),
+                                                  Color(0xffFF8A8A)
+                                                ]),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "Setuju",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ]),
+                      ),
+              ),
+            ],
+          );
+        });
   }
 }
