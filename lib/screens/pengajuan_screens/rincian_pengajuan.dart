@@ -19,7 +19,7 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [Color(0xffEE6A6A), Color(0xffC30707)]),

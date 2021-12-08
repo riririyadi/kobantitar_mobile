@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/rincian_pengajuan_controller.dart';
 import 'package:kobantitar_mobile/models/detail_pengajuan.dart';
+import 'package:kobantitar_mobile/screens/components/info_widget.dart';
+import 'package:kobantitar_mobile/screens/helper.dart';
 
 class RiwayatTagihan extends StatefulWidget {
   const RiwayatTagihan({Key? key}) : super(key: key);
@@ -17,19 +19,32 @@ class _RiwayatTagihanState extends State<RiwayatTagihan> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text("Riwayat Tagihan",
-                style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600)),
-          ),
-          Column(
-            children: riwayatTagihan(),
-          )
-        ],
-      ),
+      child: controller.pengajuan.status == "Diproses"
+          ? buildDiproses()
+          : buildTagihanList(),
+    );
+  }
+
+  Column buildTagihanList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text("Riwayat Tagihan",
+              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600)),
+        ),
+        Column(
+          children: riwayatTagihan(),
+        )
+      ],
+    );
+  }
+
+  Widget buildDiproses() {
+    return const InfoWidget(
+      icon:  Icons.access_time_filled_rounded,
+      text:  'Pengajuan anda sedang diproses',
     );
   }
 
@@ -70,7 +85,8 @@ class _RiwayatTagihanState extends State<RiwayatTagihan> {
                 ),
                 Row(
                   children: [
-                    Text("Rp ${riwayat.amount}",
+                    Text(
+                        "Rp ${KobantitarHelper.toRupiah(riwayat.amount?.toInt())}",
                         style: TextStyle(
                           color: Colors.green,
                         )),
@@ -94,3 +110,4 @@ class _RiwayatTagihanState extends State<RiwayatTagihan> {
     return list; // all widget added now retrun the list here
   }
 }
+

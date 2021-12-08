@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/rincian_pengajuan_controller.dart';
 import 'dart:math';
 
+import 'package:kobantitar_mobile/screens/helper.dart';
+
 class DetailPengajuan extends StatefulWidget {
   const DetailPengajuan({Key? key}) : super(key: key);
 
@@ -20,7 +22,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
     return Obx(() {
       if (controller.isLoading.value) {
         return Container(
-          height: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.8,
           child: Center(child: CircularProgressIndicator()),
         );
       } else {
@@ -81,7 +83,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                             height: 5.0,
                           ),
                           Text(
-                            'Rp ${controller.pengajuan.totalAngsuran}',
+                            'Rp ${KobantitarHelper.toRupiah(controller.pengajuan.totalAngsuran)}',
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.w600),
                           )
@@ -131,12 +133,12 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                         ],
                       ),
                       SizedBox(height: 5.0),
-                      Row(
+                      Column(
+                        mainAxisSize : MainAxisSize.min,
                         children: [
                           Text('Keterangan', style: TextStyle(fontSize: 12.0)),
-                          Spacer(),
                           Text(
-                            "${controller.pengajuan.keterangan}",
+                            "${controller.pengajuan.keterangan ?? "-"}",
                             style: TextStyle(
                                 fontSize: 12.0, fontWeight: FontWeight.w600),
                           ),

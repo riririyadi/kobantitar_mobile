@@ -83,7 +83,7 @@ class Pengajuan {
   String? caption;
   String? type;
   int? totalAngsuran;
-  double? angsuranPerBulan;
+  int? angsuranPerBulan;
   String? tenor;
   String? status;
   String? keterangan;

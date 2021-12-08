@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:kobantitar_mobile/screens/components/camera.dart';
 import 'package:kobantitar_mobile/screens/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -25,11 +27,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('A bg message just showed up :  ${message.messageId}');
 }
-
+late List<CameraDescription> cameras;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  cameras = await availableCameras();
 
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
@@ -43,7 +46,7 @@ void main() async {
   );
 
   await GetStorage.init();
-  runApp(const KobantitarApp());
+  runApp(KobantitarApp());
 }
 
 class KobantitarApp extends StatelessWidget {
@@ -55,6 +58,7 @@ class KobantitarApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'Montserrat'),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
+      // home: CameraApp(keterangan: "Foto ini akan digunakan untuk pengajuan Kredit Logam Mulia di Kobantitar",)
     );
   }
 }

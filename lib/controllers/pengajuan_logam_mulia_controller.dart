@@ -10,6 +10,8 @@ class PengajuanLogamMuliaController extends GetxController {
   final userData = GetStorage();
   late String token;
   List<Amount>? amountList = <Amount>[].obs;
+  List<int>? featuredAmountIds = <int>[].obs;
+  List<Amount>? featuredAmountList = <Amount>[].obs;
   var isLoading = false.obs;
 
   @override
@@ -31,8 +33,12 @@ class PengajuanLogamMuliaController extends GetxController {
     try {
       isLoading(true);
       final res = await Service.fetchPengajuanLogamMuliaConfig(token);
+      print(res?.data);
       if (res != null) {
         amountList = res.data!.amounts;
+        featuredAmountIds = res.data!.featuredAmountIds;
+        featuredAmountList = amountList?.where((element) => featuredAmountIds!.contains(element.id)).toList();
+        print(featuredAmountList);
       }
     } finally {
       isLoading(false);

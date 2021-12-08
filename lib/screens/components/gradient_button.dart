@@ -15,7 +15,7 @@ class GradientButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: this.onTap,
+      onTap: onTap,
       child: Container(
         height: 48.0,
         decoration: BoxDecoration(
@@ -25,7 +25,7 @@ class GradientButton extends StatelessWidget {
               colors: this.gradientColors),
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-            this.text == "Non Anggota"
+            text == "Non Anggota"
                 ? BoxShadow(
                     color: Colors.black.withOpacity(0.0),
                     blurRadius: 0.0,

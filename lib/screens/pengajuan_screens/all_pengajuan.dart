@@ -147,13 +147,17 @@ class _SemuaPengajuanState extends State<SemuaPengajuan> {
                               "id": pengajuan.id,
                               "type": pengajuan.type
                             }),
-                        child: Column(children: [
-                          Text(
-                            'Lihat Rincian',
-                            style:
-                                TextStyle(color: Colors.black, fontSize: 12.0),
-                          ),
-                        ]),
+                        child: Container(
+                          width: double.infinity,
+                          color: Colors.blue,
+                          child: Column(children: [
+                            Text(
+                              'Lihat Rincian',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 12.0),
+                            ),
+                          ]),
+                        ),
                       )
                     ],
                   ),

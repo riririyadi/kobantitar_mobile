@@ -21,11 +21,13 @@ class _HalamanPINState extends State<HalamanPIN> {
   List<int> pin = [];
   void insertPIN(int digit) {
     if (pin.length < 6) {
+      print(digit);
       setState(() {
         controller.listPin.add(digit);
         controller.pinController.text = (rng.nextInt(9999) * digit).toString();
         pin.add(digit);
       });
+      print(controller.pinController.text);
     }
   }
 

@@ -11,6 +11,7 @@ import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_calculation.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_configuration.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:kobantitar_mobile/screens/components/camera.dart';
 
 class PengajuanLogamMuliaFormController extends GetxController {
   var tenorController = TextEditingController();
@@ -94,8 +95,8 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
-      final image = await ImagePicker().pickImage(source: imageSource);
-
+      final image = await Get.to(CameraApp(keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
+      print(image);
       if (image != null) {
         if (imageContext == "app1") {
           selectedSelfieImagePath.value = image.path;
@@ -146,14 +147,25 @@ class PengajuanLogamMuliaFormController extends GetxController {
   }
 
   void printData() {
-    print(argumentData.id);
-    print(tenorController.text);
-    print(dateController.text);
+
+
     print(keperluanController.text);
-    print(namaAtasanController.text);
-    print(approvalFileId);
-    print(namaAtasan2Controller.text);
-    print(approvalFileId2);
+
+  }
+
+   bool checkDataSatu() {
+    bool isTenorEmpty = tenorController.text.isNotEmpty;
+    bool isDateEmpty = dateController.text.isNotEmpty;
+    bool isKeperluanEmpty = keperluanController.text.isNotEmpty;
+    bool isNamaAtasanEmtpty = namaAtasanController.text.isNotEmpty;
+    bool approvalFileIdEmpty = !(approvalFileId == null);
+    return isTenorEmpty && isDateEmpty && isKeperluanEmpty && isNamaAtasanEmtpty && approvalFileIdEmpty;
+  }
+
+  bool checkDataDua() {
+    bool approvalFileId2Empty = !(approvalFileId2 == null);
+    bool namaAtasan2Empty = namaAtasan2Controller.text.isNotEmpty;
+    return checkDataSatu() && approvalFileId2Empty && namaAtasan2Empty;
   }
 
   Future<String?> submitPengajuanLogamMulia() async {

@@ -41,7 +41,10 @@ class HalamanPINController extends GetxController {
     super.onReady();
     pinController.addListener(() {
       bool equality = dcEquality.equals(pin, listPin);
-
+      if (listPin.length < 6) {
+        return;
+      }
+      print(equality);
       if (equality) {
         Future.delayed(Duration(milliseconds: 200), () {
           Get.defaultDialog(
@@ -61,6 +64,21 @@ class HalamanPINController extends GetxController {
         Future.delayed(Duration(seconds: 2), () {
           Get.offAll(() => HomeScreen());
         });
+      } else {
+        Get.snackbar(
+          'Pin salah',
+          "Pin yang anda masukkan salah",
+           snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          borderRadius: 20,
+          margin: EdgeInsets.all(15),
+          colorText: Colors.white,
+          duration: Duration(seconds: 4),
+          isDismissible: true,
+          dismissDirection: SnackDismissDirection.HORIZONTAL,
+          forwardAnimationCurve: Curves.easeOutBack,
+
+        );
       }
     });
   }

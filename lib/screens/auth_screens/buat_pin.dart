@@ -19,9 +19,11 @@ class _BuatPINState extends State<BuatPIN> {
   int counter = 0;
   final userData = GetStorage();
   FocusNode focusNode = FocusNode();
+  FocusNode confirmFocusNode = FocusNode();
 
   @override
   void initState() {
+    focusNode.requestFocus();
     pinBaru = TextEditingController()
       ..addListener(() {
         if (pinBaru.text.length < 7) {
@@ -110,7 +112,14 @@ class _BuatPINState extends State<BuatPIN> {
                     TextField(
                       maxLength: 6,
                       focusNode: focusNode,
-                      controller: counter == 0 ? pinBaru : konfirmPin,
+                      controller: pinBaru,
+                      autofocus: true,
+                      keyboardType: TextInputType.number,
+                    ),
+                     TextField(
+                      maxLength: 6,
+                      focusNode: confirmFocusNode,
+                      controller: konfirmPin,
                       autofocus: true,
                       keyboardType: TextInputType.number,
                     ),
@@ -203,7 +212,7 @@ class _BuatPINState extends State<BuatPIN> {
                             ),
                             SizedBox(height: 30),
                             GestureDetector(
-                              onTap: () => focusNode.requestFocus(),
+                              onTap: () => confirmFocusNode.requestFocus(),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -269,6 +278,7 @@ class _BuatPINState extends State<BuatPIN> {
                         setState(() {
                           counter += 1;
                         });
+                        confirmFocusNode.requestFocus();
                       } else {
                         Get.snackbar("Oops", "PIN tidak sesuai");
                       }

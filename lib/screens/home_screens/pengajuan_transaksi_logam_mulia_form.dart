@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'package:kobantitar_mobile/controllers/pengajuan_logam_mulia_form_controller.dart';
+import 'package:kobantitar_mobile/screens/components/gradient_button.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
 class PengajuanTransaksiLogamMuliaForm extends StatefulWidget {
@@ -31,6 +32,8 @@ class _PengajuanTransaksiLogamMuliaFormState
   bool simpanGambar2 = false;
   bool gambar1tersimpan = false;
   bool gambar2tersimpan = false;
+
+  bool _available = false;
 
   dynamic tenorValue;
 
@@ -226,6 +229,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                                 : null,
                                             value: tenorValue,
                                             onChanged: (value) => setState(() {
+                                              checkIsAvailable();
                                               controller.tenorController.text =
                                                   value.toString();
                                               tenorValue = value;
@@ -256,6 +260,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                       onTap: () => _selectDate(context),
                                       child: AbsorbPointer(
                                         child: TextFormField(
+                                          onChanged: (s) => checkIsAvailable(),
                                           style: TextStyle(fontSize: 12.0),
                                           controller: controller.dateController,
                                           decoration: InputDecoration(
@@ -285,6 +290,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                     width: double.infinity,
                                     height: 40,
                                     child: TextFormField(
+                                      onChanged: (s) => checkIsAvailable(),
                                       style: TextStyle(fontSize: 12.0),
                                       controller:
                                           controller.keperluanController,
@@ -590,6 +596,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                 height: 65,
                                 child: TextFormField(
                                   controller: controller.namaAtasanController,
+                                  onChanged: (s) => checkIsAvailable(),
                                   style: TextStyle(
                                     fontSize: 12.0,
                                   ),
@@ -814,6 +821,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                     TextFormField(
                                       controller:
                                           controller.namaAtasan2Controller,
+                                      onChanged: (s) => checkIsAvailable(),
                                       style: TextStyle(
                                         fontSize: 12.0,
                                       ),
@@ -855,6 +863,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                 child: Checkbox(
                                   value: checkBoxValue,
                                   onChanged: (value) {
+                                    checkIsAvailable();
                                     setState(() {
                                       this.checkBoxValue = value;
                                     });
@@ -895,66 +904,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            controller.printData();
-                            if (checkBoxValue == true) {
-                              if (controller.isDoubleApproval == true) {
-                                controller
-                                    .submitPengajuanLogamMulia2()
-                                    .then((value) {
-                                  print(value);
-                                  Get.to(() => PengajuanSukses());
-                                }).catchError((e) {
-                                  print(e);
-                                });
-                              } else {
-                                controller
-                                    .submitPengajuanLogamMulia()
-                                    .then((value) {
-                                  print(value);
-                                  Get.to(() => PengajuanSukses());
-                                }).catchError((e) {
-                                  print(e);
-                                });
-                              }
-                            }
-                          },
-                          child: Container(
-                            height: 48.0,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xff851212),
-                                    Color(0xffFF8A8A)
-                                  ]),
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 1.0,
-                                  spreadRadius: 0.0,
-                                  offset: Offset(
-                                      0.0, 4.0), // shadow direction: bottom
-                                )
-                              ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Ajukan",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      buildAjukanButton(),
                     ],
                   ),
                 ),
@@ -964,6 +914,48 @@ class _PengajuanTransaksiLogamMuliaFormState
         ),
       ),
     );
+  }
+
+  bool checkIsAvailable() {
+    bool hasil = (checkBoxValue == true) &&
+        ((controller.isDoubleApproval && controller.checkDataDua()) ||
+            controller.checkDataSatu());
+    setState(() {
+      _available = hasil;
+    });
+    return hasil;
+  }
+
+  Widget buildAjukanButton() {
+    List<Color> gradientColors = !_available
+        ? [(Colors.grey[300])!, (Colors.grey[300])!]
+        : [Color(0xff851212)!, Color(0xffFF8A8A)!];
+    return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GradientButton(
+          text: "Ajukan",
+          onTap: () {
+            if (!checkIsAvailable()) {
+              return;
+            }
+            if (controller.isDoubleApproval == true) {
+              controller.submitPengajuanLogamMulia2().then((value) {
+                print(value);
+                Get.to(() => PengajuanSukses());
+              }).catchError((e) {
+                print(e);
+              });
+            } else {
+              controller.submitPengajuanLogamMulia().then((value) {
+                print(value);
+                Get.to(() => PengajuanSukses());
+              }).catchError((e) {
+                print(e);
+              });
+            }
+          },
+          gradientColors: gradientColors,
+        ));
   }
 
   _selectDate(BuildContext context) async {

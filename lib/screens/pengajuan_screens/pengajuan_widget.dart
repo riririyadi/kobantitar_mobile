@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/controllers/pengajuan_controller.dart';
 import 'package:kobantitar_mobile/models/pengajuan.dart';
+import 'package:kobantitar_mobile/screens/components/info_widget.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/rincian_pengajuan.dart';
 
 class PengajuanWidget extends StatefulWidget {
@@ -37,7 +38,7 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
           .toList();
     } else if (_jenisPengajuan == "KM") {
       dataPengajuan = dataPengajuan
-          .where((tagihan) => tagihan.type!.endsWith("KK"))
+          .where((tagihan) => tagihan.type!.endsWith("KM"))
           .toList();
     } else {
       dataPengajuan = dataPengajuan;
@@ -433,165 +434,189 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                   ],
                 ),
               ),
-              Flexible(
-                child: ListView.builder(
-                    padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-                    itemCount: searchController.text.isEmpty
-                        ? dataPengajuan.length
-                        : dataPengajuanFiltered.length,
-                    itemBuilder: (context, index) {
-                      final pengajuan = searchController.text.isEmpty
-                          ? dataPengajuan[index]
-                          : dataPengajuanFiltered[index];
-                      return Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-                        child: Container(
-                          padding: EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 7.0,
-                                spreadRadius: 1.0,
-                                offset: Offset(
-                                    0.0, 5.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xfff0f0f0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                        child: imageContainer(pengajuan.type!)),
-                                  ),
-                                  SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  Text(pengajuan.caption!,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600))
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    'Total Angsuran',
-                                    style: TextStyle(fontSize: 12.0),
-                                  ),
-                                  SizedBox(
-                                    height: 5.0,
-                                  ),
-                                  Text(
-                                    'Rp ${currencyFormatter.format(pengajuan.totalAngsuran)}',
-                                    style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w600),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              SizedBox(height: 5.0),
-                              Row(
-                                children: [
-                                  Text('Angsuran Per Bulan',
-                                      style: TextStyle(fontSize: 12.0)),
-                                  Spacer(),
-                                  Text(
-                                    'Rp ${currencyFormatter.format(pengajuan.angsuranPerBulan)}',
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5.0),
-                              Row(
-                                children: [
-                                  Text('Tenor',
-                                      style: TextStyle(fontSize: 12.0)),
-                                  Spacer(),
-                                  Text(
-                                    pengajuan.tenor!,
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5.0),
-                              Row(
-                                children: [
-                                  Text('Status',
-                                      style: TextStyle(fontSize: 12.0)),
-                                  Spacer(),
-                                  Text(
-                                    pengajuan.status!,
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.green),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5.0),
-                              Row(
-                                children: [
-                                  Text('Keterangan',
-                                      style: TextStyle(fontSize: 12.0)),
-                                  Spacer(),
-                                  Text(
-                                    "",
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.0),
-                              Container(
-                                height: 1,
-                                decoration:
-                                    BoxDecoration(color: Colors.grey[300]),
-                              ),
-                              SizedBox(height: 10.0),
-                              GestureDetector(
-                                onTap: () => Get.to(() => RincianPengajuan(),
-                                    arguments: {
-                                      "id": pengajuan.id,
-                                      "type": pengajuan.type
-                                    }),
-                                child: Column(children: [
-                                  Text(
-                                    'Lihat Rincian',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12.0),
-                                  ),
-                                ]),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-              ),
+              isEmpty()
+                  ? buildIfEmpty()
+                  : Flexible(
+                      child: ListView.builder(
+                          padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
+                          itemCount: searchController.text.isEmpty
+                              ? dataPengajuan.length
+                              : dataPengajuanFiltered.length,
+                          itemBuilder: (context, index) {
+                            final pengajuan = searchController.text.isEmpty
+                                ? dataPengajuan[index]
+                                : dataPengajuanFiltered[index];
+                            return buildPengajuanItem(pengajuan);
+                          }),
+                    ),
             ],
           ),
         ),
       ),
     ]);
+  }
+
+  bool isEmpty() {
+    if (searchController.text.isEmpty) {
+      return dataPengajuan.isEmpty;
+    }
+    return dataPengajuanFiltered.isEmpty;
+  }
+
+  Widget buildIfEmpty() {
+    return const InfoWidget(
+        icon: Icons.assistant_photo, text: 'Anda tidak memiliki pengajuan');
+  }
+
+  Padding buildPengajuanItem(DataPengajuan pengajuan) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      child: GestureDetector(
+        onTap: () {
+          if (pengajuan.type == "KM") return;
+          Get.to(() => RincianPengajuan(),
+              arguments: {"id": pengajuan.id, "type": pengajuan.type});
+        },
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 7.0,
+                spreadRadius: 1.0,
+                offset: Offset(0.0, 5.0), // shadow direction: bottom
+              )
+            ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Color(0xfff0f0f0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(child: imageContainer(pengajuan.type!)),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(pengajuan.caption!,
+                      style: TextStyle(fontWeight: FontWeight.w600))
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Total Angsuran',
+                    style: TextStyle(fontSize: 12.0),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Text(
+                    'Rp ${currencyFormatter.format(pengajuan.totalAngsuran)}',
+                    style:
+                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(height: 5.0),
+              Row(
+                children: [
+                  Text('Angsuran Per Bulan', style: TextStyle(fontSize: 12.0)),
+                  Spacer(),
+                  Text(
+                    'Rp ${currencyFormatter.format(pengajuan.angsuranPerBulan)}',
+                    style:
+                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5.0),
+              Row(
+                children: [
+                  Text('Tenor', style: TextStyle(fontSize: 12.0)),
+                  Spacer(),
+                  Text(
+                    pengajuan.tenor!,
+                    style:
+                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5.0),
+              Row(
+                children: [
+                  Text('Status', style: TextStyle(fontSize: 12.0)),
+                  Spacer(),
+                  Text(
+                    pengajuan.status!,
+                    style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.green),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5.0),
+              Row(
+                children: [
+                  Text('Keterangan', style: TextStyle(fontSize: 12.0)),
+                  Spacer(),
+                  Text(
+                    "",
+                    style:
+                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              buildDetailButton(pengajuan)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildDetailButton(DataPengajuan pengajuan) {
+    if (pengajuan.type == "KM") {
+      return Container();
+    }
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(height: 10.0),
+        Container(
+          height: 1,
+          decoration: BoxDecoration(color: Colors.grey[300]),
+        ),
+        const SizedBox(height: 10.0),
+        Column(children: [
+          Container(
+            width: double.infinity,
+            color: Colors.transparent,
+            height: 25.0,
+            child: const Center(
+              child: Text(
+                'Lihat Rincian',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black, fontSize: 12.0),
+              ),
+            ),
+          ),
+        ]),
+      ],
+    );
   }
 
   Widget imageContainer(String tipePengajuan) {
