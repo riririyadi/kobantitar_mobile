@@ -95,7 +95,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
-      final image = await Get.to(CameraApp(keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
+      final XFile image = await Get.to(CameraApp(keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
       print(image);
       if (image != null) {
         if (imageContext == "app1") {

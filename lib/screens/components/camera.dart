@@ -90,7 +90,7 @@ class _CameraAppState extends State<CameraApp> {
 
     try {
       XFile file = await cameraController.takePicture();
-      Get.back(result: "kocak");
+      Get.back(result: file);
       return file;
     } on CameraException catch (e) {
       return null;
