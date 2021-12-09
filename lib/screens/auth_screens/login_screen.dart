@@ -9,6 +9,7 @@ import 'package:kobantitar_mobile/screens/auth_screens/daftar_akun_baru.dart';
 import 'package:kobantitar_mobile/screens/components/gradient_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/screens/home_screen.dart';
+import 'package:kobantitar_mobile/screens/splash_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,115 +29,117 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      /** @change to true */
-      resizeToAvoidBottomInset: true,
-      /** @change wrap whole thing w/ this thing to avoid soft keyboard covering InputText  */
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width,
-            minHeight: MediaQuery.of(context).size.height,
-          ),
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
+    return KobantitarScreen(
+      child: Scaffold(
+        /** @change to true */
+        resizeToAvoidBottomInset: true,
+        /** @change wrap whole thing w/ this thing to avoid soft keyboard covering InputText  */
+        body: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: MediaQuery.of(context).size.width,
+              minHeight: MediaQuery.of(context).size.height,
             ),
-            child: Stack(
-              children: [
-                /** @change move logo above */
-                Positioned(
-                  top: MediaQuery.of(context).size.height / 7,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    child: Center(
-                      child: Image(
-                        image: AssetImage("assets/kobantitar-logo.png"),
-                        height: 94.0,
-                        width: 225.0,
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
+              ),
+              child: Stack(
+                children: [
+                  /** @change move logo above */
+                  Positioned(
+                    top: MediaQuery.of(context).size.height / 7,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      child: Center(
+                        child: Image(
+                          image: AssetImage("assets/kobantitar-logo.png"),
+                          height: 94.0,
+                          width: 225.0,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(24),
-                          topLeft: Radius.circular(24),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(24),
+                            topLeft: Radius.circular(24),
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(25.0),
-                        child: Column(
-                          children: [
-                            Text('Selamat Datang di Kobantitar Mobile'),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Form(
-                              key: loginFormKey,
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 65, child: emailField()),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  SizedBox(height: 65, child: passwordField()),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () => controller.openLink(),
-                                        child: Text(
-                                          'Lupa username / password?',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xffC30707)),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 25,
-                                  ),
-                                  loginButton(),
-                                ],
+                        child: Padding(
+                          padding: const EdgeInsets.all(25.0),
+                          child: Column(
+                            children: [
+                              Text('Selamat Datang di Kobantitar Mobile'),
+                              SizedBox(
+                                height: 30,
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text('Belum memiliki akun?'),
-                            TextButton(
-                              onPressed: () {
-                                _bottomSheet(context);
-                              },
-                              child: Text(
-                                'Daftar Sekarang',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xffC30707),
+                              Form(
+                                key: loginFormKey,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 65, child: emailField()),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    SizedBox(height: 65, child: passwordField()),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () => controller.openLink(),
+                                          child: Text(
+                                            'Lupa password?',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xffC30707)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    loginButton(),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )),
-                ),
-              ],
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text('Belum memiliki akun?'),
+                              TextButton(
+                                onPressed: () {
+                                  _bottomSheet(context);
+                                },
+                                child: Text(
+                                  'Daftar Sekarang',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xffC30707),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

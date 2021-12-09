@@ -6,11 +6,13 @@ class GradientButton extends StatelessWidget {
   final Function() onTap;
   final List<Color> gradientColors;
   final bool isDisabled;
+  final List<BoxShadow>? boxShadow;
   const GradientButton({
     required this.text,
     required this.onTap,
+    this.boxShadow,
     this.isDisabled = false,
-    this.gradientColors = const [Color(0xff851212), Color(0xffFF8A8A)],
+    this.gradientColors = const [Color(0xffC04C4C), Color(0xffF37F7F)],
     Key? key,
   }) : super(key: key);
 
@@ -26,20 +28,20 @@ class GradientButton extends StatelessWidget {
               end: Alignment.centerRight,
               colors: isDisabled ? [Colors.grey, Colors.grey] : this.gradientColors ),
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            text == "Non Anggota"
+          boxShadow:  this.boxShadow != null ? boxShadow  : [
+            (text == "Non Anggota")
                 ? BoxShadow(
                     color: Colors.black.withOpacity(0.0),
                     blurRadius: 0.0,
                     spreadRadius: 0.0,
                     offset: Offset(0.0, 0.0), // shadow direction: bottom
                   )
-                : BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 1.0,
-                    spreadRadius: 0.0,
-                    offset: Offset(0.0, 4.0), // shadow direction: bottom
-                  )
+                : const BoxShadow(
+              color: Color(0x59A93636),
+              blurRadius: 7.0,
+              spreadRadius: 0.0,
+              offset: Offset(0.0, 4.0), // shadow direction: bottom
+            )
           ],
         ),
         child: Center(

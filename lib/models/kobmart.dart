@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:kobantitar_mobile/models/dashboard.dart';
+
 Kobmart kobmartFromJson(String str) => Kobmart.fromJson(json.decode(str));
 
 String kobmartToJson(Kobmart data) => json.encode(data.toJson());
@@ -54,30 +56,3 @@ class DataKobmart {
       };
 }
 
-class PromoProduct {
-  PromoProduct({
-    this.id,
-    this.imageUrl,
-    this.hargaAwal,
-    this.hargaPromo,
-  });
-
-  String? id;
-  String? imageUrl;
-  int? hargaAwal;
-  int? hargaPromo;
-
-  factory PromoProduct.fromJson(Map<String, dynamic> json) => PromoProduct(
-        id: json["id"],
-        imageUrl: json["image_url"],
-        hargaAwal: json["harga_awal"],
-        hargaPromo: json["harga_promo"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "image_url": imageUrl,
-        "harga_awal": hargaAwal,
-        "harga_promo": hargaPromo,
-      };
-}

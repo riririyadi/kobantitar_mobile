@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:kobantitar_mobile/controllers/kobantitar_mart_list_produk_controller.dart';
 import 'package:kobantitar_mobile/models/product.dart';
+import 'package:kobantitar_mobile/screens/components/info_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'keranjang.dart';
@@ -74,6 +75,7 @@ class _KobantitarMartSearchListProdukState
   }
 
   late Uri uri;
+
   Future<bool> getProducts({bool isRefresh = false}) async {
     if (isRefresh) {
       currentPage = 1;
@@ -310,71 +312,107 @@ class _KobantitarMartSearchListProdukState
                               }
                             },
                           ),
-                          child: ListView.builder(
-                            itemCount: products.length,
-                            itemBuilder: (context, index) {
-                              final product = products[index];
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16.0, 8, 16.0, 8),
-                                child: Container(
-                                    padding: EdgeInsets.all(16.0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 5.0,
-                                          spreadRadius: 1.0,
-                                          offset: Offset(0.0,
-                                              5.0), // shadow direction: bottom
-                                        )
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${product.name}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600)),
-                                        Text(
-                                            "Rp ${currencyFormatter.format(product.price)}",
-                                            style:
-                                                TextStyle(color: Colors.red)),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                controller.addProduct(product);
-                                              },
-                                              child: Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 10.0,
-                                                      vertical: 5.0),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                  child: Text("+ Keranjang",
+                          child: products.length == 0
+                              ? InfoWidget(
+                                  icon: Icons.remove_shopping_cart,
+                                  text: "Produk yang anda cari tidak ditemukan")
+                              : ListView.builder(
+                                  itemCount: products.length,
+                                  itemBuilder: (context, index) {
+                                    final product = products[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          16.0, 8, 16.0, 8),
+                                      child: Container(
+                                          padding: EdgeInsets.all(16.0),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.2),
+                                                blurRadius: 5.0,
+                                                spreadRadius: 1.0,
+                                                offset: Offset(0.0,
+                                                    5.0), // shadow direction: bottom
+                                              )
+                                            ],
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("${product.name}",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600)),
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                                textBaseline: TextBaseline.alphabetic,
+                                                children: [
+                                                  Text(
+
+                                                      "Rp ${currencyFormatter.format(product.price)}",
                                                       style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                          fontSize: 12))),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    )),
-                              );
-                            },
-                          ),
+                                                          color: Colors.red)),
+                                                  product.beforeDiscountPrice !=
+                                                          null
+                                                      ? Padding(
+                                                        padding: const EdgeInsets.only(left : 4.0),
+                                                        child: Text(
+                                                            "Rp ${currencyFormatter.format(product.beforeDiscountPrice)}",
+                                                            style: TextStyle(
+                                                              color: Colors.grey,
+                                                              fontSize: 12,
+                                                              decoration: TextDecoration.lineThrough
+                                                            )),
+                                                      )
+                                                      : Container(),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      controller
+                                                          .addProduct(product);
+                                                    },
+                                                    child: Container(
+                                                        padding:
+                                                            EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10.0,
+                                                                    vertical:
+                                                                        5.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.blue,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        child: Text(
+                                                            "+ Keranjang",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 12))),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          )),
+                                    );
+                                  },
+                                ),
                         ),
                       ),
                     ],

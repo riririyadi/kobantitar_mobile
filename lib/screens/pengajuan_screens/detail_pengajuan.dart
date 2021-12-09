@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -135,11 +136,14 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                       SizedBox(height: 5.0),
                       Column(
                         mainAxisSize : MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text('Keterangan', style: TextStyle(fontSize: 12.0)),
                           Text(
                             "${controller.pengajuan.keterangan ?? "-"}",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
+
                                 fontSize: 12.0, fontWeight: FontWeight.w600),
                           ),
                         ],

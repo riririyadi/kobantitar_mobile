@@ -15,33 +15,14 @@ class TagihanWidget extends StatefulWidget {
 
 class _TagihanWidgetState extends State<TagihanWidget> {
   final TagihanController controller = Get.put(TagihanController());
-
   String _jenisTagihan = "ALL";
-  @override
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
   List<DataTagihan> dataTagihan = [];
   List<DataTagihan> dataTagihanFiltered = [];
-  final currencyFormatter = NumberFormat('#,##0', 'ID');
   final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    dataTagihan = controller.tagihanList;
-    if (_jenisTagihan == "LM") {
-      dataTagihan =
-          dataTagihan.where((tagihan) => tagihan.type!.endsWith("LM")).toList();
-    } else if (_jenisTagihan == "KB") {
-      dataTagihan =
-          dataTagihan.where((tagihan) => tagihan.type!.endsWith("KB")).toList();
-    } else if (_jenisTagihan == "KK") {
-      dataTagihan =
-          dataTagihan.where((tagihan) => tagihan.type!.endsWith("KK")).toList();
-    } else if (_jenisTagihan == "KM") {
-      dataTagihan =
-          dataTagihan.where((tagihan) => tagihan.type!.endsWith("KK")).toList();
-    } else {
-      dataTagihan = dataTagihan;
-    }
-
     return Stack(children: [
       Positioned(
         left: 0,
@@ -102,16 +83,11 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                       )
                     ],
                   ),
-                  child: TextField(
+                  child: TextFormField(
                     controller: searchController,
                     onChanged: (value) {
-                      setState(() {
-                        dataTagihanFiltered = dataTagihan
-                            .where((tagihan) => tagihan.caption!
-                                .toLowerCase()
-                                .contains(value.toLowerCase()))
-                            .toList();
-                      });
+                      controller.setFilter(q : value);
+                      setState(() {});
                     },
                     style: TextStyle(
                       fontSize: 14.0,
@@ -127,8 +103,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                             style: BorderStyle.none,
                           ),
                         ),
-                        prefixIcon: IconButton(
-                            onPressed: () {}, icon: Icon(Icons.search)),
+                        prefixIcon: Icon(Icons.search),
                         fillColor: Colors.white,
                         filled: true),
                   ),
@@ -140,281 +115,27 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 10.0),
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisTagihan = "ALL";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisTagihan == "ALL"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Semua Tagihan',
-                              style: TextStyle(
-                                  color: _jenisTagihan == "ALL"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                      text: "Semua Tagihan",
+                      type: "ALL"
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisTagihan = "LM";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisTagihan == "LM"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Tagihan Logam Mulia',
-                              style: TextStyle(
-                                  color: _jenisTagihan == "LM"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                        text: "Tagihan Logam Mulia",
+                        type: "LM"
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisTagihan = "KB";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisTagihan == "KB"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Tagihan Kredit Barang',
-                              style: TextStyle(
-                                  color: _jenisTagihan == "KB"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                        text: "Tagihan Kredit Barang",
+                        type: "KB"
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisTagihan = "KK";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisTagihan == "KK"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Tagihan Kredit Kendaraan',
-                              style: TextStyle(
-                                  color: _jenisTagihan == "KK"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                        text: "Tagihan Kredit Kendaraan",
+                        type: "KK"
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisTagihan = "KM";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisTagihan == "KM"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Tagihan Kobmart',
-                              style: TextStyle(
-                                  color: _jenisTagihan == "KM"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                        text: "Tagihan Kredit Kobmart",
+                        type: "KM"
                     ),
+
                   ],
                 ),
               ),
@@ -434,21 +155,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   ],
                 ),
               ),
-               isEmpty()
-                  ? buildIfEmpty()
-                  : Flexible(
-                child: ListView.builder(
-                    padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-                    itemCount: searchController.text.isEmpty
-                        ? dataTagihan.length
-                        : dataTagihanFiltered.length,
-                    itemBuilder: (context, index) {
-                      final tagihan = searchController.text.isEmpty
-                          ? dataTagihan[index]
-                          : dataTagihanFiltered[index];
-                      return buildTagihanItem(tagihan);
-                      }),
-              ),
+              buildListData(),
             ],
           ),
         ),
@@ -456,16 +163,87 @@ class _TagihanWidgetState extends State<TagihanWidget> {
     ]);
   }
 
+  GestureDetector buildFilterPills({required String type, required String text}) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _jenisTagihan = type;
+        });
+        controller.setFilter(jenisTagihan: type == 'ALL' ? "" : type);
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 10),
+        padding: EdgeInsets.symmetric(
+          horizontal: 10.0,
+        ),
+        decoration: _jenisTagihan == type
+            ? BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xffC30707), Color(0xffEE6A6A)]),
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 5.0,
+                    spreadRadius: 1.0,
+                    offset: Offset(0.0, 5.0), // shadow direction: bottom
+                  )
+                ],
+              )
+            : BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 5.0,
+                    spreadRadius: 1.0,
+                    offset: Offset(0.0, 5.0), // shadow direction: bottom
+                  )
+                ],
+              ),
+        child: Center(
+          child: Text(text,
+              style: TextStyle(
+                  color: _jenisTagihan == type ? Colors.white : Colors.black,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600)),
+        ),
+      ),
+    );
+  }
+
+  Widget buildListData() {
+    return Obx(() {
+      return Flexible(
+        child: RefreshIndicator(
+            onRefresh: controller.getTagihan,
+            child: isEmpty()
+                ? buildIfEmpty()
+                : ListView.builder(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
+                    itemCount: controller.filteredTagihanList.length,
+                    itemBuilder: (context, index) {
+                      final tagihan = controller.filteredTagihanList[index];
+                      return buildTagihanItem(tagihan);
+                    })),
+      );
+    });
+  }
+
   bool isEmpty() {
-    if (searchController.text.isEmpty) {
-      return dataTagihan.isEmpty;
-    }
-    return dataTagihanFiltered.isEmpty;
+    return controller.filteredTagihanList.isEmpty;
   }
 
   Widget buildIfEmpty() {
-    return const InfoWidget(
-        icon: Icons.assistant_photo, text: 'Anda tidak memiliki tagihan');
+    return const SingleChildScrollView(
+      physics: AlwaysScrollableScrollPhysics(),
+      child: InfoWidget(
+          icon: Icons.assistant_photo, text: 'Anda tidak memiliki pengajuan'),
+    );
   }
 
   Padding buildTagihanItem(DataTagihan tagihan) {
@@ -527,7 +305,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   Text(
                     'Rp ${currencyFormatter.format(tagihan.sisaTagihan)}',
                     style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
                   )
                 ],
               ),
@@ -542,7 +320,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   Text(
                     'Rp ${currencyFormatter.format(tagihan.tagihanHarusDibayar)}',
                     style:
-                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -554,7 +332,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   Text(
                     '${tagihan.jatuhTempo}',
                     style:
-                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

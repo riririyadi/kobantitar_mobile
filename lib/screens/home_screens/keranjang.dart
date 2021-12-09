@@ -19,6 +19,7 @@ class _KeranjangState extends State<Keranjang> {
   bool isProsesPesanan = false;
 
   final currencyFormatter = NumberFormat('#,##0', 'ID');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -248,8 +249,9 @@ class _KeranjangState extends State<Keranjang> {
                 borderRadius: BorderRadius.all(Radius.circular(16.0))),
             content: isProsesPesanan
                 ? CircularProgressIndicator()
-                : Text("Anda Yakin Ingin Kirim Pesanan?",
-                    style: TextStyle(fontWeight: FontWeight.w600)),
+                : const Text("Anda Yakin Ingin Kirim Pesanan?",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(height: 1.6, fontWeight: FontWeight.w600)),
             actions: [
               Container(
                 child: isProsesPesanan
@@ -258,16 +260,24 @@ class _KeranjangState extends State<Keranjang> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                             Expanded(
-                              child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          width: 1, color: Colors.grey),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Center(child: Text("Batal"))),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black26,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      "Batal",
+                                      style: TextStyle(color: Colors.white),
+                                    ))),
+                              ),
                             ),
-                            SizedBox(width: 10.0),
+                            SizedBox(width: 8.0),
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {

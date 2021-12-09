@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kobantitar_mobile/api_config/config.dart';
 import 'package:kobantitar_mobile/controllers/promo_kobmart_controller.dart';
+import 'package:photo_view/photo_view.dart';
 
 class PromoKobmart extends StatefulWidget {
   const PromoKobmart({Key? key}) : super(key: key);
@@ -16,83 +18,32 @@ class _PromoKobmartState extends State<PromoKobmart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
-        ),
-        child: SafeArea(
-          child: Stack(
+      appBar: AppBar(
+          centerTitle: false,
+          title: Text("Promo Kobantitar Mart", style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+          flexibleSpace:  Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[Color(0xffED6B6B), Color(0xffF38585)])),
+          )),
+      body: CachedNetworkImage(
+        imageUrl: controller.imageUrl,
+        progressIndicatorBuilder: (context, url, downloadProgress) =>
+            Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+        errorWidget: (context, url, error) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 60,
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 5.0),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => Get.back(),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.white,
-                              size: 14.0,
-                            ),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Text(
-                              'Kobantitar Mart',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 60,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xfff0f0f0),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    child: Image.network(
-                      baseURI + controller.imageUrl,
-                      errorBuilder: (BuildContext context, Object exception,
-                          StackTrace? stackTrace) {
-                        return Center(
-                            child: Column(
-                          children: [
-                            Text('Belum Ada Promo Tersedia'),
-                          ],
-                        ));
-                      },
-                    ),
-                  ),
-                ),
-              ),
+              Icon(Icons.extension, size: 80, color: Colors.grey),
+              SizedBox(height: 12.0),
+              Text("Tidak ada flyer promo saat ini"),
             ],
-          ),
+          )
         ),
-      ),
+        imageBuilder: (context, imageProvider) => PhotoView(imageProvider: imageProvider),
+      )
     );
   }
 }

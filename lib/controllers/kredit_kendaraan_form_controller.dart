@@ -98,7 +98,7 @@ class KreditBarangFormController extends GetxController {
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
       final XFile? image = await Get.to(CameraApp(
-          keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
+          keterangan: "Foto ini akan digunakan untuk pengajuan Kredit Kendaraan di Kobantitar"));
 
       if (image != null) {
         if (imageContext == "app1") {

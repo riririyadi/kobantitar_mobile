@@ -223,17 +223,17 @@ class _AkunWidgetState extends State<AkunWidget> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-              child: GestureDetector(
-                onTap: () => Get.to(() => PengunduranDiriAnggota()),
+            controller.me.role == 'ANGGOTA' ? GestureDetector(
+              onTap: () => Get.to(() => PengunduranDiriAnggota()),
+              child: Container(
+                color:  Colors.transparent,
+                padding: const EdgeInsets.all(16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "Ajukan Pengunduran Diri Anggota",
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
+                      style: const TextStyle(
                         color: Color(0xffE54444),
                         fontSize: 12.0,
                         fontWeight: FontWeight.w600,
@@ -242,7 +242,7 @@ class _AkunWidgetState extends State<AkunWidget> {
                   ],
                 ),
               ),
-            ),
+            ) : Container(),
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
               child: Row(
@@ -250,8 +250,10 @@ class _AkunWidgetState extends State<AkunWidget> {
                 children: [
                   Text(
                     "V.${controller.setting.appVersionName}",
-                    style: TextStyle(
-                      fontSize: 16.0,
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      color : Colors.black45,
+                      fontWeight: FontWeight.w600
                     ),
                   ),
                 ],

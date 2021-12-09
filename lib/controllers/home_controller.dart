@@ -86,27 +86,40 @@ class HomeController extends GetxController {
     }
   }
 
-  void getMe() async {
+
+  Future<Null> refreshData() async{
+      await getMe();
+      await getSimpanan();
+      await getDashboard();
+      return;
+  }
+
+  Future<void> getMe() async {
     final data = await Service.fetchMe(token);
     if (data != null) {
       me = data;
       isLoaded(true);
+      return;
     }
   }
 
-  void getSimpanan() async {
+  Future<void> getSimpanan() async {
     final data = await Service.fetchSimpanan(token);
     if (data != null) {
       simpanan = data;
       isSimpananLoaded(true);
+      return;
+
     }
   }
 
-  void getDashboard() async {
+  Future<void> getDashboard() async {
     final data = await Service.fetchDashboard(token);
     if (data != null) {
       dashboard = data;
       isDashboardLoaded(true);
+      return;
+
     }
   }
 

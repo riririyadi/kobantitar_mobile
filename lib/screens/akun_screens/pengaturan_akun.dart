@@ -820,7 +820,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                         color: Colors.grey,
                                                       ),
                                                       child: Image.network(
-                                                        'https://backend.kobantitar.com${controller.idCardPath}',
+                                                        'https://backend.kobantitar.com${controller.selfiePath}',
                                                         fit: BoxFit.fitWidth,
                                                         errorBuilder:
                                                             (BuildContext

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kobantitar_mobile/controllers/akun_controller.dart';
 import 'package:kobantitar_mobile/controllers/pengunduran_diri_controller.dart';
+import 'package:kobantitar_mobile/screens/components/gradient_button.dart';
+import 'package:kobantitar_mobile/screens/home_screen.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 
 class PengunduranDiriAnggota extends StatefulWidget {
@@ -96,6 +98,7 @@ class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
                                       fontSize: 12.0,
                                     ),
                                   ),
+                                  SizedBox(height: 12.0),
                                   Form(
                                     key: controller.mengundurkanDiriFormKey,
                                     child: Container(
@@ -106,7 +109,7 @@ class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
                                         style: TextStyle(
                                           fontSize: 12.0,
                                         ),
-                                        maxLines: null,
+                                        maxLines: 4,
                                         keyboardType: TextInputType.multiline,
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.all(10.0),
@@ -136,40 +139,10 @@ class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: GestureDetector(
-                          onTap: () => Get.off(() => {}),
-                          child: Container(
-                            height: 48.0,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xff851212),
-                                    Color(0xffFF8A8A)
-                                  ]),
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 1.0,
-                                  spreadRadius: 0.0,
-                                  offset: Offset(
-                                      0.0, 4.0), // shadow direction: bottom
-                                )
-                              ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Saya Ingin Tetap Menjadi Anggota",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        child: GradientButton(
+                          onTap:  () => Get.back(),
+                          text: "Saya ingin tetap menjadi anggota",
+                        )
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
@@ -184,22 +157,13 @@ class _PengunduranDiriAnggotaState extends State<PengunduranDiriAnggota> {
                             height: 48.0,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
                                   colors: [
                                     Color(0xffDDDDDD),
-                                    Color(0xfff8f8f8),
+                                    Color(0xffDDDDDD),
                                   ]),
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 1.0,
-                                  spreadRadius: 0.0,
-                                  offset: Offset(
-                                      0.0, 4.0), // shadow direction: bottom
-                                )
-                              ],
                             ),
                             child: Center(
                               child: Text(

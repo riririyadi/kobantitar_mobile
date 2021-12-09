@@ -35,8 +35,8 @@ class _KobantitarWebviewState extends State<KobantitarWebview> {
       appBar: AppBar(
         centerTitle: false,
         title: Text(widget.judul, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
+        flexibleSpace:  Container(
+          decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,

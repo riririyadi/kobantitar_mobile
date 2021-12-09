@@ -23,26 +23,6 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
 
   @override
   Widget build(BuildContext context) {
-    dataPengajuan = controller.pengajuanList;
-    if (_jenisPengajuan == "LM") {
-      dataPengajuan = dataPengajuan
-          .where((tagihan) => tagihan.type!.endsWith("LM"))
-          .toList();
-    } else if (_jenisPengajuan == "KB") {
-      dataPengajuan = dataPengajuan
-          .where((tagihan) => tagihan.type!.endsWith("KB"))
-          .toList();
-    } else if (_jenisPengajuan == "KK") {
-      dataPengajuan = dataPengajuan
-          .where((tagihan) => tagihan.type!.endsWith("KK"))
-          .toList();
-    } else if (_jenisPengajuan == "KM") {
-      dataPengajuan = dataPengajuan
-          .where((tagihan) => tagihan.type!.endsWith("KM"))
-          .toList();
-    } else {
-      dataPengajuan = dataPengajuan;
-    }
     return Stack(children: [
       Positioned(
         left: 0,
@@ -106,13 +86,8 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                   child: TextFormField(
                     controller: searchController,
                     onChanged: (value) {
-                      setState(() {
-                        dataPengajuanFiltered = dataPengajuan
-                            .where((pengajuan) => pengajuan.caption!
-                                .toLowerCase()
-                                .contains(value.toLowerCase()))
-                            .toList();
-                      });
+                      controller.setFilter(q : value);
+                      setState(() {});
                     },
                     style: TextStyle(
                       fontSize: 14.0,
@@ -140,281 +115,27 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 10.0),
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisPengajuan = "ALL";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisPengajuan == "ALL"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Semua Pengajuan',
-                              style: TextStyle(
-                                  color: _jenisPengajuan == "ALL"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                      text: "Semua Pengajuan",
+                      type: "ALL"
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisPengajuan = "LM";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisPengajuan == "LM"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Pengajuan Logam Mulia',
-                              style: TextStyle(
-                                  color: _jenisPengajuan == "LM"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                        text: "Pengajuan Logam Mulia",
+                        type: "LM"
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisPengajuan = "KB";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisPengajuan == "KB"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Pengajuan Kredit Barang',
-                              style: TextStyle(
-                                  color: _jenisPengajuan == "KB"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                        text: "Pengajuan Kredit Barang",
+                        type: "KB"
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisPengajuan = "KK";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisPengajuan == "KK"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Pengajuan Kredit Kendaraan',
-                              style: TextStyle(
-                                  color: _jenisPengajuan == "KK"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                        text: "Pengajuan Kredit Kendaraan",
+                        type: "KK"
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _jenisPengajuan = "KM";
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                        ),
-                        decoration: _jenisPengajuan == "KM"
-                            ? BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xffC30707),
-                                      Color(0xffEE6A6A)
-                                    ]),
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              )
-                            : BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5.0,
-                                    spreadRadius: 1.0,
-                                    offset: Offset(
-                                        0.0, 5.0), // shadow direction: bottom
-                                  )
-                                ],
-                              ),
-                        child: Center(
-                          child: Text('Pengajuan Kredit Kobmart',
-                              style: TextStyle(
-                                  color: _jenisPengajuan == "KM"
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      ),
+                    buildFilterPills(
+                        text: "Pengajuan Kredit Kobmart",
+                        type: "KM"
                     ),
+
                   ],
                 ),
               ),
@@ -434,21 +155,7 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                   ],
                 ),
               ),
-              isEmpty()
-                  ? buildIfEmpty()
-                  : Flexible(
-                      child: ListView.builder(
-                          padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
-                          itemCount: searchController.text.isEmpty
-                              ? dataPengajuan.length
-                              : dataPengajuanFiltered.length,
-                          itemBuilder: (context, index) {
-                            final pengajuan = searchController.text.isEmpty
-                                ? dataPengajuan[index]
-                                : dataPengajuanFiltered[index];
-                            return buildPengajuanItem(pengajuan);
-                          }),
-                    ),
+              buildListData(),
             ],
           ),
         ),
@@ -456,16 +163,87 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
     ]);
   }
 
+  GestureDetector buildFilterPills({required String type, required String text}) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _jenisPengajuan = type;
+        });
+        controller.setFilter(jenisPengajuan: type == 'ALL' ? "" : type);
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 10),
+        padding: EdgeInsets.symmetric(
+          horizontal: 10.0,
+        ),
+        decoration: _jenisPengajuan == type
+            ? BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xffC30707), Color(0xffEE6A6A)]),
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 5.0,
+                    spreadRadius: 1.0,
+                    offset: Offset(0.0, 5.0), // shadow direction: bottom
+                  )
+                ],
+              )
+            : BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 5.0,
+                    spreadRadius: 1.0,
+                    offset: Offset(0.0, 5.0), // shadow direction: bottom
+                  )
+                ],
+              ),
+        child: Center(
+          child: Text(text,
+              style: TextStyle(
+                  color: _jenisPengajuan == type ? Colors.white : Colors.black,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600)),
+        ),
+      ),
+    );
+  }
+
+  Widget buildListData() {
+    return Obx(() {
+      return Flexible(
+        child: RefreshIndicator(
+            onRefresh: controller.getPengajuan,
+            child: isEmpty()
+                ? buildIfEmpty()
+                : ListView.builder(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(top: 5.0, bottom: 64.0),
+                    itemCount: controller.filteredPengajuanList.length,
+                    itemBuilder: (context, index) {
+                      final pengajuan = controller.filteredPengajuanList[index];
+                      return buildPengajuanItem(pengajuan);
+                    })),
+      );
+    });
+  }
+
   bool isEmpty() {
-    if (searchController.text.isEmpty) {
-      return dataPengajuan.isEmpty;
-    }
-    return dataPengajuanFiltered.isEmpty;
+    return controller.filteredPengajuanList.isEmpty;
   }
 
   Widget buildIfEmpty() {
-    return const InfoWidget(
-        icon: Icons.assistant_photo, text: 'Anda tidak memiliki pengajuan');
+    return const SingleChildScrollView(
+      physics: AlwaysScrollableScrollPhysics(),
+      child: InfoWidget(
+          icon: Icons.assistant_photo, text: 'Anda tidak memiliki pengajuan'),
+    );
   }
 
   Padding buildPengajuanItem(DataPengajuan pengajuan) {
@@ -573,10 +351,15 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                 children: [
                   Text('Keterangan', style: TextStyle(fontSize: 12.0)),
                   Spacer(),
-                  Text(
-                    pengajuan.keterangan ?? "",
-                    style:
-                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Text(
+                      pengajuan.keterangan ?? "-",
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                          fontSize: 12.0, fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               ),

@@ -423,18 +423,6 @@ class _PengajuanTransaksiLogamMuliaState
                       SizedBox(
                         height: 5.0,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "*) Nilai maksimum Rp 20.000.000",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
                       Spacer(),
                       GestureDetector(
                         onTap: () {

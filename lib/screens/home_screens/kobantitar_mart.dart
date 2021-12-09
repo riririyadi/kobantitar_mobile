@@ -135,7 +135,7 @@ class _KobantitarMartState extends State<KobantitarMart> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text('Promo menarik'),
+                                      Text('PPromo menarik'),
                                     ],
                                   ),
                                   Container(
@@ -168,11 +168,6 @@ class _KobantitarMartState extends State<KobantitarMart> {
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
-                                                Text("1-15 Sept 2021",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10.0),
-                                                    textAlign: TextAlign.left),
                                               ],
                                             ),
                                             GestureDetector(

@@ -45,7 +45,7 @@ class _PengajuanMotorJenisState extends State<PengajuanMotorJenis> {
                           width: 5.0,
                         ),
                         Text(
-                          'Pengajuan Kredit Barang',
+                          'Pengajuan Kredit Kendaraan',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
