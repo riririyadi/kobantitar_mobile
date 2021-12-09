@@ -3,6 +3,7 @@
     package="com.brainy.kobantitar">
      <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
    <application
         android:label="kobantitar_mobile"

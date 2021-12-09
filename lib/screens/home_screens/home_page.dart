@@ -1,3 +1,4 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import "package:flutter/material.dart";
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
 
@@ -424,7 +425,13 @@ class _HomeWidgetState extends State<HomeWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0xff9A3A3A),
+          // color: Color(0xff9A3A3A),
+          gradient:
+              LinearGradient(colors: [Color(0xff9A3A3A), Color(0xffEE2929)]),
+          image: DecorationImage(
+            image: AssetImage('assets/card-ornament.png'),
+            fit: BoxFit.fill,
+          ),
           borderRadius: BorderRadius.circular(12.0),
           boxShadow: [
             BoxShadow(
@@ -453,7 +460,11 @@ class _HomeWidgetState extends State<HomeWidget> {
                                 fontWeight: FontWeight.w600,
                               ));
                         } else {
-                          return Text("Loading...");
+                          return Text("Loading...",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ));
                         }
                       }),
                       /** @Change text color  */
@@ -461,11 +472,15 @@ class _HomeWidgetState extends State<HomeWidget> {
                         if (controller.isLoaded.value) {
                           return Text('${controller.me.nomorAnggota}',
                               style: TextStyle(
-                                color: Colors.white38,
+                                color: Colors.white54,
                                 fontWeight: FontWeight.w600,
                               ));
                         } else {
-                          return Text("Loading...");
+                          return Text("Loading...",
+                              style: TextStyle(
+                                color: Colors.white54,
+                                fontWeight: FontWeight.w600,
+                              ));
                         }
                       }),
                     ],
@@ -475,20 +490,31 @@ class _HomeWidgetState extends State<HomeWidget> {
                       _bottomSheetQRCode(context);
                     },
                     child: Container(
-                        height: 50,
+                        height: 35,
                         width: 50,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(4.0),
                         ),
                         child: Center(
                           child: Container(
-                            height: 45,
-                            width: 45,
-                            child: Image(
-                              image: AssetImage('assets/kartu-anggota-qr.png'),
-                              fit: BoxFit.fill,
-                            ),
+                            height: 25,
+                            width: 40,
+                            child: Obx(() {
+                              if (controller.isLoaded.value) {
+                                return BarcodeWidget(
+                                  data: '${controller.me.nomorAnggota}',
+                                  barcode: Barcode.code128(),
+                                  drawText: false,
+                                );
+                              } else {
+                                return Text("Loading...",
+                                    style: TextStyle(
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.w600,
+                                    ));
+                              }
+                            }),
                           ),
                         )),
                   ),
@@ -519,7 +545,14 @@ class _HomeWidgetState extends State<HomeWidget> {
                           ),
                         );
                       } else {
-                        return Text("Loading...");
+                        return Text(
+                          "Loading...",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18.0,
+                          ),
+                        );
                       }
                     }),
                     SizedBox(
@@ -872,17 +905,21 @@ class _HomeWidgetState extends State<HomeWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.network("${config.baseURI}${product.imageUrl}"),
+              SizedBox(
+                height: 12.0,
+              ),
               Text(
                   "Rp ${currencyFormatter.format(product.hargaPromo).toString()}",
                   style: TextStyle(
                     color: Colors.red,
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                   )),
               Text(
                   "Rp ${currencyFormatter.format(product.hargaAwal).toString()}",
                   style: TextStyle(
                     color: Colors.grey[400],
-                    fontSize: 12,
+                    fontSize: 10,
                     decoration: TextDecoration.lineThrough,
                   )),
             ],
@@ -913,10 +950,20 @@ class _HomeWidgetState extends State<HomeWidget> {
                 child: Container(
                   height: 120,
                   width: 120,
-                  child: Image(
-                    image: AssetImage('assets/kartu-anggota-qr.png'),
-                    fit: BoxFit.fill,
-                  ),
+                  child: Obx(() {
+                    if (controller.isLoaded.value) {
+                      return BarcodeWidget(
+                        data: '${controller.me.nomorAnggota}',
+                        barcode: Barcode.code128(),
+                      );
+                    } else {
+                      return Text("Loading...",
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontWeight: FontWeight.w600,
+                          ));
+                    }
+                  }),
                 ),
               ),
             ),

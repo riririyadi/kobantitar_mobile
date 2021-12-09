@@ -1,3 +1,4 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import 'package:kobantitar_mobile/controllers/akun_controller.dart';
@@ -262,71 +263,75 @@ class _AkunWidgetState extends State<AkunWidget> {
     );
   }
 
-
-  Widget buildKartuNonAnggota(BuildContext context){
+  Widget buildKartuNonAnggota(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color(0xff9A3A3A),
-          borderRadius: BorderRadius.circular(12.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 5.0,
-              spreadRadius: 1.0,
-              offset: Offset(0.0, 5.0), // shadow direction: bottom
-            )
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child:  Column(
-            children: [
-              Obx(
-                        () {
-                          if (controller.isMeLoaded.value) {
-                            return Text(
-                              "${controller.me.nama!.toUpperCase()}",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            );
-                          } else {
-                            return Text("Loading", style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),);
-                          }
-                        },
-                      ),
-                      Padding(padding: EdgeInsets.only(bottom:12.0)),
-                       Obx(
-                        () {
-                          if (controller.isMeLoaded.value) {
-                            return Text(
-                              "${controller.me.instansi!.toUpperCase()}",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w200,
-                              ),
-                            );
-                          } else {
-                            return Text("Loading", style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),);
-                          }
-                        },
-                      ),
-            ],
-          ),
-        )
-      )
-    );
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xff9A3A3A),
+              borderRadius: BorderRadius.circular(12.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 5.0,
+                  spreadRadius: 1.0,
+                  offset: Offset(0.0, 5.0), // shadow direction: bottom
+                )
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Obx(
+                    () {
+                      if (controller.isMeLoaded.value) {
+                        return Text(
+                          "${controller.me.nama!.toUpperCase()}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      } else {
+                        return Text(
+                          "Loading",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 12.0)),
+                  Obx(
+                    () {
+                      if (controller.isMeLoaded.value) {
+                        return Text(
+                          "${controller.me.instansi!.toUpperCase()}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w200,
+                          ),
+                        );
+                      } else {
+                        return Text(
+                          "Loading",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            )));
   }
+
   Padding buildKartuAnggota(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -365,32 +370,10 @@ class _AkunWidgetState extends State<AkunWidget> {
                       fontSize: 12.0,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _bottomSheetQRCode(context);
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Center(
-                        child: Container(
-                          height: 45,
-                          width: 45,
-                          child: Image(
-                            image: AssetImage('assets/kartu-anggota-qr.png'),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
-              SizedBox(height: 10.0),
+              SizedBox(height: 29.0),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -405,10 +388,13 @@ class _AkunWidgetState extends State<AkunWidget> {
                           ),
                         );
                       } else {
-                        return Text("Loading", style: TextStyle(
+                        return Text(
+                          "Loading",
+                          style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
-                          ),);
+                          ),
+                        );
                       }
                     },
                   ),
@@ -418,13 +404,17 @@ class _AkunWidgetState extends State<AkunWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  
                   Obx(() {
                     if (controller.isMeLoaded.value) {
-                      return Text(
-                        '${controller.me.nomorAnggota}',
-                        style: TextStyle(
-                          color: Colors.grey[400],
-                          fontWeight: FontWeight.w600,
+                      return Container(
+                        padding: EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          '${controller.me.nomorAnggota}',
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       );
                     } else {
@@ -444,12 +434,23 @@ class _AkunWidgetState extends State<AkunWidget> {
                       ),
                       child: Center(
                         child: Container(
-                          height: 45,
-                          width: 65,
-                          child: Image(
-                            image: AssetImage('assets/kartu-anggota-bar.png'),
-                            fit: BoxFit.fill,
-                          ),
+                          height: 35,
+                          width: 55,
+                          child: Obx(() {
+                            if (controller.isMeLoaded.value) {
+                              return BarcodeWidget(
+                                data: '${controller.me.nomorAnggota}',
+                                barcode: Barcode.code128(),
+                                drawText: false,
+                              );
+                            } else {
+                              return Text("Loading...",
+                                  style: TextStyle(
+                                    color: Colors.white54,
+                                    fontWeight: FontWeight.w600,
+                                  ));
+                            }
+                          }),
                         ),
                       ),
                     ),
@@ -514,10 +515,20 @@ class _AkunWidgetState extends State<AkunWidget> {
                 child: Container(
                   height: 120,
                   width: 170,
-                  child: Image(
-                    image: AssetImage('assets/kartu-anggota-bar.png'),
-                    fit: BoxFit.fill,
-                  ),
+                  child: Obx(() {
+                    if (controller.isMeLoaded.value) {
+                      return BarcodeWidget(
+                        data: '${controller.me.nomorAnggota}',
+                        barcode: Barcode.code128(),
+                      );
+                    } else {
+                      return Text("Loading...",
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontWeight: FontWeight.w600,
+                          ));
+                    }
+                  }),
                 ),
               ),
             ),
