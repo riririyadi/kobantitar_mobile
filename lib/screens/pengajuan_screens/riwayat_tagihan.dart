@@ -43,14 +43,14 @@ class _RiwayatTagihanState extends State<RiwayatTagihan> {
 
   Widget buildDiproses() {
     return const InfoWidget(
-      icon:  Icons.access_time_filled_rounded,
-      text:  'Pengajuan anda sedang diproses',
+      icon: Icons.access_time_filled_rounded,
+      text: 'Pengajuan anda sedang diproses',
     );
   }
 
   List<Widget> riwayatTagihan() {
     List<Widget> list = [];
-    //i<5, pass your dynamic limit as per your requirment
+
     for (int i = 0; i < controller.riwayatTagihan.length; i++) {
       final riwayat = controller.riwayatTagihan[i];
       list.add(
@@ -110,4 +110,3 @@ class _RiwayatTagihanState extends State<RiwayatTagihan> {
     return list; // all widget added now retrun the list here
   }
 }
-

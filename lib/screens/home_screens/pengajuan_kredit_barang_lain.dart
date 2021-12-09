@@ -18,6 +18,8 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
   final PengajuanKreditBarangLainController controller =
       Get.put(PengajuanKreditBarangLainController());
   final currencyFormatter = NumberFormat('#,##0', 'ID');
+
+  bool _available = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +106,7 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                     width: double.infinity,
                                     height: 65,
                                     child: TextFormField(
+                                      onChanged: (s) => checkIsAvailable(),
                                       style: TextStyle(
                                         fontSize: 12.0,
                                       ),
@@ -138,6 +141,7 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                     width: double.infinity,
                                     height: 65,
                                     child: TextFormField(
+                                      onChanged: (s) => checkIsAvailable(),
                                       style: TextStyle(
                                         fontSize: 12.0,
                                       ),
@@ -172,6 +176,7 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                     width: double.infinity,
                                     height: 65,
                                     child: TextFormField(
+                                      onChanged: (s) => checkIsAvailable(),
                                       style: TextStyle(
                                         fontSize: 12.0,
                                       ),
@@ -223,9 +228,10 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: GestureDetector(
                     onTap: () {
-                      controller.nilaiBarangController.text = controller
-                          .nilaiBarangController.text
-                          .replaceAll(".", "");
+                      if (!checkIsAvailable()) {
+                        return;
+                      }
+
                       if (controller.dataBarangFormKey.currentState!
                           .validate()) {
                         Get.to(() => PengajuanKreditBarangLainForm(),
@@ -235,8 +241,9 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                     controller.jenisBarangController.text,
                                 "tipe_barang":
                                     controller.tipeBarangController.text,
-                                "nilai_barang":
-                                    controller.nilaiBarangController.text
+                                "nilai_barang": controller
+                                    .nilaiBarangController.text
+                                    .replaceAll(".", "")
                               }
                             ]);
                       }
@@ -247,7 +254,9 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                         gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            colors: [Color(0xff851212), Color(0xffFF8A8A)]),
+                            colors: !_available
+                                ? [(Colors.grey[300])!, (Colors.grey[300])!]
+                                : [Color(0xff851212), Color(0xffFF8A8A)]),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
@@ -277,5 +286,13 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
         ),
       ),
     );
+  }
+
+  bool checkIsAvailable() {
+    bool hasil = controller.checkData();
+    setState(() {
+      _available = hasil;
+    });
+    return hasil;
   }
 }

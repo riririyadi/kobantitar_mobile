@@ -235,11 +235,11 @@ class _HomeWidgetState extends State<HomeWidget> {
                                       GestureDetector(
                                         onTap: () {
                                           print(controller
-                                                  .dashboard.data?.promoImageUrl);
-                                              // return;
+                                              .dashboard.data?.promoImageUrl);
+                                          // return;
                                           Get.to(() => PromoKobmart(),
-                                              arguments: controller
-                                                  .dashboard.data?.promoImageUrl);
+                                              arguments: controller.dashboard
+                                                  .data?.promoImageUrl);
                                         },
                                         child: Text(
                                           'Lihat Semua',
@@ -871,8 +871,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                  "https://backend.kobantitar.com${product.imageUrl}"),
+              Image.network("${config.baseURI}${product.imageUrl}"),
               Text(
                   "Rp ${currencyFormatter.format(product.hargaPromo).toString()}",
                   style: TextStyle(

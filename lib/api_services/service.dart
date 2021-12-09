@@ -24,8 +24,6 @@ import 'package:kobantitar_mobile/models/pengajuan.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
 import 'package:kobantitar_mobile/models/tagihan.dart';
 import 'package:kobantitar_mobile/models/kontak.dart';
-import 'package:flutter/services.dart';
-import 'package:kobantitar_mobile/screens/pengajuan_screens/detail_pengajuan.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -71,6 +69,7 @@ class Service extends GetConnect {
       Uri.parse("${config.baseURL}/bank"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json'
       },
     );
     if (response.statusCode == 200) {
@@ -120,10 +119,8 @@ class Service extends GetConnect {
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
         final data = jsonEncode(json["data"]);
-        print(data);
         return meFromJson(data);
       } else {
-        print("Ini me ${response.statusCode}");
         return null;
       }
     } catch (exception) {
@@ -143,10 +140,9 @@ class Service extends GetConnect {
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       final data = jsonEncode(json["data"]);
-      // print(data);
+
       return simpananFromJson(data);
     } else {
-      print("Ini simp ${response.statusCode}");
       return null;
     }
   }
@@ -163,8 +159,6 @@ class Service extends GetConnect {
     );
     if (response.statusCode == 200) {
       final json = kreditKendaraanConfigurationFromJson(response.body);
-      // final data = jsonEncode(json["data"]);
-      print(json);
 
       return json;
     } else {
@@ -203,7 +197,6 @@ class Service extends GetConnect {
       },
     );
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body));
       return kreditKendaraanCalculationFromJson(response.body);
     } else {
       return null;
@@ -256,7 +249,6 @@ class Service extends GetConnect {
       },
     );
     if (response.statusCode == 200) {
-      print(jsonEncode(response.body));
       return kreditBarangConfigurationFromJson(response.body);
     } else {
       return null;
@@ -275,7 +267,6 @@ class Service extends GetConnect {
       },
     );
     if (response.statusCode == 200) {
-      print(jsonEncode(response.body));
       return barangLainCalculationFromJson(response.body);
     } else {
       return null;
@@ -292,7 +283,6 @@ class Service extends GetConnect {
       },
     );
     if (response.statusCode == 200) {
-      print(jsonEncode(response.body));
       return kobmartFromJson(response.body);
     } else {
       return null;
@@ -342,7 +332,6 @@ class Service extends GetConnect {
       },
     );
     if (response.statusCode == 200) {
-      print("Detail Pengajuan " + response.statusCode.toString());
       return detailDataPengajuanFromJson(response.body);
     } else {
       return null;
@@ -375,10 +364,7 @@ class Service extends GetConnect {
       },
     );
     if (response.statusCode == 200) {
-      var das = dashboardFromJson(response.body);
-      print(response.body);
-      print(das.data?.promoImageUrl);
-      return das;
+      return dashboardFromJson(response.body);
     } else {
       return null;
     }

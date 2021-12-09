@@ -16,6 +16,16 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
   final AmbilSimpananSukarelaController controller =
       Get.put(AmbilSimpananSukarelaController());
   final currencyFormatter = NumberFormat('#,##0', 'ID');
+  late int saldoSisa;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      saldoSisa = controller.argumenData;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +155,20 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                                     prefixText: 'Rp ',
                                     border: UnderlineInputBorder(),
                                   ),
+                                  onChanged: (e) {
+                                    var nominalPengambilan =
+                                        e.replaceAll('.', '');
+                                    setState(() {
+                                      if (nominalPengambilan == "") {
+                                        nominalPengambilan = "0";
+                                      }
+                                      saldoSisa = controller.argumenData -
+                                          int.parse(nominalPengambilan);
+                                      if (nominalPengambilan == "") {
+                                        saldoSisa = controller.argumenData;
+                                      }
+                                    });
+                                  },
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Nominal Pengajuan tidak boleh kosong';
@@ -160,18 +184,14 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                                         fontSize: 10.0,
                                       )),
                                   Spacer(),
-                                  Obx(
-                                    () {
-                                      return Text(
-                                        'Rp ${currencyFormatter.format(controller.sisa.value)}',
-                                        style: TextStyle(
-                                          color: Color(0xff7C0A0A),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 10.0,
-                                        ),
-                                      );
-                                    }
-                                  )
+                                  Text(
+                                    'Rp ${currencyFormatter.format(saldoSisa)}',
+                                    style: TextStyle(
+                                      color: Color(0xff7C0A0A),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10.0,
+                                    ),
+                                  ),
                                 ],
                               )
                             ],

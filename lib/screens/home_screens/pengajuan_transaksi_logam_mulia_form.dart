@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +23,7 @@ class _PengajuanTransaksiLogamMuliaFormState
     extends State<PengajuanTransaksiLogamMuliaForm> {
   final PengajuanLogamMuliaFormController controller =
       Get.put(PengajuanLogamMuliaFormController());
+
   late DateTime _selectedDate;
   Task task = Task();
   final _formKey = GlobalKey<FormState>();
@@ -316,7 +318,6 @@ class _PengajuanTransaksiLogamMuliaFormState
                         ),
                       ),
                       Obx(() {
-                        // ignore: unnecessary_null_comparison
                         if (controller.detailKredit.isNotEmpty) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
@@ -440,9 +441,10 @@ class _PengajuanTransaksiLogamMuliaFormState
                                   checkIsAvailable();
                                 });
                                 return KobantitarImagePicker(
-                                          onChangeImage: () =>  controller.getSelfie(ImageSource.camera, "app2"),
-                                          selectedImagePath: controller
-                                              .selectedSelfieImagePath.value);
+                                    onChangeImage: () => controller.getSelfie(
+                                        ImageSource.camera, "app1"),
+                                    selectedImagePath: controller
+                                        .selectedSelfieImagePath.value);
                               }),
                               Text(
                                 "Nama Atasan",
@@ -518,7 +520,9 @@ class _PengajuanTransaksiLogamMuliaFormState
                                         checkIsAvailable();
                                       });
                                       return KobantitarImagePicker(
-                                          onChangeImage: () =>  controller.getSelfie(ImageSource.camera, "app2"),
+                                          onChangeImage: () =>
+                                              controller.getSelfie(
+                                                  ImageSource.camera, "app2"),
                                           selectedImagePath: controller
                                               .selectedSelfieImage2Path.value);
                                     }),
@@ -590,7 +594,12 @@ class _PengajuanTransaksiLogamMuliaFormState
                                         style: const TextStyle(
                                             fontSize: 12, color: Colors.black),
                                         children: <InlineSpan>[
-                                          const TextSpan(
+                                          TextSpan(
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () {
+                                                  controller.openLink(
+                                                      controller.termsUrl);
+                                                },
                                               text: 'Syarat & Ketentuan',
                                               style: TextStyle(
                                                   fontSize: 12,
@@ -598,7 +607,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                                   decoration:
                                                       TextDecoration.underline,
                                                   color: Color(0xffEE6A6A))),
-                                          const TextSpan(
+                                          TextSpan(
                                               text:
                                                   ' pengajuan transaksi logam mulia',
                                               style: TextStyle(
@@ -626,7 +635,6 @@ class _PengajuanTransaksiLogamMuliaFormState
     );
   }
 
-
   bool checkIsAvailable() {
     bool hasil = (checkBoxValue == true) &&
         ((controller.isDoubleApproval && controller.checkDataDua()) ||
@@ -634,7 +642,6 @@ class _PengajuanTransaksiLogamMuliaFormState
     setState(() {
       _available = hasil;
     });
-    print(hasil);
     return hasil;
   }
 
@@ -651,19 +658,18 @@ class _PengajuanTransaksiLogamMuliaFormState
               return;
             }
             Get.defaultDialog(
-                  title: "",
-                  content: Column(
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 10),
-                      Text("Please wait")
-                    ],
-                  ),
-                  barrierDismissible: false,
-                );
+              title: "",
+              content: Column(
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10),
+                  Text("Please wait")
+                ],
+              ),
+              barrierDismissible: false,
+            );
             if (controller.isDoubleApproval == true) {
               controller.submitPengajuanLogamMulia2().then((value) {
-                
                 Get.offAll(() => PengajuanSukses());
               }).catchError((e) {
                 print(e);
@@ -693,115 +699,6 @@ class _PengajuanTransaksiLogamMuliaFormState
             "${picked.toLocal().year}-${picked.toLocal().month}-${picked.toLocal().day}";
         controller.dateController.text = date;
       });
-  }
-
-  _bottomSheet(context, data) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext c) {
-          return Container(
-            color: Color(0xff757575),
-            child: Container(
-              padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
-                ),
-              ),
-              height: 180,
-              child: Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Ambil dari',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Get.back();
-
-                                controller.getSelfie(ImageSource.gallery, data);
-                              },
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff0f0f0),
-                                  borderRadius: BorderRadius.circular(
-                                    10.0,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Container(
-                                    height: 40,
-                                    width: 40,
-                                    child: Icon(Icons.image),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text("Gallery"),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 50.0,
-                        ),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Get.back();
-
-                                controller.getSelfie(ImageSource.camera, data);
-                              },
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                  color: Color(0xfff0f0f0),
-                                  borderRadius: BorderRadius.circular(
-                                    10.0,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Container(
-                                    height: 40,
-                                    width: 40,
-                                    child: Icon(Icons.camera),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text("Kamera"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
   }
 }
 

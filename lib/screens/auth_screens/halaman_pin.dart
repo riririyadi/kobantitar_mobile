@@ -17,6 +17,7 @@ class HalamanPIN extends StatefulWidget {
 
 class _HalamanPINState extends State<HalamanPIN> {
   final HalamanPINController controller = Get.put(HalamanPINController());
+
   var rng = Random();
   List<int> pin = [];
   void insertPIN(int digit) {

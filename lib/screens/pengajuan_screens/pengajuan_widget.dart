@@ -574,7 +574,7 @@ class _PengajuanWidgetState extends State<PengajuanWidget> {
                   Text('Keterangan', style: TextStyle(fontSize: 12.0)),
                   Spacer(),
                   Text(
-                    "",
+                    pengajuan.keterangan ?? "",
                     style:
                         TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
                   ),

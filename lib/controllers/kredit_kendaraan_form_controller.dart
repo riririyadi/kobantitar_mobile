@@ -11,6 +11,9 @@ import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/kredit_kendaraan_calculation.dart';
 import 'package:kobantitar_mobile/models/kredit_kendaraan_configuration.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:kobantitar_mobile/screens/components/camera.dart';
+import 'package:kobantitar_mobile/screens/components/webview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class KreditBarangFormController extends GetxController {
   var tenorController = TextEditingController();
@@ -29,6 +32,7 @@ class KreditBarangFormController extends GetxController {
   var detailKredit = <KreditKendaraanCalculation>[].obs;
   int? approvalFileId;
   int? approvalFileId2;
+  var termsUrl = "";
 
   @override
   void onInit() {
@@ -63,6 +67,7 @@ class KreditBarangFormController extends GetxController {
         final tenor = data.data!.tenors;
         tenors = tenor;
         isDoubleApproval = data.data!.isDoubleApproval!;
+        termsUrl = data.data!.termsUrl!;
       }
     } finally {
       isLoading(false);
@@ -92,16 +97,24 @@ class KreditBarangFormController extends GetxController {
 
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
-      final image = await ImagePicker().pickImage(source: imageSource);
+      final XFile? image = await Get.to(CameraApp(
+          keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
 
       if (image != null) {
         if (imageContext == "app1") {
+          print(image.path);
+          selectedSelfieImagePath.value = "LOADING";
+          await uploadImage(image.path, imageContext);
           selectedSelfieImagePath.value = image.path;
+
           selectedSelfieImageSize.value =
               ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
                       .toStringAsFixed(2) +
                   " Mb";
         } else {
+          selectedSelfieImage2Path.value = "LOADING";
+          await uploadImage(image.path, imageContext);
+
           selectedSelfieImage2Path.value = image.path;
           selectedSelfieImage2Size.value =
               ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
@@ -127,7 +140,6 @@ class KreditBarangFormController extends GetxController {
     var response = await request.send();
     final respStr = await http.Response.fromStream(response);
     if (response.statusCode == 200) {
-      print(response.statusCode);
       final json = jsonDecode(respStr.body);
       final fileId = json['data']['file_id'];
 
@@ -141,14 +153,6 @@ class KreditBarangFormController extends GetxController {
     } else {
       return Future.error(response);
     }
-  }
-
-  void printData() {
-    print(argumentData.id);
-    print(tenorController.text);
-    print(dateController.text);
-    print(approvalFileId);
-    print("nama atasan");
   }
 
   Future<String?> submitPengajuanKreditKendaraan() async {
@@ -205,5 +209,30 @@ class KreditBarangFormController extends GetxController {
     } else {
       return Future.error(response);
     }
+  }
+
+  Future openLink(String uri) async {
+    if (await canLaunch(uri)) {
+      Get.to(() =>
+          KobantitarWebview(judul: "Pengajuan Kredit Kendaraan", url: uri));
+    }
+  }
+
+  bool checkDataSatu() {
+    bool isTenorEmpty = tenorController.text.isNotEmpty;
+    bool isDateEmpty = dateController.text.isNotEmpty;
+    bool isNamaAtasanEmtpty = namaAtasanController.text.isNotEmpty;
+    bool approvalFileIdEmpty =
+        !(approvalFileId == null || approvalFileId == "LOADING");
+    return isTenorEmpty &&
+        isDateEmpty &&
+        isNamaAtasanEmtpty &&
+        approvalFileIdEmpty;
+  }
+
+  bool checkDataDua() {
+    bool approvalFileId2Empty = !(approvalFileId2 == null);
+    bool namaAtasan2Empty = namaAtasan2Controller.text.isNotEmpty;
+    return checkDataSatu() && approvalFileId2Empty && namaAtasan2Empty;
   }
 }

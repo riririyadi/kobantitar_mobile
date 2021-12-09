@@ -53,7 +53,6 @@ class _DetailAkunState extends State<DetailAkun> {
           SizedBox(height: 5.0),
           Text(
             "No. HP (Whatsapp)",
-            
             style: TextStyle(
               fontSize: 12.0,
             ),

@@ -53,4 +53,12 @@ class PengajuanKreditBarangLainController extends GetxController {
       isLoading(false);
     }
   }
+
+  bool checkData() {
+    bool isJenisBarangEmpty = jenisBarangController.text.isNotEmpty;
+    bool isTipeBarangEmpty = tipeBarangController.text.isNotEmpty;
+    bool isNilaiBarangEmpty = nilaiBarangController.text.isNotEmpty;
+
+    return isJenisBarangEmpty && isTipeBarangEmpty && isNilaiBarangEmpty;
+  }
 }

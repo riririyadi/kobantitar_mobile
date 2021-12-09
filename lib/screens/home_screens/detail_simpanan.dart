@@ -96,7 +96,7 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                             ],
                           );
                         } else {
-                          return Text("Halo");
+                          return Text("Loading...");
                         }
                       }),
                     ],

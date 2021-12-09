@@ -12,6 +12,8 @@ import 'package:kobantitar_mobile/models/logam_mulia_calculation.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_configuration.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:kobantitar_mobile/screens/components/camera.dart';
+import 'package:kobantitar_mobile/screens/components/webview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PengajuanLogamMuliaFormController extends GetxController {
   var tenorController = TextEditingController();
@@ -28,6 +30,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
   var detailKredit = <LogamMuliaCalculation>[].obs;
   int? approvalFileId;
   int? approvalFileId2;
+  var termsUrl = "";
   var isDoubleApproval = false;
   var namaAtasanController = TextEditingController();
   var namaAtasan2Controller = TextEditingController();
@@ -64,6 +67,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
       if (data != null) {
         tenors = data.data!.tenors;
         isDoubleApproval = data.data!.isDoubleApproval!;
+        termsUrl = data.data!.termsUrl;
       }
     } finally {
       isLoading(false);
@@ -77,8 +81,6 @@ class PengajuanLogamMuliaFormController extends GetxController {
       final data = await Service.fetchPengajuanLogamMuliaCalculation(
           token, argumentData.id, tenorController.text);
       if (data != null) {
-        print(jsonEncode(data));
-
         detailKredit.add(data);
       }
     } finally {
@@ -95,8 +97,9 @@ class PengajuanLogamMuliaFormController extends GetxController {
 
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
-      final XFile? image = await Get.to(CameraApp(keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
-      print(image);
+      final XFile? image = await Get.to(CameraApp(
+          keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
+
       if (image != null) {
         if (imageContext == "app1") {
           print(image.path);
@@ -108,7 +111,6 @@ class PengajuanLogamMuliaFormController extends GetxController {
               ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
                       .toStringAsFixed(2) +
                   " Mb";
-          
         } else {
           selectedSelfieImage2Path.value = "LOADING";
           await uploadImage(image.path, imageContext);
@@ -119,8 +121,6 @@ class PengajuanLogamMuliaFormController extends GetxController {
                       .toStringAsFixed(2) +
                   " Mb";
         }
-
-
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -156,20 +156,18 @@ class PengajuanLogamMuliaFormController extends GetxController {
     }
   }
 
-  void printData() {
-
-
-    print(keperluanController.text);
-
-  }
-
-   bool checkDataSatu() {
+  bool checkDataSatu() {
     bool isTenorEmpty = tenorController.text.isNotEmpty;
     bool isDateEmpty = dateController.text.isNotEmpty;
     bool isKeperluanEmpty = keperluanController.text.isNotEmpty;
     bool isNamaAtasanEmtpty = namaAtasanController.text.isNotEmpty;
-    bool approvalFileIdEmpty = !(approvalFileId == null || approvalFileId == "LOADING");
-    return isTenorEmpty && isDateEmpty && isKeperluanEmpty && isNamaAtasanEmtpty && approvalFileIdEmpty;
+    bool approvalFileIdEmpty =
+        !(approvalFileId == null || approvalFileId == "LOADING");
+    return isTenorEmpty &&
+        isDateEmpty &&
+        isKeperluanEmpty &&
+        isNamaAtasanEmtpty &&
+        approvalFileIdEmpty;
   }
 
   bool checkDataDua() {
@@ -238,6 +236,13 @@ class PengajuanLogamMuliaFormController extends GetxController {
     } else {
       print(response.statusCode);
       return null;
+    }
+  }
+
+  Future openLink(String uri) async {
+    if (await canLaunch(uri)) {
+      Get.to(() => KobantitarWebview(
+          judul: "Pengajuan Transaksi Logam Mulia", url: uri));
     }
   }
 }

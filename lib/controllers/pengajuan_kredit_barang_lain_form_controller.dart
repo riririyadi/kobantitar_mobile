@@ -11,12 +11,15 @@ import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/kredit_barang_calculation.dart';
 import 'package:kobantitar_mobile/models/kredit_barang_configuration.dart';
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
+import 'package:kobantitar_mobile/screens/components/camera.dart';
+import 'package:kobantitar_mobile/screens/components/webview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PengajuanKreditBarangFormController extends GetxController {
   var tenorController = TextEditingController();
   var tglPembayaranController = TextEditingController();
   var dateController = TextEditingController();
-  var keperluanController = TextEditingController();
+
   var namaAtasanController = TextEditingController();
   var namaAtasan2Controller = TextEditingController();
   final userData = GetStorage();
@@ -29,7 +32,8 @@ class PengajuanKreditBarangFormController extends GetxController {
   var detailKredit = <BarangLainCalculation>[].obs;
   int? approvalFileId;
   int? approvalFileId2;
-  bool? isDoubleApproval = false;
+  bool isDoubleApproval = false;
+  var termsUrl = "";
 
   @override
   void onInit() {
@@ -52,7 +56,6 @@ class PengajuanKreditBarangFormController extends GetxController {
     tenorController.dispose();
     tglPembayaranController.dispose();
     dateController.dispose();
-    keperluanController.dispose();
     namaAtasanController.dispose();
     namaAtasan2Controller.dispose();
     super.onClose();
@@ -64,8 +67,8 @@ class PengajuanKreditBarangFormController extends GetxController {
       final data = await Service.fetchPengajuanBarangLainConfig(token);
       if (data != null) {
         tenors = data.data!.tenors;
-
-        isDoubleApproval = data.data!.isDoubleApproval;
+        isDoubleApproval = data.data!.isDoubleApproval!;
+        termsUrl = data.data!.termsUrl;
       }
     } finally {
       isLoading(false);
@@ -79,8 +82,6 @@ class PengajuanKreditBarangFormController extends GetxController {
       final data = await Service.fetchPengajuanBarangCalculation(token,
           int.parse(argumentData[0]['nilai_barang']), tenorController.text);
       if (data != null) {
-        // print(jsonEncode(data));
-
         detailKredit.add(data);
       }
     } finally {
@@ -97,16 +98,24 @@ class PengajuanKreditBarangFormController extends GetxController {
 
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
-      final image = await ImagePicker().pickImage(source: imageSource);
+      final XFile? image = await Get.to(CameraApp(
+          keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia"));
 
       if (image != null) {
         if (imageContext == "app1") {
+          print(image.path);
+          selectedSelfieImagePath.value = "LOADING";
+          await uploadImage(image.path, imageContext);
           selectedSelfieImagePath.value = image.path;
+
           selectedSelfieImageSize.value =
               ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
                       .toStringAsFixed(2) +
                   " Mb";
         } else {
+          selectedSelfieImage2Path.value = "LOADING";
+          await uploadImage(image.path, imageContext);
+
           selectedSelfieImage2Path.value = image.path;
           selectedSelfieImage2Size.value =
               ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
@@ -148,17 +157,23 @@ class PengajuanKreditBarangFormController extends GetxController {
     }
   }
 
-  void printData() {
-    print("tenor: " + tenorController.text);
-    print("nominal: " + argumentData[0]['nilai_barang']);
-    print("jenis_barang: " + argumentData[0]['jenis_barang']);
-    print("tipe_barang: " + argumentData[0]['tipe_barang']);
-    print("start_date: " + dateController.text);
-    print("file_id: " + approvalFileId.toString());
-    print("nama atasan1:" + namaAtasanController.text);
-    print("file_id2: " + approvalFileId2.toString());
+  bool checkDataSatu() {
+    bool isTenorEmpty = tenorController.text.isNotEmpty;
+    bool isDateEmpty = dateController.text.isNotEmpty;
 
-    print("nama atasan2:" + namaAtasan2Controller.text);
+    bool isNamaAtasanEmtpty = namaAtasanController.text.isNotEmpty;
+    bool approvalFileIdEmpty =
+        !(approvalFileId == null || approvalFileId == "LOADING");
+    return isTenorEmpty &&
+        isDateEmpty &&
+        isNamaAtasanEmtpty &&
+        approvalFileIdEmpty;
+  }
+
+  bool checkDataDua() {
+    bool approvalFileId2Empty = !(approvalFileId2 == null);
+    bool namaAtasan2Empty = namaAtasan2Controller.text.isNotEmpty;
+    return checkDataSatu() && approvalFileId2Empty && namaAtasan2Empty;
   }
 
   Future<String?> sumbitPengajuanBarangLain() async {
@@ -222,6 +237,13 @@ class PengajuanKreditBarangFormController extends GetxController {
     } else {
       print(response.statusCode);
       return null;
+    }
+  }
+
+  Future openLink(String uri) async {
+    if (await canLaunch(uri)) {
+      Get.to(
+          () => KobantitarWebview(judul: "Pengajuan Kredit Barang", url: uri));
     }
   }
 }

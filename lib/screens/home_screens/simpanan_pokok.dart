@@ -26,6 +26,7 @@ class _SimpananPokokState extends State<SimpananPokok> {
   int numOfSimpananPokok = 0;
   List<DataSimpananPokok> simpananPokoks = [];
   final currencyFormatter = NumberFormat('#,##0', 'ID');
+  bool hasMoreItem = false;
 
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
@@ -63,7 +64,9 @@ class _SimpananPokokState extends State<SimpananPokok> {
       totalSimpananPokok = json['data']['total'];
 
       currentPage++;
-      setState(() {});
+      setState(() {
+        hasMoreItem = json['data']['list']['pagination']['has_more_item'];
+      });
 
       return true;
     } else {
@@ -73,7 +76,7 @@ class _SimpananPokokState extends State<SimpananPokok> {
 
   void refreshData() async {
     try {
-      await getSimpananPokokData(isRefresh: true);
+      await getSimpananPokokData(isRefresh: false);
       setState(() {});
       refreshController.refreshCompleted();
     } catch (e) {
@@ -85,13 +88,8 @@ class _SimpananPokokState extends State<SimpananPokok> {
     try {
       await getSimpananPokokData();
 
-      if (simpananPokoks.length >= numOfSimpananPokok) {
-        // stop gaada user di database .... sudah abis datanya
-        refreshController.loadNoData();
-      } else {
-        setState(() {});
-        refreshController.loadComplete();
-      }
+      setState(() {});
+      refreshController.loadComplete();
     } catch (e) {
       refreshController.loadFailed();
     }
@@ -237,7 +235,9 @@ class _SimpananPokokState extends State<SimpananPokok> {
                           controller: refreshController,
                           enablePullUp: true,
                           onRefresh: refreshData,
-                          onLoading: loadData,
+                          onLoading: hasMoreItem
+                              ? () => loadData()
+                              : () => refreshController.loadNoData(),
                           footer: CustomFooter(
                             height: 30,
                             builder: (context, mode) {

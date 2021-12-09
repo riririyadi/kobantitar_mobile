@@ -195,41 +195,40 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: GradientButton(
-                        onTap: () {
-                          if (controller.step == 0) {
-                            if (controller.dataPribadiFormKey.currentState!
-                                .validate()) {
-                              setState(() {
-                                controller.step += 1;
-                              });
+                          onTap: () {
+                            if (controller.step == 0) {
+                              if (controller.dataPribadiFormKey.currentState!
+                                  .validate()) {
+                                setState(() {
+                                  controller.step += 1;
+                                });
+                              }
+                            } else if (controller.step == 1) {
+                              if (controller.detailBankFormKey.currentState!
+                                  .validate()) {
+                                setState(() {
+                                  controller.step += 1;
+                                });
+                              }
+                            } else if (controller.step == 2) {
+                              if (controller.detailAkunFormKey.currentState!
+                                  .validate()) {
+                                scrollToEnd();
+                                setState(() {
+                                  controller.step += 1;
+                                });
+                              }
+                            } else if (controller.step == 3) {
+                              if (controller.checkIsImageFilled()) {
+                                _dialog(context);
+                              } else {
+                                Get.snackbar("Mohon Upload Foto",
+                                    "Mohon Upload Foto KTP dan Selfie anda");
+                                return;
+                              }
                             }
-                          } else if (controller.step == 1) {
-                            if (controller.detailBankFormKey.currentState!
-                                .validate()) {
-                              setState(() {
-                                controller.step += 1;
-                              });
-                            }
-                          } else if (controller.step == 2) {
-                            if (controller.detailAkunFormKey.currentState!
-                                .validate()) {
-                              scrollToEnd();
-                              setState(() {
-                                controller.step += 1;
-                              });
-                            }
-                          }  else if (controller.step == 3) {
-                            if (controller.checkIsImageFilled()) {
-                              _dialog(context);
-
-                            }else{
-                              Get.snackbar("Mohon Upload Foto", "Mohon Upload Foto KTP dan Selfie anda");
-                             return;
-                            }
-                          }
-                        },
-                        text: "Selanjutnya"
-                      ),
+                          },
+                          text: "Selanjutnya"),
                     ),
                   ],
                 ),
@@ -282,8 +281,12 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                                                 text: 'Syarat & Ketentuan',
                                                 recognizer:
                                                     TapGestureRecognizer()
-                                                      ..onTap = (){
-                                                        Get.to(()=>KobantitarWebview(judul: "Terms & Condition Pendaftaran", url: baseURI+"/informasi/1"));
+                                                      ..onTap = () {
+                                                        Get.to(() => KobantitarWebview(
+                                                            judul:
+                                                                "Terms & Condition Pendaftaran",
+                                                            url: baseURI +
+                                                                "/informasi/1"));
                                                       },
                                                 style: TextStyle(
                                                     fontSize: 12,
@@ -330,7 +333,7 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
-                                           Get.defaultDialog(
+                                          Get.defaultDialog(
                                             title: "",
                                             content: Column(
                                               children: [

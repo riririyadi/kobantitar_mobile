@@ -10,6 +10,8 @@ import 'package:kobantitar_mobile/models/simpanan_sukarela.dart';
 import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
 import 'package:http/http.dart' as http;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
 
 class History extends StatefulWidget {
   const History({Key? key}) : super(key: key);
@@ -24,9 +26,10 @@ class _HistoryState extends State<History> {
   int _screen = 0;
   int currentPage = 1;
   late int totalPages;
-
   int numOfSimpananSukarela = 0;
+  bool hasMoreItem = false;
   List<DataSimpananSukarela> simpananSukarelas = [];
+
   final currencyFormatter = NumberFormat('#,##0', 'ID');
 
   final RefreshController refreshController =
@@ -37,8 +40,8 @@ class _HistoryState extends State<History> {
       currentPage = 1;
     }
 
-    final Uri uri = Uri.parse(
-        "https://backend.kobantitar.com/api/simpanan/sukarela?page=$currentPage");
+    final Uri uri =
+        Uri.parse("${config.baseURL}/simpanan/sukarela?page=$currentPage");
 
     final response = await http.get(
       uri,
@@ -65,7 +68,9 @@ class _HistoryState extends State<History> {
           json['data']['list']['pagination']['object_count'];
 
       currentPage++;
-      setState(() {});
+      setState(() {
+        hasMoreItem = json['data']['list']['pagination']['has_more_item'];
+      });
 
       return true;
     } else {
@@ -75,7 +80,7 @@ class _HistoryState extends State<History> {
 
   void refreshData() async {
     try {
-      await getSimpananSukarelaData(isRefresh: true);
+      await getSimpananSukarelaData(isRefresh: false);
       setState(() {});
       refreshController.refreshCompleted();
     } catch (e) {
@@ -87,13 +92,8 @@ class _HistoryState extends State<History> {
     try {
       await getSimpananSukarelaData();
 
-      if (simpananSukarelas.length >= numOfSimpananSukarela) {
-        // stop gaada user di database .... sudah abis datanya
-        refreshController.loadNoData();
-      } else {
-        setState(() {});
-        refreshController.loadComplete();
-      }
+      setState(() {});
+      refreshController.loadComplete();
     } catch (e) {
       refreshController.loadFailed();
     }
@@ -152,7 +152,9 @@ class _HistoryState extends State<History> {
               controller: refreshController,
               enablePullUp: true,
               onRefresh: refreshData,
-              onLoading: loadData,
+              onLoading: hasMoreItem
+                  ? () => loadData()
+                  : () => refreshController.loadNoData(),
               footer: CustomFooter(
                 height: 30,
                 builder: (context, mode) {

@@ -75,11 +75,15 @@ class _PromoKobmartState extends State<PromoKobmart> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     child: Image.network(
-                     baseURI+controller.imageUrl,
+                      baseURI + controller.imageUrl,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
                         return Center(
-                            child: Text('Oops... something went wrong'));
+                            child: Column(
+                          children: [
+                            Text('Belum Ada Promo Tersedia'),
+                          ],
+                        ));
                       },
                     ),
                   ),

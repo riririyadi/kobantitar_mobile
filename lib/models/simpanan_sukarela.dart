@@ -8,8 +8,8 @@ List<DataSimpananSukarela> dataSimpananSukarelaFromJson(String str) =>
     List<DataSimpananSukarela>.from(
         json.decode(str).map((x) => DataSimpananSukarela.fromJson(x)));
 
-
-List<DataSimpananSukarela> dataSimpananSukarelaFromMap(List<Map<String, dynamic>> json) =>
+List<DataSimpananSukarela> dataSimpananSukarelaFromMap(
+        List<Map<String, dynamic>> json) =>
     List<DataSimpananSukarela>.from(
         json.map((x) => DataSimpananSukarela.fromJson(x)));
 
@@ -27,7 +27,7 @@ class DataSimpananSukarela {
 
   String? text;
   dynamic? description;
-  DateTime? date;
+  String? date;
   int? amount;
   bool? isPositive;
 
@@ -35,7 +35,7 @@ class DataSimpananSukarela {
       DataSimpananSukarela(
         text: json["text"],
         description: json["description"],
-        date: DateTime.parse(json["date"]),
+        date: json["date"],
         amount: json["amount"],
         isPositive: json["is_positive"],
       );
@@ -43,8 +43,7 @@ class DataSimpananSukarela {
   Map<String, dynamic> toJson() => {
         "text": text,
         "description": description,
-        "date":
-            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
+        "date": date,
         "amount": amount,
         "is_positive": isPositive,
       };

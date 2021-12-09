@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:kobantitar_mobile/api_services/service.dart';
+import 'package:kobantitar_mobile/models/kobmart.dart';
 import 'package:kobantitar_mobile/models/product.dart';
 
 import 'package:kobantitar_mobile/api_config/config.dart' as config;
@@ -13,15 +15,23 @@ class KobMartListProductController extends GetxController {
   String token = "";
   final userData = GetStorage();
   final searchQueryController = TextEditingController();
+  Kobmart kobmart = Kobmart();
+  var isKobmartLoaded = false.obs;
 
   @override
   void onInit() {
     token = userData.read("token");
     super.onInit();
+    searchQueryController.addListener(() {});
+    getKobmartPromo();
+  }
 
-    searchQueryController.addListener(() {
-      
-    });
+  void getKobmartPromo() async {
+    final data = await Service.fetchKobmart(token);
+    if (data != null) {
+      kobmart = data;
+      isKobmartLoaded(true);
+    }
   }
 
   void addProduct(Product product) {

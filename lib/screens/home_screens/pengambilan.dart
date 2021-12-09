@@ -23,6 +23,7 @@ class _PengambilanState extends State<Pengambilan> {
   int _screen = 0;
   int currentPage = 1;
   late int totalPages;
+  bool hasMoreItem = false;
 
   int numOfSimpananSukarela = 0;
   List<DataSimpananSukarela> simpananSukarelas = [];
@@ -50,21 +51,18 @@ class _PengambilanState extends State<Pengambilan> {
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
-      // print(jsonData["data"]["list"]["data"]);
-
-
-
-    
 
       jsonData = jsonDecode(response.body);
-          totalPages =
+
+      totalPages =
           (jsonData['data']['list']['pagination']['object_count'] / 15).ceil();
       numOfSimpananSukarela =
           jsonData['data']['list']['pagination']['object_count'];
 
       final jso = jsonData['data']['list']['data'];
 
-      List<DataSimpananSukarela> list = List.generate(jso.length, (index) => DataSimpananSukarela.fromJson(jso[index])); 
+      List<DataSimpananSukarela> list = List.generate(
+          jso.length, (index) => DataSimpananSukarela.fromJson(jso[index]));
 
       if (isRefresh) {
         simpananSukarelas = list;
@@ -72,10 +70,10 @@ class _PengambilanState extends State<Pengambilan> {
         simpananSukarelas.addAll(list);
       }
 
-
-  
       currentPage++;
-      setState(() {});
+      setState(() {
+        hasMoreItem = jsonData['data']['list']['pagination']['has_more_item'];
+      });
 
       return true;
     } else {
@@ -85,7 +83,7 @@ class _PengambilanState extends State<Pengambilan> {
 
   void refreshData() async {
     try {
-      await getSimpananSukarelaData(isRefresh: true);
+      await getSimpananSukarelaData(isRefresh: false);
       setState(() {});
       refreshController.refreshCompleted();
     } catch (e) {
@@ -97,13 +95,8 @@ class _PengambilanState extends State<Pengambilan> {
     try {
       await getSimpananSukarelaData();
 
-      if (simpananSukarelas.length >= numOfSimpananSukarela) {
-        // stop gaada user di database .... sudah abis datanya
-        refreshController.loadNoData();
-      } else {
-        setState(() {});
-        refreshController.loadComplete();
-      }
+      setState(() {});
+      refreshController.loadComplete();
     } catch (e) {
       refreshController.loadFailed();
     }
@@ -162,7 +155,9 @@ class _PengambilanState extends State<Pengambilan> {
               controller: refreshController,
               enablePullUp: true,
               onRefresh: refreshData,
-              onLoading: loadData,
+              onLoading: hasMoreItem
+                  ? () => loadData()
+                  : () => refreshController.loadNoData(),
               footer: CustomFooter(
                 height: 30,
                 builder: (context, mode) {

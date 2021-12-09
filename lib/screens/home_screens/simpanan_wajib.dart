@@ -26,6 +26,7 @@ class _SimpananWajibState extends State<SimpananWajib> {
   int numOfSimpananWajib = 0;
   List<DataSimpananWajib> simpananWajibs = [];
   final currencyFormatter = NumberFormat('#,##0', 'ID');
+  bool hasMoreItem = false;
 
   final RefreshController refreshController =
       RefreshController(initialRefresh: true);
@@ -63,7 +64,9 @@ class _SimpananWajibState extends State<SimpananWajib> {
       totalSimpananWajib = json['data']['total'];
 
       currentPage++;
-      setState(() {});
+      setState(() {
+        hasMoreItem = json['data']['list']['pagination']['has_more_item'];
+      });
 
       return true;
     } else {
@@ -84,14 +87,8 @@ class _SimpananWajibState extends State<SimpananWajib> {
   void loadData() async {
     try {
       await getSimpananSukarelaData();
-
-      if (simpananWajibs.length >= numOfSimpananWajib) {
-        // stop gaada user di database .... sudah abis datanya
-        refreshController.loadNoData();
-      } else {
-        setState(() {});
-        refreshController.loadComplete();
-      }
+      setState(() {});
+      refreshController.loadComplete();
     } catch (e) {
       refreshController.loadFailed();
     }
@@ -237,7 +234,9 @@ class _SimpananWajibState extends State<SimpananWajib> {
                           controller: refreshController,
                           enablePullUp: true,
                           onRefresh: refreshData,
-                          onLoading: loadData,
+                          onLoading: hasMoreItem
+                              ? () => loadData()
+                              : () => refreshController.loadNoData(),
                           footer: CustomFooter(
                             height: 30,
                             builder: (context, mode) {

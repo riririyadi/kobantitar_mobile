@@ -50,11 +50,13 @@ class HomeController extends GetxController {
     getSimpanan();
     getSetting();
     getDashboard();
+    Future.delayed(Duration(seconds: 5), () {
+      checkVersion();
+    });
   }
 
   @override
   void onReady() {
-    checkVersion();
     super.onReady();
   }
 
@@ -73,7 +75,7 @@ class HomeController extends GetxController {
 
   Future openLink(String uri) async {
     if (await canLaunch(uri)) {
-     Get.to(()=> KobantitarWebview(judul: "Informasi Terbaru", url: uri));
+      Get.to(() => KobantitarWebview(judul: "Informasi Terbaru", url: uri));
     }
   }
 
@@ -88,7 +90,6 @@ class HomeController extends GetxController {
     final data = await Service.fetchMe(token);
     if (data != null) {
       me = data;
-
       isLoaded(true);
     }
   }
@@ -114,12 +115,16 @@ class HomeController extends GetxController {
       Get.defaultDialog(
           title: "Latest update is available",
           titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          content:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            Text(
-                "Your app version is not uptodate, this app version is ${_packageInfo.version}",
-                style: TextStyle(fontSize: 14))
-          ]),
+          content: Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                      "Your app version is not uptodate, this app version is ${_packageInfo.version}",
+                      style: TextStyle(fontSize: 14))
+                ]),
+          ),
           cancel: GestureDetector(
             onTap: () => Get.back(),
             child: Padding(

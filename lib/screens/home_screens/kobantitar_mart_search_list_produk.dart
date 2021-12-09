@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:kobantitar_mobile/controllers/kobantitar_mart_list_produk_controller.dart';
 import 'package:kobantitar_mobile/models/product.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -39,11 +40,11 @@ class _KobantitarMartSearchListProdukState
 
   Future<bool> searchProducts() async {
     final Uri uri = Uri.parse(
-        "https://backend.kobantitar.com/api/kobmart/product?q=${controller.searchQueryController.text}");
+        "${config.baseURL}/kobmart/product?q=${controller.searchQueryController.text}");
 
-       setState(() {
-         isLoading = true;
-       });
+    setState(() {
+      isLoading = true;
+    });
     final response = await http.get(
       uri,
       headers: <String, String>{
@@ -77,15 +78,15 @@ class _KobantitarMartSearchListProdukState
     if (isRefresh) {
       currentPage = 1;
       uri = Uri.parse(
-          "https://backend.kobantitar.com/api/kobmart/product?q=${controller.searchQueryController.text}");
+          "${config.baseURL}/kobmart/product?q=${controller.searchQueryController.text}");
     } else {
-      uri = Uri.parse(
-          "https://backend.kobantitar.com/api/kobmart/product?page=$currentPage");
+      uri =
+          Uri.parse("${config.baseURL}/api/kobmart/product?page=$currentPage");
     }
 
     setState(() {
-        isLoading = true;
-      });
+      isLoading = true;
+    });
     final response = await http.get(
       uri,
       headers: <String, String>{
@@ -380,9 +381,11 @@ class _KobantitarMartSearchListProdukState
                   ),
                 ),
               ),
-              isLoading ? Positioned.fill(
-                child: Container(child : Center(child : CircularProgressIndicator()))
-              ) : Container()
+              isLoading
+                  ? Positioned.fill(
+                      child: Container(
+                          child: Center(child: CircularProgressIndicator())))
+                  : Container()
             ],
           ),
         ),

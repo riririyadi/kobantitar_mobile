@@ -15,6 +15,7 @@ class HalamanPINController extends GetxController {
   String? savedPIN;
   final userData = GetStorage();
   String token = "";
+  late Animation<double> wiggleAnimation;
 
   var pinDefault = [1, 1, 1, 1, 1, 1];
   var listPin = <int>[];
@@ -23,11 +24,11 @@ class HalamanPINController extends GetxController {
 
   @override
   void onInit() {
-    try{
+    try {
       token = userData.read("token");
       savedPIN = userData.read("PIN");
-    }catch(e,stt){
-      Get.offAll(()=> LoginScreen());
+    } catch (e, stt) {
+      Get.offAll(() => LoginScreen());
     }
 
     if (savedPIN != null) {
@@ -49,7 +50,6 @@ class HalamanPINController extends GetxController {
       if (listPin.length < 6) {
         return;
       }
-      print(equality);
       if (equality) {
         Future.delayed(Duration(milliseconds: 200), () {
           Get.defaultDialog(
