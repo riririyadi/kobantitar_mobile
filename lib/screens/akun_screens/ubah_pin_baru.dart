@@ -52,7 +52,7 @@ class _UbahPINBaruState extends State<UbahPINBaru> {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
+              colors: [Color(0xffEE6A6A), Color(0xffC30707), Color(0xfff8f8f8),Color(0xfff8f8f8)]),
         ),
         child: SafeArea(
           child: Stack(

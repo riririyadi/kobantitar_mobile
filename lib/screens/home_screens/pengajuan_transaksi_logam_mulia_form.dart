@@ -49,7 +49,7 @@ class _PengajuanTransaksiLogamMuliaFormState
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
+              colors: [Color(0xffEE6A6A), Color(0xffC30707), Color(0xfff8f8f8),Color(0xfff8f8f8)]),
         ),
         child: SafeArea(
           child: Stack(
@@ -652,6 +652,7 @@ class _PengajuanTransaksiLogamMuliaFormState
     return Padding(
         padding: const EdgeInsets.all(16.0),
         child: GradientButton(
+          boxShadow: _available ? null : const[BoxShadow(color: Colors.transparent)],
           text: "Ajukan",
           onTap: () {
             if (!checkIsAvailable()) {

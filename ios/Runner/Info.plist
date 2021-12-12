@@ -2,11 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Why is my app authenticating using face id?</string>
-	
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Kobantitar Mobile</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -25,6 +24,24 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Aktifkan Kamera Untuk Menggambil Foto Approval</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Aktifkan Face ID untuk mempermudah masuk ke aplikasi</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Mohon berikan akses lokasi untuk menggunakan aplikasi</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Mohon berikan akses lokasi untuk menggunakan aplikasi</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Mohon berikan akses lokasi untuk menggunakan aplikasi</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Mohon berikan akses ke Mic untuk menggunakan aplikasi </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Mohon berikan akses untuk Photo Library untuk menggunakan Aplikasi</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -43,12 +60,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<key>NSCameraUsageDescription</key>
-<string>Can I use the camera please?</string>
-<key>NSMicrophoneUsageDescription</key>
-<string>Can I use the mic please?</string>
-	
-	<false/>
+	<string>YES</string>
 </dict>
 </plist>

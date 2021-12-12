@@ -2,6 +2,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:kobantitar_mobile/screens/components/snackbar.dart';
 import 'package:kobantitar_mobile/screens/home_screens/home_page.dart';
 import 'package:kobantitar_mobile/screens/kontak_screens/kontak_widget.dart';
 import 'package:kobantitar_mobile/screens/pengajuan_screens/pengajuan_widget.dart';
@@ -25,28 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher',
-              ),
-            ));
-      }
-    });
-
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
@@ -65,22 +46,45 @@ class _HomeScreenState extends State<HomeScreen> {
             });
       }
     });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification!;
+      AndroidNotification android = message.notification!.android!;
+
+      // If `onMessage` is triggered with a notification, construct our own
+      // local notification to show to users using the created channel.
+      if (notification != null && android != null) {
+        showNotification(notification);
+      }
+    });
   }
 
-  void showNotification() {
-    setState(() {
-      _counter++;
-    });
-    flutterLocalNotificationsPlugin.show(
-        0,
-        "Testing $_counter",
-        "How you doin ?",
-        NotificationDetails(
-            android: AndroidNotificationDetails(channel.id, channel.name,
-                importance: Importance.high,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher')));
+  void showNotification(RemoteNotification notification) {
+    showSnackbar(notification.title!, notification.body!,
+        titleText: Text(
+          notification.title!,
+          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+        messageText: Text(
+          notification.body!,
+          style: const TextStyle(color: Colors.white, fontSize: 10, height: 1.5),
+        ),
+        position: SnackPosition.TOP,
+        background: Colors.green,
+        icon: const Icon(Icons.email, color: Colors.white));
+
+    // flutterLocalNotificationsPlugin.show(
+    //   notification.id,
+    //   "Testing $_counter",
+    //   "How you doin ?",
+    //   NotificationDetails(
+    //     android: AndroidNotificationDetails(channel.id, channel.name,
+    //         importance: Importance.high,
+    //         color: Colors.blue,
+    //         playSound: true,
+    //         icon: '@mipmap/ic_launcher'),
+    //   ),
+    // );
   }
 
   @override
@@ -89,11 +93,22 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
+                stops: [
+                  0,
+                  .9,
+                  .9,
+                  1
+                ],
+                colors: [
+                  Color(0xffEE6A6A),
+                  Color(0xffC30707),
+                  Colors.white,
+                  Colors.white
+                ]),
           ),
           child: SafeArea(
             child: Stack(
@@ -116,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Positioned(
                   child: PhysicalModel(
-                    elevation: 5,
+                    // elevation: 5,
                     color: Colors.black.withOpacity(0.4),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(24),
@@ -125,6 +140,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       height: 64,
                       decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.1),
+                              offset: Offset(0, -6),
+                              blurRadius: 5)
+                        ],
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(24),

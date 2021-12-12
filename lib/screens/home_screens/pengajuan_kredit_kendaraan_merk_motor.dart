@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/api_config/config.dart';
 import 'package:kobantitar_mobile/controllers/kredit_kendaraan_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_jenis_motor.dart';
 
@@ -22,7 +23,7 @@ class _PengajuanKreditBarangState extends State<PengajuanKreditBarang> {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
+              colors: [Color(0xffEE6A6A), Color(0xffC30707), Color(0xfff8f8f8),Color(0xfff8f8f8)]),
         ),
         child: SafeArea(
           child: Stack(
@@ -117,23 +118,24 @@ class _PengajuanKreditBarangState extends State<PengajuanKreditBarang> {
                                           Container(
                                             height: 40,
                                             width: 40,
+                                            padding: const EdgeInsets.all(4.0),
                                             decoration: BoxDecoration(
-                                              color: Color(0xfff0f0f0),
+                                              color: const Color(0xfff0f0f0),
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
-                                            // child: kendaraan.iconUrl
-                                            //     ? Image.network(
-                                            //         "${kendaraan.iconUrl}",
-                                            //         fit: BoxFit.fill)
-                                            //     : Container(
-                                            //         decoration: BoxDecoration(
-                                            //           color: Color(0xfff0f0f0),
-                                            //           borderRadius:
-                                            //               BorderRadius.circular(
-                                            //                   10),
-                                            //         ),
-                                            //       ),
+                                            child: kendaraan.iconUrl != null
+                                                ? Image.network(
+                                                    baseURI+kendaraan.iconUrl,
+                                                    fit: BoxFit.fill)
+                                                : Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xfff0f0f0),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                  ),
                                           ),
                                           SizedBox(
                                             width: 16.0,

@@ -31,8 +31,10 @@ class _RiwayatTagihanState extends State<RiwayatTagihan> {
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text("Riwayat Tagihan",
-              style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600)),
+          child: Container(
+            child: Text("Riwayat Tagihan",
+                style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600)),
+          ),
         ),
         Column(
           children: riwayatTagihan(),
@@ -75,7 +77,8 @@ class _RiwayatTagihanState extends State<RiwayatTagihan> {
                 Row(
                   children: [
                     Text("${riwayat.caption}",
-                        style: TextStyle(fontWeight: FontWeight.w600)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600)),
                     Spacer(),
                     Text("${riwayat.date}",
                         style: TextStyle(

@@ -28,7 +28,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Service extends GetConnect {
-  static var client = http.Client();
+  static var client = new http.Client();
 
   static Future<AppSetting?> fetchSetting() async {
     final response = await client.get(
@@ -37,12 +37,15 @@ class Service extends GetConnect {
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json'
       },
-    );
+    ).timeout(const Duration(seconds: 10), onTimeout: () {
+      return http.Response('Error', 500);
+    });
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
       final data = jsonEncode(json["data"]);
       return appSettingFromJson(data);
     } else {
+      throw Exception('Failed to fetch setting');
       return null;
     }
   }

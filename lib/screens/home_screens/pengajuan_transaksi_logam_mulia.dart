@@ -5,6 +5,7 @@ import 'package:kobantitar_mobile/controllers/pengajuan_logam_mulia_controller.d
 import 'package:kobantitar_mobile/models/logam_mulia_calculation.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_configuration.dart'
     as config;
+import 'package:kobantitar_mobile/screens/components/gradient_button.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_transaksi_logam_mulia_form.dart';
 
 class PengajuanTransaksiLogamMulia extends StatefulWidget {
@@ -26,6 +27,7 @@ class _PengajuanTransaksiLogamMuliaState
   config.Amount amountData = config.Amount();
 
   final currencyFormatter = NumberFormat('#,##0', 'ID');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +36,12 @@ class _PengajuanTransaksiLogamMuliaState
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
+              colors: [
+                Color(0xffEE6A6A),
+                Color(0xffC30707),
+                Color(0xfff8f8f8),
+                Color(0xfff8f8f8)
+              ]),
         ),
         child: Obx(() {
           if (controller.isLoading.value) {
@@ -104,13 +111,13 @@ class _PengajuanTransaksiLogamMuliaState
                       if (controller.isLoading.value) {
                         return Text("loading");
                       } else {
-                        if(amountData.id == null){
+                        if (amountData.id == null) {
                           return Text(
                             "Pilih Nominal",
                             style: TextStyle(
-                              color: Colors.white54,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20.0),
+                                color: Colors.white54,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20.0),
                           );
                         }
                         return Text(
@@ -127,13 +134,13 @@ class _PengajuanTransaksiLogamMuliaState
                       if (controller.isLoading.value) {
                         return Text("loading");
                       } else {
-                        if(amountData.id == null){
+                        if (amountData.id == null) {
                           return Text(
                             "Pilih Nominal",
                             style: TextStyle(
-                              color: Colors.white54,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10),
+                                color: Colors.white54,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 10),
                           );
                         }
                         return Text(
@@ -237,7 +244,8 @@ class _PengajuanTransaksiLogamMuliaState
                       ],
                     ),
                     Spacer(),
-                    GestureDetector(
+                    GradientButton(
+                      text: "Selanjutnya",
                       onTap: () {
                         if (controller.amountIdController.text == "") {
                           Get.snackbar("Oops", "Masukkan nominal transaksi");
@@ -248,35 +256,7 @@ class _PengajuanTransaksiLogamMuliaState
                                   1]);
                         }
                       },
-                      child: Container(
-                        height: 48.0,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [Color(0xff851212), Color(0xffFF8A8A)]),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 1.0,
-                              spreadRadius: 0.0,
-                              offset:
-                                  Offset(0.0, 4.0), // shadow direction: bottom
-                            )
-                          ],
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Selanjutnya",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -321,18 +301,14 @@ class _PengajuanTransaksiLogamMuliaState
             children: [
               Text(
                 amountData.caption!.replaceAll(" Juta", ''),
-                style:  TextStyle(
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.w600,
-                  color: textColor
-                ),
-              ),
-               Text(
-                "Juta",
                 style: TextStyle(
-                  fontSize: 12,
-                  color: textColor
-                ),
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.w600,
+                    color: textColor),
+              ),
+              Text(
+                "Juta",
+                style: TextStyle(fontSize: 12, color: textColor),
               )
             ],
           ),
@@ -424,46 +400,18 @@ class _PengajuanTransaksiLogamMuliaState
                         height: 5.0,
                       ),
                       Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          // ignore: unnecessary_null_comparison
-                          if (controller.amountIdController.text == "") {
-                            Get.snackbar("err", "message");
-                          } else {
-                            Get.off(() => PengajuanTransaksiLogamMuliaForm(),
-                                arguments: controller.amountList![int.parse(
-                                    controller.amountIdController.text)]);
-                          }
-                        },
-                        child: Container(
-                          height: 48.0,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Color(0xff851212), Color(0xffFF8A8A)]),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 1.0,
-                                spreadRadius: 0.0,
-                                offset: Offset(
-                                    0.0, 4.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Selanjutnya",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      GradientButton(
+                          text: 'Selanjutnywa',
+                          onTap: () {
+                            // ignore: unnecessary_null_comparison
+                            if (controller.amountIdController.text == "") {
+                              Get.snackbar("err", "message");
+                            } else {
+                              Get.off(() => PengajuanTransaksiLogamMuliaForm(),
+                                  arguments: controller.amountList![int.parse(
+                                      controller.amountIdController.text)]);
+                            }
+                          })
                     ],
                   ),
                 ),

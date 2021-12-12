@@ -668,7 +668,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
                 SizedBox(height: 10.0),
                 Text(
-                  'Simulasi SHU',
+                  'Simulasi\nSHU',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 9.0,

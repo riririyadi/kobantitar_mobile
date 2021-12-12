@@ -45,7 +45,6 @@ void main() async {
     badge: true,
     sound: true,
   );
-
   await GetStorage.init();
   runApp(KobantitarApp());
 }

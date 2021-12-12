@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -48,17 +49,17 @@ class LoginController extends GetxController {
       body: jsonEncode(<String, String>{'email': email, 'password': password}),
     );
 
-    print(response.statusCode);
-
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
-      print(response.statusCode);
-
       final token = json['data']['token'];
       final role = json['data']['role'];
       userData.write("token", token);
       userData.write("role", role);
-      postDevice(token);
+
+      // If User Authenticated Get FCM TOKEN
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      await postDevice(token, fcmToken!);
+
       Get.offAll(() => BuatPIN());
       return token;
     } if(response.statusCode == 401){
@@ -123,7 +124,7 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<String?> postDevice(String token) async {
+  Future<String?> postDevice(String token, String fcmToken) async {
     final response = await http.post(Uri.parse("${config.baseURL}/devices"),
         headers: <String, String>{
           "Content-Type": "application/json",
@@ -131,7 +132,7 @@ class LoginController extends GetxController {
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode(<String, String>{
-          'token': token,
+          'token': fcmToken,
         }));
     if (response.statusCode == 200) {
       print("Post Device OK");

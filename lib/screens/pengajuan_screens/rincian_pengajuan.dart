@@ -11,9 +11,25 @@ class RincianPengajuan extends StatefulWidget {
   _RincianPengajuanState createState() => _RincianPengajuanState();
 }
 
-class _RincianPengajuanState extends State<RincianPengajuan> {
+class _RincianPengajuanState extends State<RincianPengajuan>
+    with SingleTickerProviderStateMixin {
   final controller = Get.put(RincianPengajuanController());
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
   int _jenisRincian = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +38,12 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
           gradient: const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
+              colors: [
+                Color(0xffEE6A6A),
+                Color(0xffC30707),
+                Color(0xfff8f8f8),
+                Color(0xfff8f8f8)
+              ]),
         ),
         child: SafeArea(
           child: Stack(
@@ -54,117 +75,78 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xfff8f8f8),
-                  ),
-                  child: ListView(
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
-                        child: Container(
-                          padding: const EdgeInsets.all(5.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 7.0,
-                                spreadRadius: 1.0,
-                                offset: Offset(
-                                    0.0, 5.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _jenisRincian = 0;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10.0),
-                                    decoration: _jenisRincian == 0
-                                        ? BoxDecoration(
-                                            gradient: LinearGradient(
-                                                begin: Alignment.centerRight,
-                                                end: Alignment.centerLeft,
-                                                colors: [
-                                                  Color(0xffFCB3B3),
-                                                  Color(0xffFF4D4D)
-                                                ]),
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          )
-                                        : BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ),
-                                    child: Center(
-                                      child: Text(
-                                        "Detail",
-                                        style: TextStyle(
-                                            fontSize: 12.0,
-                                            color: _jenisRincian == 0
-                                                ? Colors.white
-                                                : Colors.black),
+                child: SingleChildScrollView(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xfff8f8f8),
+                    ),
+                    child: Obx(() {
+                      if (controller.isLoading.isTrue) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height - 160,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                      return Container(
+                        height: controller.riwayatTagihan.length * 88 + 160,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  16.0, 16.0, 16.0, 8.0),
+                              child: Container(
+                                padding: const EdgeInsets.all(5.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 7.0,
+                                      spreadRadius: 1.0,
+                                      offset: const Offset(
+                                          0.0, 5.0), // shadow direction: bottom
+                                    )
+                                  ],
+                                ),
+                                child: TabBar(
+                                  controller: _tabController,
+                                  // give the indicator a decoration (color and border radius)
+                                  indicator: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                        25.0,
                                       ),
-                                    ),
-                                  ),
+                                      // color: Colors.green,
+                                      gradient: const LinearGradient(
+                                          begin: Alignment.bottomLeft,
+                                          end: Alignment.topRight,
+                                          colors: [
+                                            Color(0xffC04C4C),
+                                            Color(0xffF37F7F)
+                                          ])),
+                                  labelColor: Colors.white,
+                                  unselectedLabelColor: Colors.black,
+                                  tabs: const [
+                                    Tab(text: 'Detail'),
+                                    Tab(text: 'Riwayat Tagihan'),
+                                  ],
                                 ),
                               ),
-                              SizedBox(width: 5.0),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _jenisRincian = 1;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10.0),
-                                    decoration: _jenisRincian == 1
-                                        ? BoxDecoration(
-                                            gradient: LinearGradient(
-                                                begin: Alignment.centerRight,
-                                                end: Alignment.centerLeft,
-                                                colors: [
-                                                  Color(0xffFCB3B3),
-                                                  Color(0xffFF4D4D)
-                                                ]),
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          )
-                                        : BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ),
-                                    child: Center(
-                                      child: Text(
-                                        "Riwayat Tagihan",
-                                        style: TextStyle(
-                                            fontSize: 12.0,
-                                            color: _jenisRincian == 1
-                                                ? Colors.white
-                                                : Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                            ),
+                            Expanded(
+                              child: TabBarView(
+                                physics: NeverScrollableScrollPhysics(),
+                                controller: _tabController,
+                                children: const [
+                                  DetailPengajuan(),
+                                  RiwayatTagihan()
+                                ],
                               ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                      ),
-                      _jenisRincian == 0 ? DetailPengajuan() : RiwayatTagihan(),
-                    ],
+                      );
+                    }),
                   ),
                 ),
               ),
@@ -177,7 +159,7 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
 
   Widget textDetail(String tipePengajuan) {
     if (tipePengajuan == "LM") {
-      return Text(
+      return const Text(
         'Transaksi Logam Mulia',
         style: TextStyle(
           fontWeight: FontWeight.w600,
@@ -185,7 +167,7 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
         ),
       );
     } else if (tipePengajuan == "KB") {
-      return Text(
+      return const Text(
         'Transaksi Kredit Barang',
         style: TextStyle(
           fontWeight: FontWeight.w600,
@@ -193,7 +175,7 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
         ),
       );
     } else if (tipePengajuan == "KK") {
-      return Text(
+      return const Text(
         'Transaksi Kredit Kendaraan',
         style: TextStyle(
           fontWeight: FontWeight.w600,
@@ -201,7 +183,7 @@ class _RincianPengajuanState extends State<RincianPengajuan> {
         ),
       );
     } else {
-      return Text(
+      return const Text(
         'Transaksi Kobmart',
         style: TextStyle(
           fontWeight: FontWeight.w600,
