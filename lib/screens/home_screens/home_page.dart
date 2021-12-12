@@ -4,13 +4,12 @@ import 'package:kobantitar_mobile/api_config/config.dart' as config;
 
 import 'package:kobantitar_mobile/controllers/home_controller.dart';
 import 'package:kobantitar_mobile/screens/components/promo_kobmart.dart';
+import 'package:kobantitar_mobile/screens/home_screens/informasi.dart';
 import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart_list_produk.dart';
-import 'package:kobantitar_mobile/screens/home_screens/kobantitar_mart_search_list_produk.dart';
 import 'package:kobantitar_mobile/screens/home_screens/laporan_keuangan.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_kendaraan_merk_motor.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_kredit_barang_lain.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_transaksi_logam_mulia.dart';
-import 'package:kobantitar_mobile/screens/home_screens/promo_kobmart.dart';
 import 'package:kobantitar_mobile/screens/home_screens/simulasi_shu.dart';
 import 'package:kobantitar_mobile/screens/home_screens/detail_simpanan.dart';
 import 'package:get/get.dart';
@@ -107,14 +106,17 @@ class _HomeWidgetState extends State<HomeWidget> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text('Informasi terbaru'),
-                                      // const Text(
-                                      //   'Lihat Semua',
-                                      //   style: TextStyle(
-                                      //     color: Color(0xff9A3A3A),
-                                      //     fontWeight: FontWeight.w600,
-                                      //   ),
-                                      // ),
+                                      Text('Informasi terbaru'),
+                                      GestureDetector(
+                                        onTap: () => Get.to(() => Informasi()),
+                                        child: Text(
+                                          'Lihat Semua',
+                                          style: TextStyle(
+                                            color: Color(0xff9A3A3A),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
                                     ]);
                               } else {
                                 return Text("");
@@ -433,7 +435,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      _bottomSheetQRCode(context);
+                      _bottomSheetBarCode(context);
                     },
                     child: Container(
                         height: 35,
@@ -539,7 +541,12 @@ class _HomeWidgetState extends State<HomeWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0xff9A3A3A),
+          gradient:
+              LinearGradient(colors: [Color(0xff9A3A3A), Color(0xffEE2929)]),
+          image: DecorationImage(
+            image: AssetImage('assets/card-ornament.png'),
+            fit: BoxFit.fill,
+          ),
           borderRadius: BorderRadius.circular(12.0),
           boxShadow: [
             BoxShadow(
@@ -578,7 +585,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                             ),
                           );
                         } else {
-                          return Text("Loading...");
+                          return Text("Loading...",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600));
                         }
                       }),
                     ],
@@ -834,7 +844,6 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   List<Widget> promoProducts() {
     List<Widget> list = [];
-
     for (int i = 0; i < controller.dashboard.data!.promoProducts!.length; i++) {
       final product = controller.dashboard.data!.promoProducts![i];
       list.add(Container(
@@ -881,7 +890,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     return list; // all widget added now retrun the list here
   }
 
-  _bottomSheetQRCode(context) {
+  _bottomSheetBarCode(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext c) {
@@ -900,7 +909,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               child: Center(
                 child: Container(
                   height: 120,
-                  width: 120,
+                  width: 170,
                   child: Obx(() {
                     if (controller.isLoaded.value) {
                       return BarcodeWidget(

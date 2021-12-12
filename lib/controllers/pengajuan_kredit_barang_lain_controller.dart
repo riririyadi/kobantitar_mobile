@@ -12,7 +12,7 @@ class PengajuanKreditBarangLainController extends GetxController {
   var nilaiBarangController = TextEditingController();
   final userData = GetStorage();
   late String token;
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
   List<TenorBarang>? tenors = <TenorBarang>[].obs;
   final dataBarangFormKey = GlobalKey<FormState>();
   var nilaiMinimal = 0;
@@ -32,25 +32,15 @@ class PengajuanKreditBarangLainController extends GetxController {
     super.onInit();
   }
 
-  void printData() {
-    print(jenisBarangController.text);
-    print(tipeBarangController.text);
-    print(nilaiBarangController.text);
-  }
-
   void getPengajuanKreditBarangLainConfig() async {
-    try {
-      isLoading(true);
-      final res = await Service.fetchPengajuanBarangLainConfig(token);
-      if (res != null) {
-        tenors = res.data!.tenors;
-        nilaiMinimal = res.data!.minPrice!;
-        for (var tenor in tenors!) {
-          print(tenor.caption);
-        }
+    final res = await Service.fetchPengajuanBarangLainConfig(token);
+    if (res != null) {
+      tenors = res.data!.tenors;
+      nilaiMinimal = res.data!.minPrice!;
+      for (var tenor in tenors!) {
+        print(tenor.caption);
       }
-    } finally {
-      isLoading(false);
+      isLoaded(true);
     }
   }
 

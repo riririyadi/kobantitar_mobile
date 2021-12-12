@@ -16,6 +16,7 @@ import 'package:kobantitar_mobile/models/kredit_barang_calculation.dart';
 import 'package:kobantitar_mobile/models/kredit_barang_configuration.dart';
 import 'package:kobantitar_mobile/models/kredit_kendaraan_calculation.dart';
 import 'package:kobantitar_mobile/models/kredit_kendaraan_configuration.dart';
+import 'package:kobantitar_mobile/models/laporan.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_calculation.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_configuration.dart';
 import 'package:kobantitar_mobile/models/me.dart';
@@ -416,6 +417,44 @@ class Service extends GetConnect {
     );
     if (response.statusCode == 200) {
       return notifikasiFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Laporan?> fetchLaporanTahunan(
+      String token, String tahun) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/laporan?tahun=$tahun"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      final data = jsonEncode(json["data"]);
+      return laporanFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Laporan?> fetchLaporanBulanan(
+      String token, String tahun, String bulan) async {
+    final response = await client.get(
+      Uri.parse("${config.baseURL}/laporan?tahun=$tahun&bulan=$bulan"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      final data = jsonEncode(json["data"]);
+      return laporanFromJson(data);
     } else {
       return null;
     }

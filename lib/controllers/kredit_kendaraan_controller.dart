@@ -12,7 +12,7 @@ class KreditKendaraanController extends GetxController {
   var tglPembayaranController = TextEditingController();
   final userData = GetStorage();
   late String token;
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
 
   List<Brand>? merkKendaraan = <Brand>[].obs;
   List<TenorConfig>? tenors = <TenorConfig>[].obs;
@@ -32,15 +32,11 @@ class KreditKendaraanController extends GetxController {
   }
 
   void getKendaraan() async {
-    try {
-      isLoading(true);
-      final data = await Service.fetchKreditKendaraanConfiguration(token);
-      if (data != null) {
-        final merk_kendaraan = data.data!.brands;
-        merkKendaraan = merk_kendaraan;
-      }
-    } finally {
-      isLoading(false);
+    final data = await Service.fetchKreditKendaraanConfiguration(token);
+    if (data != null) {
+      final merk_kendaraan = data.data!.brands;
+      merkKendaraan = merk_kendaraan;
+      isLoaded(true);
     }
   }
 }

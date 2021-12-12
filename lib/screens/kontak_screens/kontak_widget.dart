@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
 import 'package:kobantitar_mobile/controllers/kontak_controller.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 class KontakWidget extends StatefulWidget {
   const KontakWidget({Key? key}) : super(key: key);
@@ -193,8 +195,8 @@ class _KontakWidgetState extends State<KontakWidget> {
                                   Positioned(
                                     top: 0,
                                     left: 2,
-                                    child: Icon(Icons.whatshot,
-                                        color: Colors.white, size: 16.0),
+                                    child: FaIcon(FontAwesomeIcons.whatsapp,
+                                        color: Colors.white, size: 14.0),
                                   ),
                                   Center(
                                     child: Text(

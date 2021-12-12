@@ -35,9 +35,7 @@ class _DetailBankState extends State<DetailBank> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Obx(() {
-              if (controller.isBankLoading.value) {
-                return Text("");
-              } else {
+              if (controller.isBankLoaded.value) {
                 return DropdownButtonHideUnderline(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
@@ -54,11 +52,16 @@ class _DetailBankState extends State<DetailBank> {
                       return DropdownMenuItem(
                           value: item.id,
                           child: Text(item.name!,
+                              maxLines: 1,
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 12.0)));
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.black,
+                                  fontSize: 12.0)));
                     }).toList(),
                   ),
                 );
+              } else {
+                return Text("");
               }
             }),
           ),
@@ -80,7 +83,6 @@ class _DetailBankState extends State<DetailBank> {
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                 helperText: ' ',
-
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                 floatingLabelBehavior: FloatingLabelBehavior.never,

@@ -86,9 +86,6 @@ class _KobantitarMartSearchListProdukState
           Uri.parse("${config.baseURL}/api/kobmart/product?page=$currentPage");
     }
 
-    setState(() {
-      isLoading = true;
-    });
     final response = await http.get(
       uri,
       headers: <String, String>{
@@ -112,9 +109,7 @@ class _KobantitarMartSearchListProdukState
       hasMoreItem = json['data']['pagination']['has_more_item'];
 
       currentPage++;
-      setState(() {
-        isLoading = false;
-      });
+      setState(() {});
 
       return true;
     } else {
@@ -135,13 +130,8 @@ class _KobantitarMartSearchListProdukState
   void loadData() async {
     try {
       await getProducts();
-
-      if (!hasMoreItem) {
-        refreshController2.loadNoData();
-      } else {
-        setState(() {});
-        refreshController2.loadComplete();
-      }
+      setState(() {});
+      refreshController2.loadComplete();
     } catch (e) {
       refreshController2.loadFailed();
     }
@@ -349,26 +339,32 @@ class _KobantitarMartSearchListProdukState
                                                       fontWeight:
                                                           FontWeight.w600)),
                                               Row(
-                                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                                textBaseline: TextBaseline.alphabetic,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.baseline,
+                                                textBaseline:
+                                                    TextBaseline.alphabetic,
                                                 children: [
                                                   Text(
-
                                                       "Rp ${currencyFormatter.format(product.price)}",
                                                       style: TextStyle(
                                                           color: Colors.red)),
                                                   product.beforeDiscountPrice !=
                                                           null
                                                       ? Padding(
-                                                        padding: const EdgeInsets.only(left : 4.0),
-                                                        child: Text(
-                                                            "Rp ${currencyFormatter.format(product.beforeDiscountPrice)}",
-                                                            style: TextStyle(
-                                                              color: Colors.grey,
-                                                              fontSize: 12,
-                                                              decoration: TextDecoration.lineThrough
-                                                            )),
-                                                      )
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 4.0),
+                                                          child: Text(
+                                                              "Rp ${currencyFormatter.format(product.beforeDiscountPrice)}",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  fontSize: 12,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough)),
+                                                        )
                                                       : Container(),
                                                 ],
                                               ),

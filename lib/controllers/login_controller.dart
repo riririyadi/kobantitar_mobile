@@ -62,9 +62,10 @@ class LoginController extends GetxController {
 
       Get.offAll(() => BuatPIN());
       return token;
-    } if(response.statusCode == 401){
+    }
+    if (response.statusCode == 401) {
       final json = jsonDecode(response.body);
-       Get.snackbar(
+      Get.snackbar(
         'Tidak bisa masuk',
         json["data"]["message"],
         snackPosition: SnackPosition.BOTTOM,
@@ -80,7 +81,7 @@ class LoginController extends GetxController {
     } else {
       Get.snackbar(
         'Password Salah',
-        "Username / Password yang anda masukkan salah",
+        "Email / Password yang anda masukkan salah",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.redAccent,
         borderRadius: 20,
@@ -113,7 +114,7 @@ class LoginController extends GetxController {
     } else if (response.statusCode == 401) {
       final json = jsonDecode(response.body);
       final data = json['data'];
-      print(data);
+
       Get.back();
       Get.snackbar("Error", data['message']);
       return null;

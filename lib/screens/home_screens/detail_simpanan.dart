@@ -96,7 +96,7 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                             ],
                           );
                         } else {
-                          return Text("Loading...");
+                          return Text("Loading...", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600));
                         }
                       }),
                     ],
@@ -181,7 +181,12 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             SizedBox(height: 10.0),
-                                            Row(
+                                           
+                                                Obx(() {
+                                                  if (controller
+                                                      .isSimpananLoaded.value) {
+                                                    return 
+                                                     Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -192,16 +197,16 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
-                                                Obx(() {
-                                                  if (controller
-                                                      .isSimpananLoaded.value) {
-                                                    return Text(
+                                                    
+                                                    Text(
                                                       "${currencyFormatter.format(controller.simpanan.pokok)}",
                                                       style: TextStyle(
                                                           fontSize: 24.0,
                                                           fontWeight:
                                                               FontWeight.w600),
-                                                    );
+                                                    ),
+                                                      ],
+                                            );
                                                   } else {
                                                     return Text(
                                                       "Loading...",
@@ -211,9 +216,8 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                               FontWeight.w600),
                                                     );
                                                   }
-                                                })
-                                              ],
-                                            ),
+                                                }),
+                                            
                                           ],
                                         ),
                                       ],
@@ -314,7 +318,12 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             SizedBox(height: 10.0),
-                                            Row(
+                                            
+                                                Obx(() {
+                                                  if (controller
+                                                      .isSimpananLoaded.value) {
+                                                    return 
+                                                    Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -325,16 +334,15 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
-                                                Obx(() {
-                                                  if (controller
-                                                      .isSimpananLoaded.value) {
-                                                    return Text(
+                                                    Text(
                                                       "${currencyFormatter.format(controller.simpanan.wajib)}",
                                                       style: TextStyle(
                                                           fontSize: 24.0,
                                                           fontWeight:
                                                               FontWeight.w600),
-                                                    );
+                                                    ),
+                                                     ],
+                                            );
                                                   } else {
                                                     return Text(
                                                       "Loading...",
@@ -344,9 +352,8 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                               FontWeight.w600),
                                                     );
                                                   }
-                                                })
-                                              ],
-                                            ),
+                                                }),
+                                             
                                           ],
                                         ),
                                       ],
@@ -443,7 +450,12 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             SizedBox(height: 10.0),
-                                            Row(
+                                           
+                                                Obx(() {
+                                                  if (controller
+                                                      .isSimpananLoaded.value) {
+                                                    return 
+                                                     Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
@@ -454,16 +466,14 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                       fontWeight:
                                                           FontWeight.w600),
                                                 ),
-                                                Obx(() {
-                                                  if (controller
-                                                      .isSimpananLoaded.value) {
-                                                    return Text(
+                                                    Text(
                                                       "${currencyFormatter.format(controller.simpanan.sukarela)}",
                                                       style: TextStyle(
                                                           fontSize: 24.0,
                                                           fontWeight:
                                                               FontWeight.w600),
-                                                    );
+                                                    ), ],
+                                            );
                                                   } else {
                                                     return Text(
                                                       "Loading...",
@@ -473,9 +483,8 @@ class _DetailSimpananState extends State<DetailSimpanan> {
                                                               FontWeight.w600),
                                                     );
                                                   }
-                                                })
-                                              ],
-                                            ),
+                                                }),
+                                             
                                           ],
                                         ),
                                       ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kobantitar_mobile/controllers/akun_controller.dart';
+import 'package:kobantitar_mobile/controllers/ubah_password_controller.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pengajuan_sukses.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/update_akun_sukses.dart';
 
@@ -12,7 +13,7 @@ class UbahPassword extends StatefulWidget {
 }
 
 class _UbahPasswordState extends State<UbahPassword> {
-  final AkunController controller = Get.put(AkunController());
+  final UbahPasswordController controller = Get.put(UbahPasswordController());
 
   bool isSubmitting = false;
 
@@ -94,7 +95,7 @@ class _UbahPasswordState extends State<UbahPassword> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600),
                                       ),
-                                      SizedBox(height: 5.0),
+                                      SizedBox(height: 20.0),
                                       Text(
                                         "Password Lama",
                                         style: TextStyle(
@@ -202,7 +203,7 @@ class _UbahPasswordState extends State<UbahPassword> {
                                                 controller
                                                     .passwordBaruController
                                                     .text) {
-                                              return 'Konfimasi password harus sesuai dengan password baru';
+                                              return 'Konfimasi password harus cocok';
                                             }
                                             return null;
                                           },
@@ -233,12 +234,11 @@ class _UbahPasswordState extends State<UbahPassword> {
                                                   .text)
                                           .then((value) {
                                         setState(() {
-                                          isSubmitting = true;
+                                          isSubmitting = false;
                                         });
-                                        Get.to(() => PengajuanSukses());
                                       }).catchError((e) {
                                         setState(() {
-                                          isSubmitting = true;
+                                          isSubmitting = false;
                                         });
                                         print(e);
                                       })

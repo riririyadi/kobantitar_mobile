@@ -44,10 +44,11 @@ class _PengajuanTransaksiLogamMuliaState
               ]),
         ),
         child: Obx(() {
-          if (controller.isLoading.value) {
+          if (controller.isLoaded.value) {
+            return buildLMPage(context);
+          } else {
             return buildLoading();
           }
-          return buildLMPage(context);
         }),
       ),
     );
@@ -108,9 +109,13 @@ class _PengajuanTransaksiLogamMuliaState
                     ),
                     SizedBox(height: 5.0),
                     Obx(() {
+<<<<<<< HEAD
                       if (controller.isLoading.value) {
                         return Text("loading");
                       } else {
+=======
+                      if (controller.isLoaded.value) {
+>>>>>>> 409069ad70e10281330a86325891e57d0063167f
                         if (amountData.id == null) {
                           return Text(
                             "Pilih Nominal",
@@ -127,13 +132,19 @@ class _PengajuanTransaksiLogamMuliaState
                               fontWeight: FontWeight.w600,
                               fontSize: 24.0),
                         );
+                      } else {
+                        return Text("loading");
                       }
                     }),
                     SizedBox(height: 5.0),
                     Obx(() {
+<<<<<<< HEAD
                       if (controller.isLoading.value) {
                         return Text("loading");
                       } else {
+=======
+                      if (controller.isLoaded.value) {
+>>>>>>> 409069ad70e10281330a86325891e57d0063167f
                         if (amountData.id == null) {
                           return Text(
                             "Pilih Nominal",
@@ -150,6 +161,8 @@ class _PengajuanTransaksiLogamMuliaState
                             fontWeight: FontWeight.w600,
                           ),
                         );
+                      } else {
+                        return Text("loading");
                       }
                     }),
                   ],
@@ -365,9 +378,7 @@ class _PengajuanTransaksiLogamMuliaState
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Obx(() {
-                          if (controller.isLoading.value) {
-                            return Center(child: Text("Loading"));
-                          } else {
+                          if (controller.isLoaded.value) {
                             return DropdownButtonHideUnderline(
                               child: DropdownButtonFormField(
                                 isExpanded: true,
@@ -376,7 +387,7 @@ class _PengajuanTransaksiLogamMuliaState
                                         borderSide: BorderSide(
                                             color: Colors.transparent))),
                                 validator: (value) => value == null
-                                    ? 'Instansi tidak boleh kosong'
+                                    ? 'Amount tidak boleh kosong'
                                     : null,
                                 onChanged: (value) => setState(() {
                                   controller.amountIdController.text =
@@ -393,6 +404,8 @@ class _PengajuanTransaksiLogamMuliaState
                                 }).toList(),
                               ),
                             );
+                          } else {
+                            return Center(child: Text(""));
                           }
                         }),
                       ),
@@ -400,6 +413,7 @@ class _PengajuanTransaksiLogamMuliaState
                         height: 5.0,
                       ),
                       Spacer(),
+<<<<<<< HEAD
                       GradientButton(
                           text: 'Selanjutnywa',
                           onTap: () {
@@ -412,6 +426,47 @@ class _PengajuanTransaksiLogamMuliaState
                                       controller.amountIdController.text)]);
                             }
                           })
+=======
+                      GestureDetector(
+                        onTap: () {
+                          // ignore: unnecessary_null_comparison
+                          if (controller.amountIdController.text == "") {
+                          } else {
+                            Get.off(() => PengajuanTransaksiLogamMuliaForm(),
+                                arguments: controller.amountList![int.parse(
+                                    controller.amountIdController.text)]);
+                          }
+                        },
+                        child: Container(
+                          height: 48.0,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Color(0xff851212), Color(0xffFF8A8A)]),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 1.0,
+                                spreadRadius: 0.0,
+                                offset: Offset(
+                                    0.0, 4.0), // shadow direction: bottom
+                              )
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Selanjutnya",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+>>>>>>> 409069ad70e10281330a86325891e57d0063167f
                     ],
                   ),
                 ),

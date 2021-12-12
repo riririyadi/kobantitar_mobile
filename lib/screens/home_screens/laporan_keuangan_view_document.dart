@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:http/http.dart' as http;
-import 'package:kobantitar_mobile/controllers/laporan_keuangan_controller.dart';
+import 'package:kobantitar_mobile/controllers/laporan_keuangan_view_document_controller.dart';
 
 class ViewDocument extends StatefulWidget {
   const ViewDocument({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class ViewDocument extends StatefulWidget {
 }
 
 class _ViewDocumentState extends State<ViewDocument> {
-  final controller = Get.put(LaporanKeuanganController());
+  final controller = Get.put(LaporanKeuanganViewDocumentController());
   final Completer<PDFViewController> _controller =
       Completer<PDFViewController>();
   int? pages = 0;
@@ -77,12 +77,7 @@ class _ViewDocumentState extends State<ViewDocument> {
                   child: Stack(
                     children: [
                       Obx(() {
-                        if (controller.isLoading.value) {
-                          return SizedBox(
-                            height: 0,
-                            width: 0,
-                          );
-                        } else {
+                        if (controller.isLoaded.value) {
                           return PDFView(
                             filePath: controller.file.path,
                             enableSwipe: true,
@@ -125,6 +120,11 @@ class _ViewDocumentState extends State<ViewDocument> {
                                 currentPage = page;
                               });
                             },
+                          );
+                        } else {
+                          return SizedBox(
+                            height: 0,
+                            width: 0,
                           );
                         }
                       }),

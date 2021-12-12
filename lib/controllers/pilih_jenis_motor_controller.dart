@@ -10,13 +10,11 @@ class PilihJenisMotorController extends GetxController {
   late String token;
   dynamic argumentData = Get.arguments;
   List<JenisKendaraan>? listKendaraan = <JenisKendaraan>[].obs;
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
 
   @override
   void onInit() {
     token = userData.read("token");
-    print(argumentData);
-    print(token);
     getJenisKendaraanByBrandId();
 
     super.onInit();
@@ -28,15 +26,11 @@ class PilihJenisMotorController extends GetxController {
   }
 
   void getJenisKendaraanByBrandId() async {
-    try {
-      isLoading(true);
-      var data =
-          await Service.fetchJenisKendaraanByBrandId(token, argumentData);
-      if (data != null) {
-        listKendaraan = data;
-      }
-    } finally {
-      isLoading(false);
+    final data =
+        await Service.fetchJenisKendaraanByBrandId(token, argumentData);
+    if (data != null) {
+      listKendaraan = data;
+      isLoaded(true);
     }
   }
 }

@@ -21,12 +21,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isLoading.value) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: Center(child: CircularProgressIndicator()),
-        );
-      } else {
+      if (controller.isLoaded.value) {
         return Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,7 +130,7 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                       ),
                       SizedBox(height: 5.0),
                       Column(
-                        mainAxisSize : MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text('Keterangan', style: TextStyle(fontSize: 12.0)),
@@ -143,7 +138,6 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
                             "${controller.pengajuan.keterangan ?? "-"}",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-
                                 fontSize: 12.0, fontWeight: FontWeight.w600),
                           ),
                         ],
@@ -165,13 +159,17 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
             ],
           ),
         );
+      } else {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: Center(child: CircularProgressIndicator()),
+        );
       }
     });
   }
 
   List<Widget> riwayatPengajuan() {
     List<Widget> list = [];
-    //i<5, pass your dynamic limit as per your requirment
     for (int i = 0; i < controller.riwayatPengajuan.length; i++) {
       final riwayat = controller.riwayatPengajuan[i];
       list.add(
@@ -204,9 +202,9 @@ class _DetailPengajuanState extends State<DetailPengajuan> {
             ),
           ),
         ),
-      ); //add any Widget in place of Text("Index $i")
+      );
     }
-    return list; // all widget added now retrun the list here
+    return list;
   }
 
   Widget imageContainer(String tipePengajuan) {

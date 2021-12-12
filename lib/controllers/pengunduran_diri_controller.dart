@@ -23,7 +23,8 @@ class PengunduranDiriController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
+    alasanPengunduranDiriController.dispose();
+    passwordController.dispose();
     super.onClose();
   }
 

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-import "package:get/get.dart";
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:kobantitar_mobile/models/simpanan_sukarela.dart';
-import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
 import 'package:http/http.dart' as http;
-import 'package:kobantitar_mobile/screens/home_screens/simpanan_sukarela_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Pengambilan extends StatefulWidget {
@@ -184,7 +181,7 @@ class _PengambilanState extends State<Pengambilan> {
                 itemCount: simpananSukarelas.length,
                 itemBuilder: (context, index) {
                   final simpananSukarela = simpananSukarelas[index];
-                  return Text("Cak");
+
                   return Container(
                     padding: EdgeInsets.all(10.0),
                     child: Row(children: [
@@ -197,13 +194,16 @@ class _PengambilanState extends State<Pengambilan> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "${simpananSukarela.text}",
-                              maxLines: 2,
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w500,
+                            Container(
+                              width: 200,
+                              child: Text(
+                                "${simpananSukarela.text}",
+                                maxLines: 2,
+                                style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                             Text(

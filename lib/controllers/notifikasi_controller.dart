@@ -8,7 +8,7 @@ import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:http/http.dart' as http;
 
 class NotifikasiController extends GetxController {
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
   String token = "";
   final userData = GetStorage();
   var notifikasi = <NotifikasiData>[];
@@ -21,14 +21,10 @@ class NotifikasiController extends GetxController {
   }
 
   void getNotifikasi() async {
-    try {
-      isLoading(true);
-      final data = await Service.fetchNotifikasi(token);
-      if (data != null) {
-        notifikasi = data.data!;
-      }
-    } finally {
-      isLoading(false);
+    final data = await Service.fetchNotifikasi(token);
+    if (data != null) {
+      notifikasi = data.data!;
+      isLoaded(true);
     }
   }
 

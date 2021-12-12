@@ -22,7 +22,7 @@ class PengajuanLogamMuliaFormController extends GetxController {
   var keperluanController = TextEditingController();
   final userData = GetStorage();
   late String token;
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
   var isLoading2 = false.obs;
   var isMounted = false.obs;
   dynamic argumentData = Get.arguments;
@@ -61,16 +61,12 @@ class PengajuanLogamMuliaFormController extends GetxController {
   }
 
   void getTenor() async {
-    try {
-      isLoading(true);
-      final data = await Service.fetchPengajuanLogamMuliaConfig(token);
-      if (data != null) {
-        tenors = data.data!.tenors;
-        isDoubleApproval = data.data!.isDoubleApproval!;
-        termsUrl = data.data!.termsUrl;
-      }
-    } finally {
-      isLoading(false);
+    final data = await Service.fetchPengajuanLogamMuliaConfig(token);
+    if (data != null) {
+      tenors = data.data!.tenors;
+      isDoubleApproval = data.data!.isDoubleApproval!;
+      termsUrl = data.data!.termsUrl;
+      isLoaded(true);
     }
   }
 
@@ -98,7 +94,8 @@ class PengajuanLogamMuliaFormController extends GetxController {
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
       final XFile? image = await Get.to(CameraApp(
-          keterangan: "Foto ini akan digunakan untuk pengajuan Logam Mulia di Kobantitar"));
+          keterangan:
+              "Foto ini akan digunakan untuk pengajuan Logam Mulia di Kobantitar"));
 
       if (image != null) {
         if (imageContext == "app1") {

@@ -81,9 +81,7 @@ class _PengajuanMotorJenisState extends State<PengajuanMotorJenis> {
                       ),
                       Flexible(
                         child: Obx(() {
-                          if (controller.isLoading.value) {
-                            return Center(child: Text("Loading..."));
-                          } else {
+                          if (controller.isLoaded.value) {
                             return ListView.builder(
                               itemCount: controller.listKendaraan!.length,
                               itemBuilder: (BuildContext context, int index) {
@@ -162,6 +160,8 @@ class _PengajuanMotorJenisState extends State<PengajuanMotorJenis> {
                                 );
                               },
                             );
+                          } else {
+                            return Center(child: Text("Loading..."));
                           }
                         }),
                       ),

@@ -12,12 +12,11 @@ class PengajuanLogamMuliaController extends GetxController {
   List<Amount>? amountList = <Amount>[].obs;
   List<int>? featuredAmountIds = <int>[].obs;
   List<Amount>? featuredAmountList = <Amount>[].obs;
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
 
   @override
   void onInit() {
     token = userData.read("token");
-    print("ini adalah amout " + amountIdController.text);
     getPengajuanLogamMuliaConfig();
     super.onInit();
   }
@@ -25,23 +24,19 @@ class PengajuanLogamMuliaController extends GetxController {
   @override
   void onClose() {
     amountIdController.dispose();
-
     super.onInit();
   }
 
   void getPengajuanLogamMuliaConfig() async {
-    try {
-      isLoading(true);
-      final res = await Service.fetchPengajuanLogamMuliaConfig(token);
-      print(res?.data);
-      if (res != null) {
-        amountList = res.data!.amounts;
-        featuredAmountIds = res.data!.featuredAmountIds;
-        featuredAmountList = amountList?.where((element) => featuredAmountIds!.contains(element.id)).toList();
-        print(featuredAmountList);
-      }
-    } finally {
-      isLoading(false);
+    final res = await Service.fetchPengajuanLogamMuliaConfig(token);
+
+    if (res != null) {
+      amountList = res.data!.amounts;
+      featuredAmountIds = res.data!.featuredAmountIds;
+      featuredAmountList = amountList
+          ?.where((element) => featuredAmountIds!.contains(element.id))
+          .toList();
+      isLoaded(true);
     }
   }
 }

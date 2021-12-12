@@ -66,19 +66,19 @@ class PengajuanController extends GetxController {
     var filterData = currentFilter.value;
 
     if (filterData.query != null && filterData.query!.isNotEmpty) {
-      filteredPengajuanList = pengajuanList
-          .where((DataPengajuan pengajuan) {
-              return pengajuan.caption!.toLowerCase().contains(filterData.query!.toLowerCase());
-              }
-          )
-          .toList();
+      filteredPengajuanList = pengajuanList.where((DataPengajuan pengajuan) {
+        return pengajuan.caption!
+            .toLowerCase()
+            .contains(filterData.query!.toLowerCase());
+      }).toList();
       return;
     }
     if (filterData.category != null && filterData.category!.isNotEmpty) {
       filteredPengajuanList = pengajuanList
           .where(
-            (DataPengajuan pengajuan) => pengajuan.type!.endsWith(filterData.category!),
-      )
+            (DataPengajuan pengajuan) =>
+                pengajuan.type!.endsWith(filterData.category!),
+          )
           .toList();
       print(filteredPengajuanList.length);
 

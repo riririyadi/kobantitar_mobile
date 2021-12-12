@@ -1,13 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:get/get.dart';
+import 'package:kobantitar_mobile/controllers/laporan_keuangan_controller.dart';
 import 'package:kobantitar_mobile/screens/home_screens/laporan_keuangan_view_document.dart';
 
 class LaporanKeuangan extends StatefulWidget {
@@ -18,23 +13,40 @@ class LaporanKeuangan extends StatefulWidget {
 }
 
 class _LaporanKeuanganState extends State<LaporanKeuangan> {
-  final items = ['2010', '2011', '2012', '2013', '2014', '2015'];
-  final anotherItems = [
-    'Januari 2019',
-    'Februari 2019',
-    'Maret 2019',
-    'April 2019',
-    'Mei 2019',
-    'Juni 2019'
+  final controller = Get.put(LaporanKeuanganController());
+
+  final tahun = [
+    '2010',
+    '2011',
+    '2012',
+    '2013',
+    '2014',
+    '2015',
+    '2016',
+    '2017',
+    '2018',
+    '2019',
+    '2020',
+    '2021'
+  ];
+  final bulan = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
   ];
 
-  final url =
-      'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf';
-
-  String pathPDF = "";
-  String landscapePathPdf = "";
-  String remotePDFpath = "";
-  String corruptedPathPDF = "";
+  String selectedMonth = '1';
+  String selectedMonthYear = '2010';
+  String selectedYear = '2010';
 
   @override
   void initState() {
@@ -212,20 +224,24 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
                     child: CupertinoPicker(
                       itemExtent: 64,
                       selectionOverlay: Container(),
-                      children: items
+                      children: tahun
                           .map((item) => Center(
                               child: Text(item,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontFamily: "Montserrat"))))
                           .toList(),
-                      onSelectedItemChanged: (index) {},
+                      onSelectedItemChanged: (index) {
+                        setState(() {
+                          selectedYear = tahun[index];
+                        });
+                      },
                     ),
                   ),
                   Spacer(),
                   GestureDetector(
                     onTap: () {
-                      Get.off(() => ViewDocument(), arguments: url);
+                      controller.getLaporanTahunan(selectedYear);
                     },
                     child: Container(
                       height: 48.0,
@@ -266,7 +282,7 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
   _monthPicker(context) {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext c) {
+        builder: (BuildContext context) {
           return Container(
             color: Color(0xff757575),
             child: Container(
@@ -281,28 +297,80 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
               height: 260,
               child: Column(
                 children: [
-                  Text("Pilih Bulan",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 16.0)),
-                  SizedBox(height: 20.0),
-                  SizedBox(
-                    height: 120,
-                    child: CupertinoPicker(
-                      itemExtent: 64,
-                      selectionOverlay: Container(),
-                      children: anotherItems
-                          .map((item) => Center(
-                              child: Text(item,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: "Montserrat"))))
-                          .toList(),
-                      onSelectedItemChanged: (index) {},
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Pilih Bulan",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16.0))
+                    ],
+                  ),
+                  Container(
+                    height: 140.0,
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      children: [
+                        Flexible(
+                          flex: 5,
+                          child: SizedBox(
+                            height: 120,
+                            child: CupertinoPicker(
+                                itemExtent: 64,
+                                selectionOverlay: Container(),
+                                onSelectedItemChanged: (int index) {
+                                  setState(() {
+                                    selectedMonth = (index + 1).toString();
+                                  });
+                                },
+                                children: bulan
+                                    .map(
+                                      (item) => Center(
+                                        child: Text(
+                                          item,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: "Montserrat"),
+                                        ),
+                                      ),
+                                    )
+                                    .toList()),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 5,
+                          child: SizedBox(
+                            height: 120,
+                            child: CupertinoPicker(
+                                itemExtent: 64,
+                                selectionOverlay: Container(),
+                                onSelectedItemChanged: (int index) {
+                                  setState(() {
+                                    selectedMonthYear = tahun[index];
+                                  });
+                                },
+                                children: tahun
+                                    .map(
+                                      (item) => Center(
+                                        child: Text(
+                                          item,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: "Montserrat"),
+                                        ),
+                                      ),
+                                    )
+                                    .toList()),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Spacer(),
                   GestureDetector(
-                    onTap: () => Get.off(() => ViewDocument(), arguments: url),
+                    onTap: () {
+                      controller.getLaporanBulanan(
+                          selectedMonthYear, selectedMonth);
+                    },
                     child: Container(
                       height: 48.0,
                       decoration: BoxDecoration(

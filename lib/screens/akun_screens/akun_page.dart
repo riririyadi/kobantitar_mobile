@@ -223,38 +223,39 @@ class _AkunWidgetState extends State<AkunWidget> {
                 ),
               ),
             ),
-            controller.me.role == 'ANGGOTA' ? GestureDetector(
-              onTap: () => Get.to(() => PengunduranDiriAnggota()),
-              child: Container(
-                color:  Colors.transparent,
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Ajukan Pengunduran Diri Anggota",
-                      style: const TextStyle(
-                        color: Color(0xffE54444),
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w600,
+            controller.me.role == 'ANGGOTA'
+                ? GestureDetector(
+                    onTap: () => Get.to(() => PengunduranDiriAnggota()),
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Ajukan Pengunduran Diri Anggota",
+                            style: const TextStyle(
+                              color: Color(0xffE54444),
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ) : Container(),
+                  )
+                : Container(),
             Padding(
               padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "V.${controller.setting.appVersionName}",
+                    "V.${controller.packageInfo.version}",
                     style: const TextStyle(
-                      fontSize: 12.0,
-                      color : Colors.black45,
-                      fontWeight: FontWeight.w600
-                    ),
+                        fontSize: 12.0,
+                        color: Colors.black45,
+                        fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -270,7 +271,12 @@ class _AkunWidgetState extends State<AkunWidget> {
         padding: const EdgeInsets.all(16.0),
         child: Container(
             decoration: BoxDecoration(
-              color: Color(0xff9A3A3A),
+              gradient: LinearGradient(
+                  colors: [Color(0xff9A3A3A), Color(0xffEE2929)]),
+              image: DecorationImage(
+                image: AssetImage('assets/card-ornament.png'),
+                fit: BoxFit.fill,
+              ),
               borderRadius: BorderRadius.circular(12.0),
               boxShadow: [
                 BoxShadow(
@@ -339,14 +345,19 @@ class _AkunWidgetState extends State<AkunWidget> {
       padding: const EdgeInsets.all(16.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0xff9A3A3A),
+          gradient:
+              LinearGradient(colors: [Color(0xff9A3A3A), Color(0xffEE2929)]),
+          image: DecorationImage(
+            image: AssetImage('assets/card-ornament.png'),
+            fit: BoxFit.fill,
+          ),
           borderRadius: BorderRadius.circular(12.0),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
               blurRadius: 5.0,
               spreadRadius: 1.0,
-              offset: Offset(0.0, 5.0), // shadow direction: bottom
+              offset: Offset(0.0, 6.0), // shadow direction: bottom
             )
           ],
         ),
@@ -372,7 +383,6 @@ class _AkunWidgetState extends State<AkunWidget> {
                       fontSize: 12.0,
                     ),
                   ),
-
                 ],
               ),
               SizedBox(height: 29.0),
@@ -406,7 +416,6 @@ class _AkunWidgetState extends State<AkunWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  
                   Obx(() {
                     if (controller.isMeLoaded.value) {
                       return Container(

@@ -5,7 +5,7 @@ import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
 
 class SimpananSukarelaController extends GetxController {
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
   dynamic argumentData = Get.arguments;
   final userData = GetStorage();
   String token = "";
@@ -19,15 +19,10 @@ class SimpananSukarelaController extends GetxController {
   }
 
   void getDetailSimpanan() async {
-    try {
-      isLoading(true);
-      final data = await Service.fetchSimpanan(token);
-      if (data != null) {
-        simpanan = data;
-      }
-    } finally {
-      isLoading(false);
-      // TODO
+    final data = await Service.fetchSimpanan(token);
+    if (data != null) {
+      simpanan = data;
+      isLoaded(true);
     }
   }
 }
