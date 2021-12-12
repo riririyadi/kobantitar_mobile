@@ -96,12 +96,7 @@ class _SimpananSukarelaState extends State<SimpananSukarela> {
                                   fontSize: 14.0),
                             ),
                             Obx(() {
-                              if (controller.isLoading.value) {
-                                return Text("Loading", style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 24.0));
-                              } else {
+                              if (controller.isLoaded.value) {
                                 return Text(
                                   '${currencyFormatter.format(controller.simpanan.sukarela)}',
                                   style: TextStyle(
@@ -109,6 +104,12 @@ class _SimpananSukarelaState extends State<SimpananSukarela> {
                                       fontWeight: FontWeight.w600,
                                       fontSize: 24.0),
                                 );
+                              } else {
+                                return Text("Loading",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 24.0));
                               }
                             }),
                           ],

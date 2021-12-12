@@ -6,7 +6,7 @@ import 'package:kobantitar_mobile/controllers/pengajuan_controller.dart';
 import 'package:kobantitar_mobile/models/tagihan.dart';
 
 class TagihanController extends GetxController {
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
   final userData = GetStorage();
   String token = "";
   final searchQueryController = TextEditingController();
@@ -33,16 +33,11 @@ class TagihanController extends GetxController {
   }
 
   Future<Null> getTagihan() async {
-    try {
-      isLoading(true);
-      final data = await Service.fetchTagihan(token);
-      if (data != null) {
-        tagihanList = data.data!;
-        filter();
-      }
-    } finally {
-      isLoading(false);
-      return;
+    final data = await Service.fetchTagihan(token);
+    if (data != null) {
+      tagihanList = data.data!;
+      filter();
+      isLoaded(true);
     }
   }
 
@@ -56,19 +51,19 @@ class TagihanController extends GetxController {
     var filterData = currentFilter.value;
 
     if (filterData.query != null && filterData.query!.isNotEmpty) {
-      filteredTagihanList = tagihanList
-          .where((DataTagihan tagihan) {
-        return tagihan.caption!.toLowerCase().contains(filterData.query!.toLowerCase());
-      }
-      )
-          .toList();
+      filteredTagihanList = tagihanList.where((DataTagihan tagihan) {
+        return tagihan.caption!
+            .toLowerCase()
+            .contains(filterData.query!.toLowerCase());
+      }).toList();
       return;
     }
     if (filterData.category != null && filterData.category!.isNotEmpty) {
       filteredTagihanList = tagihanList
           .where(
-            (DataTagihan tagihan) => tagihan.type!.endsWith(filterData.category!),
-      )
+            (DataTagihan tagihan) =>
+                tagihan.type!.endsWith(filterData.category!),
+          )
           .toList();
       print(filteredTagihanList.length);
 

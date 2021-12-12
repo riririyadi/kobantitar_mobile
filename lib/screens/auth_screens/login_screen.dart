@@ -93,7 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    SizedBox(height: 65, child: passwordField()),
+                                    SizedBox(
+                                        height: 65, child: passwordField()),
                                     SizedBox(
                                       height: 5,
                                     ),
@@ -156,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         helperText: ' ',
-        contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         floatingLabelBehavior: FloatingLabelBehavior.never,
         prefixIcon: Icon(Icons.person),
         border: OutlineInputBorder(
@@ -181,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       controller: controller.passwordController,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+        contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         helperText: ' ',
         floatingLabelBehavior: FloatingLabelBehavior.never,
         prefixIcon: Icon(Icons.lock),
@@ -222,7 +223,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller.passwordController.text)
               .then((value) {
             controller.isLoading(false);
-           
           }).catchError((e) {
             print(e);
             controller.isLoading(false);
@@ -372,15 +372,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 65,
                         child: TextFormField(
                           controller: controller.nomorAnggotaController,
-                         keyboardType: TextInputType.numberWithOptions(
-                           signed: false, decimal: false
-                         ),
+                          keyboardType: TextInputType.numberWithOptions(
+                              signed: false, decimal: false),
                           style: TextStyle(fontSize: 12.0),
                           decoration: InputDecoration(
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.never,
                               helperText: ' ',
-                              
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 0.0),
                               border: OutlineInputBorder(
@@ -418,10 +416,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             gradient: LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
-                                colors: [
-                                  Color(0xff851212),
-                                  Color(0xffFF8A8A)
-                                ]),
+                                colors: [Color(0xff851212), Color(0xffFF8A8A)]),
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(

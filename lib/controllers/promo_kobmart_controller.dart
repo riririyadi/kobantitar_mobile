@@ -6,7 +6,6 @@ class PromoKobmartController extends GetxController {
 
   @override
   void onInit() {
-    print(Get.arguments);
     imageUrl = argumenData ?? "";
     super.onInit();
   }

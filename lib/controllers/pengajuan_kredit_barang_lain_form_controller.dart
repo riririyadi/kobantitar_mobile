@@ -24,9 +24,8 @@ class PengajuanKreditBarangFormController extends GetxController {
   var namaAtasan2Controller = TextEditingController();
   final userData = GetStorage();
   late String token;
-  var isLoading = false.obs;
-  var isLoading2 = false.obs;
-  var isMounted = false.obs;
+  var isLoaded = false.obs;
+  var isLoaded2 = false.obs;
   dynamic argumentData = Get.arguments;
   List<TenorBarang>? tenors = <TenorBarang>[].obs;
   var detailKredit = <BarangLainCalculation>[].obs;
@@ -62,30 +61,22 @@ class PengajuanKreditBarangFormController extends GetxController {
   }
 
   void getTenor() async {
-    try {
-      isLoading(true);
-      final data = await Service.fetchPengajuanBarangLainConfig(token);
-      if (data != null) {
-        tenors = data.data!.tenors;
-        isDoubleApproval = data.data!.isDoubleApproval!;
-        termsUrl = data.data!.termsUrl;
-      }
-    } finally {
-      isLoading(false);
+    final data = await Service.fetchPengajuanBarangLainConfig(token);
+    if (data != null) {
+      tenors = data.data!.tenors;
+      isDoubleApproval = data.data!.isDoubleApproval!;
+      termsUrl = data.data!.termsUrl;
+      isLoaded(true);
     }
   }
 
   void getCalculation() async {
-    try {
-      isLoading2(true);
-      detailKredit.clear();
-      final data = await Service.fetchPengajuanBarangCalculation(token,
-          int.parse(argumentData[0]['nilai_barang']), tenorController.text);
-      if (data != null) {
-        detailKredit.add(data);
-      }
-    } finally {
-      isLoading2(false);
+    detailKredit.clear();
+    final data = await Service.fetchPengajuanBarangCalculation(token,
+        int.parse(argumentData[0]['nilai_barang']), tenorController.text);
+    if (data != null) {
+      detailKredit.add(data);
+      isLoaded2(true);
     }
   }
 
@@ -99,7 +90,8 @@ class PengajuanKreditBarangFormController extends GetxController {
   void getSelfie(ImageSource imageSource, String imageContext) async {
     try {
       final XFile? image = await Get.to(CameraApp(
-          keterangan: "Foto ini akan digunakan untuk pengajuan Kredit Barang di Kobantitar"));
+          keterangan:
+              "Foto ini akan digunakan untuk pengajuan Kredit Barang di Kobantitar"));
 
       if (image != null) {
         if (imageContext == "app1") {

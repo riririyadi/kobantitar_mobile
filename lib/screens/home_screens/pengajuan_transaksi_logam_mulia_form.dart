@@ -208,9 +208,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Obx(() {
-                                      if (controller.isLoading.value) {
-                                        return Center(child: Text(""));
-                                      } else {
+                                      if (controller.isLoaded.value) {
                                         return DropdownButtonHideUnderline(
                                           child: DropdownButtonFormField(
                                             isDense: true,
@@ -248,6 +246,8 @@ class _PengajuanTransaksiLogamMuliaFormState
                                             }).toList(),
                                           ),
                                         );
+                                      } else {
+                                        return Center(child: Text(""));
                                       }
                                     }),
                                   ),
@@ -485,9 +485,7 @@ class _PengajuanTransaksiLogamMuliaFormState
                         ),
                       ),
                       Obx(() {
-                        if (controller.isLoading.value) {
-                          return SizedBox(height: 0, width: 0);
-                        } else {
+                        if (controller.isLoaded.value) {
                           if (controller.isDoubleApproval == true) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -563,6 +561,8 @@ class _PengajuanTransaksiLogamMuliaFormState
                               ),
                             );
                           }
+                          return SizedBox(height: 0, width: 0);
+                        } else {
                           return SizedBox(height: 0, width: 0);
                         }
                       }),

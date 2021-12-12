@@ -24,6 +24,8 @@ class PengaturanAkunController extends GetxController {
   var isBankLoaded = false.obs;
   var isDataBankLoaded = false.obs;
   var isDataInstansiLoaded = false.obs;
+  var isKTPUploaded = false.obs;
+  var isSelfieUploaded = false.obs;
   List<Instansi> instansis = [];
   Instansi dataInstansi = Instansi();
   Bank dataBank = Bank();
@@ -35,10 +37,8 @@ class PengaturanAkunController extends GetxController {
   var setting = AppSetting();
   var me = Me();
 
-  final mengundurkanDiriFormKey = GlobalKey<FormState>();
-  final passwordFormKey = GlobalKey<FormState>();
-  final ubahPasswordFormKey = GlobalKey<FormState>();
-
+  var bank = "";
+  var instansi = "";
   var namaController = TextEditingController();
   var jenisKelaminController = TextEditingController();
   var nikController = TextEditingController();
@@ -56,7 +56,6 @@ class PengaturanAkunController extends GetxController {
   var emailController = TextEditingController();
   var noHpController = TextEditingController();
 
-  var passwordController = TextEditingController();
   var selfiePath = "";
   var idCardPath = "";
   int? ktpFileId;
@@ -68,20 +67,21 @@ class PengaturanAkunController extends GetxController {
     getInstansi();
     getBank();
     getMe();
-
+    super.onInit();
     Future.delayed(const Duration(seconds: 4), () {
-      dataBank =
-          banks.firstWhere((element) => element.name == bankController.text);
-      dataInstansi = instansis
-          .firstWhere((element) => element.name == instansiController.text);
+      dataBank = banks.firstWhere((element) => element.name == bank);
+      dataInstansi =
+          instansis.firstWhere((element) => element.name == instansi);
+
       if (dataInstansi != null) {
+        instansiController.text = instansis[dataInstansi.id! - 1].id.toString();
         isDataInstansiLoaded(true);
       }
       if (dataBank != null) {
+        bankController.text = banks[dataBank.id! - 1].id.toString();
         isDataBankLoaded(true);
       }
     });
-    super.onInit();
   }
 
   @override
@@ -91,6 +91,21 @@ class PengaturanAkunController extends GetxController {
 
   @override
   void onClose() {
+    namaController.dispose();
+    jenisKelaminController.dispose();
+    nikController.dispose();
+    alamatController.dispose();
+    instansiController.dispose();
+    jabatanController.dispose();
+    nipController.dispose();
+    passwordLamaController.dispose();
+    passwordBaruController.dispose();
+    konfirmPasswordController.dispose();
+    bankController.dispose();
+    nomorRekeningController.dispose();
+    cabangController.dispose();
+    emailController.dispose();
+    noHpController.dispose();
     super.onClose();
   }
 
@@ -119,10 +134,10 @@ class PengaturanAkunController extends GetxController {
       jenisKelaminController.text = me.jenisKelamin!;
       nikController.text = me.nik!;
       alamatController.text = me.alamat!;
-      instansiController.text = me.instansi!;
       jabatanController.text = me.jabatan!;
+      bank = me.bank!;
+      instansi = me.instansi!;
       nipController.text = me.nip!;
-      bankController.text = me.bank!;
       nomorRekeningController.text = me.nomorRekening!;
       cabangController.text = me.cabang!;
       emailController.text = me.email!;
@@ -133,8 +148,6 @@ class PengaturanAkunController extends GetxController {
       isMeLoaded(true);
     }
   }
-
-  void getInfo() {}
 
   var selectedSelfieImagePath = "".obs;
   var selectedSelfieImageSize = "".obs;
@@ -151,6 +164,8 @@ class PengaturanAkunController extends GetxController {
             ((File(selectedSelfieImagePath.value)).lengthSync() / 1024 / 1024)
                     .toStringAsFixed(2) +
                 " Mb";
+        isSelfieUploaded(false);
+        uploadImage(selectedSelfieImagePath.value, "selfie");
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -162,13 +177,14 @@ class PengaturanAkunController extends GetxController {
   void getKTPImage(ImageSource imageSource) async {
     try {
       final image = await ImagePicker().pickImage(source: imageSource);
-
       if (image != null) {
         selectedKTPImagePath.value = image.path;
         selectedKTPImageSize.value =
             ((File(selectedKTPImagePath.value)).lengthSync() / 1024 / 1024)
                     .toStringAsFixed(2) +
                 " Mb";
+        isKTPUploaded(false);
+        uploadImage(selectedKTPImagePath.value, "ktp");
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -193,8 +209,10 @@ class PengaturanAkunController extends GetxController {
       final fileId = json['data']['file_id'];
       if (uploadType == "ktp") {
         ktpFileId = fileId;
+        isKTPUploaded(true);
       } else {
         selfieFileId = fileId;
+        isSelfieUploaded(true);
       }
       return response;
     } else {
@@ -218,11 +236,13 @@ class PengaturanAkunController extends GetxController {
       if (selfieFileId != null) "photo_file_id": selfieFileId,
       if (ktpFileId != null) "ktp_file_id": ktpFileId
     });
-    print(body);
+
     final response = await http.put(
       Uri.parse("${config.baseURL}/account"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
       },
       body: body,
     );

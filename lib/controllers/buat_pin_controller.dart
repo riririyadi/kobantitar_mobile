@@ -25,9 +25,6 @@ class BuatPINController extends GetxController {
     if (konfirmPin.text == pinBaru.text) {
       userData.write("PIN", konfirmPin.text);
       Get.offAll(() => HomeScreen());
-    } else {
-      Get.snackbar(
-          "Ini PIN BARU ${pinBaru.text}", "Konfirmasi pin ${konfirmPin.text}");
-    }
+    } else {}
   }
 }

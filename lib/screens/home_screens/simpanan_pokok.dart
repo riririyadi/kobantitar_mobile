@@ -277,12 +277,16 @@ class _SimpananPokokState extends State<SimpananPokok> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "${simpananSukarela.text}",
-                                        style: TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w500,
+                                      Container(
+                                        width: 200,
+                                        child: Text(
+                                          "${simpananSukarela.text}",
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            fontSize: 12.0,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
                                       Text(

@@ -86,7 +86,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   child: TextFormField(
                     controller: searchController,
                     onChanged: (value) {
-                      controller.setFilter(q : value);
+                      controller.setFilter(q: value);
                       setState(() {});
                     },
                     style: TextStyle(
@@ -115,27 +115,13 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 10.0),
                   children: [
+                    buildFilterPills(text: "Semua Tagihan", type: "ALL"),
+                    buildFilterPills(text: "Tagihan Logam Mulia", type: "LM"),
+                    buildFilterPills(text: "Tagihan Kredit Barang", type: "KB"),
                     buildFilterPills(
-                      text: "Semua Tagihan",
-                      type: "ALL"
-                    ),
+                        text: "Tagihan Kredit Kendaraan", type: "KK"),
                     buildFilterPills(
-                        text: "Tagihan Logam Mulia",
-                        type: "LM"
-                    ),
-                    buildFilterPills(
-                        text: "Tagihan Kredit Barang",
-                        type: "KB"
-                    ),
-                    buildFilterPills(
-                        text: "Tagihan Kredit Kendaraan",
-                        type: "KK"
-                    ),
-                    buildFilterPills(
-                        text: "Tagihan Kredit Kobmart",
-                        type: "KM"
-                    ),
-
+                        text: "Tagihan Kredit Kobmart", type: "KM"),
                   ],
                 ),
               ),
@@ -163,7 +149,8 @@ class _TagihanWidgetState extends State<TagihanWidget> {
     ]);
   }
 
-  GestureDetector buildFilterPills({required String type, required String text}) {
+  GestureDetector buildFilterPills(
+      {required String type, required String text}) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -242,7 +229,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
     return const SingleChildScrollView(
       physics: AlwaysScrollableScrollPhysics(),
       child: InfoWidget(
-          icon: Icons.assistant_photo, text: 'Anda tidak memiliki pengajuan'),
+          icon: Icons.assistant_photo, text: 'Anda tidak memiliki tagihan'),
     );
   }
 
@@ -305,7 +292,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   Text(
                     'Rp ${currencyFormatter.format(tagihan.sisaTagihan)}',
                     style:
-                    TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
                   )
                 ],
               ),
@@ -320,7 +307,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   Text(
                     'Rp ${currencyFormatter.format(tagihan.tagihanHarusDibayar)}',
                     style:
-                    TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -332,7 +319,7 @@ class _TagihanWidgetState extends State<TagihanWidget> {
                   Text(
                     '${tagihan.jatuhTempo}',
                     style:
-                    TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: 12.0, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

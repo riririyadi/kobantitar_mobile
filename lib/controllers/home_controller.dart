@@ -7,8 +7,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/api_services/service.dart';
 import 'package:kobantitar_mobile/models/app_setting.dart';
 import 'package:kobantitar_mobile/models/dashboard.dart';
-import 'package:http/http.dart' as http;
-import 'package:kobantitar_mobile/api_config/config.dart' as config;
 import 'package:kobantitar_mobile/models/kobmart.dart';
 import 'package:kobantitar_mobile/models/me.dart';
 import 'package:kobantitar_mobile/models/simpanan.dart';
@@ -50,14 +48,14 @@ class HomeController extends GetxController {
     getSimpanan();
     getSetting();
     getDashboard();
-    Future.delayed(Duration(seconds: 5), () {
-      checkVersion();
-    });
   }
 
   @override
   void onReady() {
     super.onReady();
+    Future.delayed(Duration(seconds: 5), () {
+      checkVersion();
+    });
   }
 
   @override
@@ -86,12 +84,11 @@ class HomeController extends GetxController {
     }
   }
 
-
-  Future<Null> refreshData() async{
-      await getMe();
-      await getSimpanan();
-      await getDashboard();
-      return;
+  Future<Null> refreshData() async {
+    await getMe();
+    await getSimpanan();
+    await getDashboard();
+    return;
   }
 
   Future<void> getMe() async {
@@ -109,7 +106,6 @@ class HomeController extends GetxController {
       simpanan = data;
       isSimpananLoaded(true);
       return;
-
     }
   }
 
@@ -119,22 +115,20 @@ class HomeController extends GetxController {
       dashboard = data;
       isDashboardLoaded(true);
       return;
-
     }
   }
 
   void checkVersion() {
-    if (_packageInfo.version != setting.appVersionName) {
+    if (_packageInfo.version != setting.appVersionName!) {
       Get.defaultDialog(
-          title: "Latest update is available",
+          title: "Pembaruan tersedia",
           titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           content: Container(
             padding: EdgeInsets.all(10),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                      "Your app version is not uptodate, this app version is ${_packageInfo.version}",
+                  Text("Update aplikasi anda untuk dukungan yang lebih optimal",
                       style: TextStyle(fontSize: 14))
                 ]),
           ),
@@ -142,18 +136,18 @@ class HomeController extends GetxController {
             onTap: () => Get.back(),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Later", style: TextStyle(fontSize: 14)),
+              child: Text("Nanti", style: TextStyle(fontSize: 14)),
             ),
           ),
           confirm: GestureDetector(
             onTap: () => Get.back(),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Update Now", style: TextStyle(fontSize: 14)),
+              child: Text("Update", style: TextStyle(fontSize: 14)),
             ),
           ),
           contentPadding: EdgeInsets.all(10),
           titlePadding: EdgeInsets.all(10));
-    }
+    } else {}
   }
 }

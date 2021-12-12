@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:kobantitar_mobile/screens/auth_screens/buat_pin.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/halaman_pin.dart';
 import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
 

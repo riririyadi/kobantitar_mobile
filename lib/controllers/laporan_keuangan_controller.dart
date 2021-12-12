@@ -1,31 +1,33 @@
-import 'dart:io';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/api_services/service.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:kobantitar_mobile/models/laporan.dart';
+import 'package:kobantitar_mobile/screens/home_screens/laporan_keuangan_view_document.dart';
 
 class LaporanKeuanganController extends GetxController {
-  var isLoading = false.obs;
-  late File file;
-  dynamic argumentData = Get.arguments;
-  String uri = "";
+  String token = "";
+  final userData = GetStorage();
+  Laporan laporan = Laporan();
+
   @override
   void onInit() {
-    uri = argumentData;
+    token = userData.read('token');
     super.onInit();
-    getPdfNetwork();
   }
 
-  void getPdfNetwork() async {
-    try {
-      isLoading(true);
-      final data = await Service.loadPdfNetwork(uri);
-      if (data != null) {
-        file = data;
-      }
-    } finally {
-      isLoading(false);
+  void getLaporanTahunan(String tahun) async {
+    final data = await Service.fetchLaporanTahunan(token, tahun);
+    if (data != null) {
+      laporan = data;
+      Get.to(() => ViewDocument(), arguments: laporan.laporanUrl);
+    }
+  }
+
+  void getLaporanBulanan(String tahun, String bulan) async {
+    final data = await Service.fetchLaporanBulanan(token, tahun, bulan);
+    if (data != null) {
+      laporan = data;
+      Get.to(() => ViewDocument(), arguments: laporan.laporanUrl);
     }
   }
 }

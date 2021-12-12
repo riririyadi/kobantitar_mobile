@@ -116,7 +116,8 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 10.0, vertical: 0.0),
                                         helperText: '',
-                                        hintText: 'Cont.: Smartphone, Mesin Cuci, Televisi, dll',
+                                        hintText:
+                                            'Cont.: Smartphone, Mesin Cuci, Televisi, dll',
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                         border: OutlineInputBorder(
@@ -152,7 +153,8 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 10.0, vertical: 0.0),
                                         helperText: '',
-                                        hintText: 'Cont.: Xiaomi Note 3, Sharp 330, dll',
+                                        hintText:
+                                            'Cont.: Xiaomi Note 3, Sharp 330, dll',
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                         border: OutlineInputBorder(
@@ -193,7 +195,8 @@ class _PengajuanKreditBarangLainState extends State<PengajuanKreditBarangLain> {
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 10.0, vertical: 0.0),
                                         helperText: ' ',
-                                        hintText: 'Masukkan nilai estimasi harga',
+                                        hintText:
+                                            'Masukkan nilai estimasi harga',
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.never,
                                         border: OutlineInputBorder(

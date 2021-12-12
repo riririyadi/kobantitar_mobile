@@ -1,21 +1,22 @@
 import 'dart:async';
 import 'dart:io';
 
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class KobantitarWebview extends StatefulWidget {
   final String judul;
   final String url;
-  const KobantitarWebview({required this.judul,required this.url, Key? key }) : super(key: key);
+  const KobantitarWebview({required this.judul, required this.url, Key? key})
+      : super(key: key);
 
   @override
   State<KobantitarWebview> createState() => _KobantitarWebviewState();
 }
 
 class _KobantitarWebviewState extends State<KobantitarWebview> {
-   final Completer<WebViewController> _controller =
+  final Completer<WebViewController> _controller =
       Completer<WebViewController>();
   bool isLoading = true;
   @override
@@ -26,16 +27,24 @@ class _KobantitarWebviewState extends State<KobantitarWebview> {
     }
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 14.0,
+          ),
+          onPressed: () => Get.back(),
+        ),
+        titleSpacing: 0,
         centerTitle: false,
-        title: Text(widget.judul, style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
-        flexibleSpace:  Container(
+        title: Text(widget.judul,
+            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+        flexibleSpace: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -56,7 +65,7 @@ class _KobantitarWebviewState extends State<KobantitarWebview> {
                   _controller.complete(webViewController);
                 },
                 onProgress: (int progress) {
-                   setState(() {
+                  setState(() {
                     isLoading = true;
                   });
                 },
@@ -69,8 +78,7 @@ class _KobantitarWebviewState extends State<KobantitarWebview> {
                   }
                   return NavigationDecision.navigate;
                 },
-                onPageStarted: (String url) {
-                },
+                onPageStarted: (String url) {},
                 onPageFinished: (String url) {
                   setState(() {
                     isLoading = false;
@@ -79,13 +87,13 @@ class _KobantitarWebviewState extends State<KobantitarWebview> {
                 gestureNavigationEnabled: true,
                 backgroundColor: const Color(0x00000000),
               ),
-            ), isLoading
-              ? Positioned.fill(
-                  child: Center(
-                  child: CircularProgressIndicator(),
-                ))
-              : Stack()
-
+            ),
+            isLoading
+                ? Positioned.fill(
+                    child: Center(
+                    child: CircularProgressIndicator(),
+                  ))
+                : Stack()
           ],
         );
       }),

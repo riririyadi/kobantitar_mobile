@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 
 class HalamanPINController extends GetxController {
   final pinController = TextEditingController();
-
   String? savedPIN;
   final userData = GetStorage();
   String token = "";

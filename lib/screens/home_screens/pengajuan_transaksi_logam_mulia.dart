@@ -37,10 +37,11 @@ class _PengajuanTransaksiLogamMuliaState
               colors: [Color(0xffEE6A6A), Color(0xffC30707)]),
         ),
         child: Obx(() {
-          if (controller.isLoading.value) {
+          if (controller.isLoaded.value) {
+            return buildLMPage(context);
+          } else {
             return buildLoading();
           }
-          return buildLMPage(context);
         }),
       ),
     );
@@ -101,16 +102,14 @@ class _PengajuanTransaksiLogamMuliaState
                     ),
                     SizedBox(height: 5.0),
                     Obx(() {
-                      if (controller.isLoading.value) {
-                        return Text("loading");
-                      } else {
-                        if(amountData.id == null){
+                      if (controller.isLoaded.value) {
+                        if (amountData.id == null) {
                           return Text(
                             "Pilih Nominal",
                             style: TextStyle(
-                              color: Colors.white54,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 20.0),
+                                color: Colors.white54,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20.0),
                           );
                         }
                         return Text(
@@ -120,20 +119,20 @@ class _PengajuanTransaksiLogamMuliaState
                               fontWeight: FontWeight.w600,
                               fontSize: 24.0),
                         );
+                      } else {
+                        return Text("loading");
                       }
                     }),
                     SizedBox(height: 5.0),
                     Obx(() {
-                      if (controller.isLoading.value) {
-                        return Text("loading");
-                      } else {
-                        if(amountData.id == null){
+                      if (controller.isLoaded.value) {
+                        if (amountData.id == null) {
                           return Text(
                             "Pilih Nominal",
                             style: TextStyle(
-                              color: Colors.white54,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 10),
+                                color: Colors.white54,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 10),
                           );
                         }
                         return Text(
@@ -143,6 +142,8 @@ class _PengajuanTransaksiLogamMuliaState
                             fontWeight: FontWeight.w600,
                           ),
                         );
+                      } else {
+                        return Text("loading");
                       }
                     }),
                   ],
@@ -321,18 +322,14 @@ class _PengajuanTransaksiLogamMuliaState
             children: [
               Text(
                 amountData.caption!.replaceAll(" Juta", ''),
-                style:  TextStyle(
-                  fontSize: 32.0,
-                  fontWeight: FontWeight.w600,
-                  color: textColor
-                ),
-              ),
-               Text(
-                "Juta",
                 style: TextStyle(
-                  fontSize: 12,
-                  color: textColor
-                ),
+                    fontSize: 32.0,
+                    fontWeight: FontWeight.w600,
+                    color: textColor),
+              ),
+              Text(
+                "Juta",
+                style: TextStyle(fontSize: 12, color: textColor),
               )
             ],
           ),
@@ -389,9 +386,7 @@ class _PengajuanTransaksiLogamMuliaState
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Obx(() {
-                          if (controller.isLoading.value) {
-                            return Center(child: Text("Loading"));
-                          } else {
+                          if (controller.isLoaded.value) {
                             return DropdownButtonHideUnderline(
                               child: DropdownButtonFormField(
                                 isExpanded: true,
@@ -400,7 +395,7 @@ class _PengajuanTransaksiLogamMuliaState
                                         borderSide: BorderSide(
                                             color: Colors.transparent))),
                                 validator: (value) => value == null
-                                    ? 'Instansi tidak boleh kosong'
+                                    ? 'Amount tidak boleh kosong'
                                     : null,
                                 onChanged: (value) => setState(() {
                                   controller.amountIdController.text =
@@ -417,6 +412,8 @@ class _PengajuanTransaksiLogamMuliaState
                                 }).toList(),
                               ),
                             );
+                          } else {
+                            return Center(child: Text(""));
                           }
                         }),
                       ),
@@ -428,7 +425,6 @@ class _PengajuanTransaksiLogamMuliaState
                         onTap: () {
                           // ignore: unnecessary_null_comparison
                           if (controller.amountIdController.text == "") {
-                            Get.snackbar("err", "message");
                           } else {
                             Get.off(() => PengajuanTransaksiLogamMuliaForm(),
                                 arguments: controller.amountList![int.parse(

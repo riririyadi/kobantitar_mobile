@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:kobantitar_mobile/screens/home_screens/ambil_simpanan_sukarela.dart';
 
 class SimulasiSHU extends StatefulWidget {
   const SimulasiSHU({Key? key}) : super(key: key);
@@ -9,9 +11,37 @@ class SimulasiSHU extends StatefulWidget {
 }
 
 class _SimulasiSHUState extends State<SimulasiSHU> {
-  bool value = false;
+  int persentase = 5;
+  int simpananPokok = 1000000;
+  final simpananWajibController = TextEditingController();
+  final simpananSukarelaController = TextEditingController();
+  double hasil = 0;
+  final currencyFormatter = NumberFormat('#,##0', 'ID');
 
-  get onChanged => null;
+  void hitungSHU() {
+    setState(() {
+      if (simpananWajibController.text == '') {
+        simpananWajibController.text = '0';
+      }
+      if (simpananSukarelaController.text == '') {
+        simpananSukarelaController.text = '0';
+      }
+      hasil = persentase /
+          100 *
+          (simpananPokok +
+              int.parse(simpananWajibController.text.replaceAll('.', '')) +
+              int.parse(simpananSukarelaController.text.replaceAll('.', '')));
+    });
+  }
+
+  @override
+  void initState() {
+    simpananWajibController.text = '2.000.000';
+    simpananSukarelaController.text = '3.000.000';
+    hitungSHU();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +137,19 @@ class _SimulasiSHUState extends State<SimulasiSHU> {
                                   width: double.infinity,
                                   height: 40,
                                   child: TextField(
+                                    onChanged: (e) => hitungSHU(),
+                                    controller: simpananWajibController,
+                                    inputFormatters: [
+                                      ThousandsSeparatorInputFormatter()
+                                    ],
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                    keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
+                                      prefixText: 'Rp  ',
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 10.0),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -125,7 +167,19 @@ class _SimulasiSHUState extends State<SimulasiSHU> {
                                   width: double.infinity,
                                   height: 40,
                                   child: TextField(
+                                    onChanged: (e) => hitungSHU(),
+                                    controller: simpananSukarelaController,
+                                    inputFormatters: [
+                                      ThousandsSeparatorInputFormatter()
+                                    ],
+                                    keyboardType: TextInputType.number,
+                                    style: TextStyle(
+                                      fontSize: 12.0,
+                                    ),
                                     decoration: InputDecoration(
+                                      prefixText: 'Rp  ',
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 10.0),
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.0),
@@ -156,42 +210,60 @@ class _SimulasiSHUState extends State<SimulasiSHU> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                            width: 30,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[300],
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "-",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                if (persentase > 0) {
+                                                  persentase--;
+                                                }
+                                              });
+                                              hitungSHU();
+                                            },
+                                            child: Container(
+                                              width: 30,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[300],
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "-",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                          Text("5"),
-                                          Container(
-                                            width: 30,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              color: Color(0xff9A3A3A),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "+",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                          Text(persentase.toString()),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                persentase++;
+                                              });
+                                              hitungSHU();
+                                            },
+                                            child: Container(
+                                              width: 30,
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xff9A3A3A),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "+",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -244,7 +316,7 @@ class _SimulasiSHUState extends State<SimulasiSHU> {
                               ),
                               SizedBox(height: 5.0),
                               Text(
-                                "RP 5.000.000",
+                                "RP ${currencyFormatter.format(hasil.floor())}",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18.0,

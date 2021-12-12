@@ -62,13 +62,7 @@ class _NotificationsState extends State<Notifications> {
                       color: Color(0xfff8f8f8),
                     ),
                     child: Obx(() {
-                      if (controller.isLoading.value) {
-                        return Container(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      } else {
+                      if (controller.isLoaded.value) {
                         return ListView.builder(
                             itemCount: controller.notifikasi.length,
                             itemBuilder: (context, index) {
@@ -153,6 +147,12 @@ class _NotificationsState extends State<Notifications> {
                                 ),
                               );
                             });
+                      } else {
+                        return Container(
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
                       }
                     })),
               ),

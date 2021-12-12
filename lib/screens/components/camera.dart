@@ -11,7 +11,8 @@ import 'package:kobantitar_mobile/screens/components/kobantitar_app_bar.dart';
 class CameraApp extends StatefulWidget {
   final String? keterangan;
   final int cameraId;
-  const CameraApp({this.keterangan, this.cameraId = 0, Key? key}) : super(key: key);
+  const CameraApp({this.keterangan, this.cameraId = 0, Key? key})
+      : super(key: key);
   @override
   _CameraAppState createState() => _CameraAppState();
 }
@@ -27,7 +28,8 @@ class _CameraAppState extends State<CameraApp> {
   void initState() {
     super.initState();
     currentCamera = widget.cameraId;
-    controller = CameraController(cameras[widget.cameraId], ResolutionPreset.medium);
+    controller =
+        CameraController(cameras[widget.cameraId], ResolutionPreset.medium);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
@@ -101,6 +103,15 @@ class _CameraAppState extends State<CameraApp> {
     var judul = "Ambil Selfie";
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 14.0,
+          ),
+          onPressed: () => Get.back(),
+        ),
+        titleSpacing: 0,
         centerTitle: false,
         title: Text(judul, style: TextStyle(fontSize: 14.0)),
         flexibleSpace: Container(
@@ -190,21 +201,19 @@ class _CameraAppState extends State<CameraApp> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   buildButtonConfirm(
-                    onPressed: (){
-                      setState(() {
-                        file =  null;
-                      });
-                    },
-                    icon: Icons.close,
-                    color : Colors.redAccent
-                  ),
-                    buildButtonConfirm(
-                    onPressed: (){
-                      Get.back(result: file);
-                    },
-                    icon: Icons.check,
-                    color : Colors.white
-                  ),
+                      onPressed: () {
+                        setState(() {
+                          file = null;
+                        });
+                      },
+                      icon: Icons.close,
+                      color: Colors.redAccent),
+                  buildButtonConfirm(
+                      onPressed: () {
+                        Get.back(result: file);
+                      },
+                      icon: Icons.check,
+                      color: Colors.white),
                 ],
               ),
             ),
@@ -214,7 +223,8 @@ class _CameraAppState extends State<CameraApp> {
     );
   }
 
-  Container buildButtonConfirm({required void Function()? onPressed,IconData? icon, Color? color}) {
+  Container buildButtonConfirm(
+      {required void Function()? onPressed, IconData? icon, Color? color}) {
     return Container(
       width: MediaQuery.of(context).size.width / 2,
       child: Center(
@@ -259,26 +269,27 @@ class _CameraAppState extends State<CameraApp> {
                 ),
               ),
             ),
-          ), 
-          widget.keterangan != null ?
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: double.infinity,
-                height: 60,
-                padding: EdgeInsets.all(8),
-                color: Colors.white54,
-                child: Center(
-                  child: Text(
-                    widget.keterangan!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.redAccent[700],
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              )) : Container()
+          ),
+          widget.keterangan != null
+              ? Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: double.infinity,
+                    height: 60,
+                    padding: EdgeInsets.all(8),
+                    color: Colors.white54,
+                    child: Center(
+                      child: Text(
+                        widget.keterangan!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.redAccent[700],
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ))
+              : Container()
         ],
       ),
     );

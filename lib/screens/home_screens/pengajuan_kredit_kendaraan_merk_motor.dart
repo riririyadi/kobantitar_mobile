@@ -81,9 +81,7 @@ class _PengajuanKreditBarangState extends State<PengajuanKreditBarang> {
                       ),
                       Flexible(
                         child: Obx(() {
-                          if (controller.isLoading.value) {
-                            return Center(child: Text("Loading..."));
-                          } else {
+                          if (controller.isLoaded.value) {
                             return ListView.builder(
                               itemCount: controller.merkKendaraan!.length,
                               itemBuilder: (BuildContext context, int index) {
@@ -150,6 +148,8 @@ class _PengajuanKreditBarangState extends State<PengajuanKreditBarang> {
                                 );
                               },
                             );
+                          } else {
+                            return Center(child: Text(""));
                           }
                         }),
                       ),

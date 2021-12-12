@@ -8,7 +8,7 @@ import 'package:kobantitar_mobile/screens/pengajuan_screens/detail_pengajuan.dar
 
 class RincianPengajuanController extends GetxController {
   dynamic argumentData = Get.arguments;
-  var isLoading = false.obs;
+  var isLoaded = false.obs;
   final userData = GetStorage();
   String token = "";
   var rincianPengajuan = DetailDataPengajuan();
@@ -25,18 +25,13 @@ class RincianPengajuanController extends GetxController {
   }
 
   void getDetailPengajuan() async {
-    try {
-      isLoading(true);
-      final data =
-          await Service.fetchDetailPengajuan(token, argumentData['id']);
-      if (data != null) {
-        rincianPengajuan = data;
-        riwayatPengajuan = data.data!.riwayat!;
-        pengajuan = data.data!.pengajuan!;
-        riwayatTagihan = data.data!.tagihan!;
-      }
-    } finally {
-      isLoading(false);
+    final data = await Service.fetchDetailPengajuan(token, argumentData['id']);
+    if (data != null) {
+      rincianPengajuan = data;
+      riwayatPengajuan = data.data!.riwayat!;
+      pengajuan = data.data!.pengajuan!;
+      riwayatTagihan = data.data!.tagihan!;
+      isLoaded(true);
     }
   }
 }

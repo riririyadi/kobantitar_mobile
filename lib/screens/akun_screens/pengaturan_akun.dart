@@ -462,7 +462,11 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                 return DropdownMenuItem(
                                                     value: item.id,
                                                     child: Text(item.name!,
+                                                        maxLines: 1,
                                                         style: TextStyle(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             color: Colors.black,
                                                             fontSize: 12.0)));
                                               }).toList(),
@@ -608,7 +612,11 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                 return DropdownMenuItem(
                                                     value: item.id,
                                                     child: Text(item.name!,
+                                                        maxLines: 1,
                                                         style: TextStyle(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                             color: Colors.black,
                                                             fontSize: 12.0)));
                                               }).toList(),
@@ -840,11 +848,28 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                     Container(
                                                       height: 160,
                                                       width: double.infinity,
-                                                      child: Image.file(
-                                                          File(controller
-                                                              .selectedSelfieImagePath
-                                                              .value),
-                                                          fit: BoxFit.fitWidth),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                        color: Colors.grey,
+                                                      ),
+                                                      child: Obx(() {
+                                                        if (controller
+                                                            .isSelfieUploaded
+                                                            .value) {
+                                                          return Image.file(
+                                                              File(controller
+                                                                  .selectedSelfieImagePath
+                                                                  .value),
+                                                              fit: BoxFit
+                                                                  .fitWidth);
+                                                        } else {
+                                                          return Center(
+                                                              child:
+                                                                  CircularProgressIndicator());
+                                                        }
+                                                      }),
                                                     ),
                                                     SizedBox(height: 10),
                                                     Row(
@@ -857,7 +882,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                               GestureDetector(
                                                             onTap: () {
                                                               _bottomSheet(
-                                                                  context, 2);
+                                                                  context, 1);
                                                             },
                                                             child: Container(
                                                               padding:
@@ -875,45 +900,6 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                               child: Center(
                                                                 child: Text(
                                                                     "Ambil ulang",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white)),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(width: 10),
-                                                        Expanded(
-                                                          child:
-                                                              GestureDetector(
-                                                            onTap: () {
-                                                              controller
-                                                                  .uploadImage(
-                                                                      controller
-                                                                          .selectedKTPImagePath
-                                                                          .value,
-                                                                      "ktp")
-                                                                  .then((value) =>
-                                                                      Get.snackbar(
-                                                                          "Success",
-                                                                          "Image saved successfully"));
-                                                            },
-                                                            child: Container(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(10),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Color(
-                                                                    0xff851212),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                              child: Center(
-                                                                child: Text(
-                                                                    "Simpan",
                                                                     style: TextStyle(
                                                                         color: Colors
                                                                             .white)),
@@ -988,11 +974,28 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                     Container(
                                                       height: 160,
                                                       width: double.infinity,
-                                                      child: Image.file(
-                                                          File(controller
-                                                              .selectedKTPImagePath
-                                                              .value),
-                                                          fit: BoxFit.fitWidth),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                        color: Colors.grey,
+                                                      ),
+                                                      child: Obx(() {
+                                                        if (controller
+                                                            .isKTPUploaded
+                                                            .value) {
+                                                          return Image.file(
+                                                              File(controller
+                                                                  .selectedKTPImagePath
+                                                                  .value),
+                                                              fit: BoxFit
+                                                                  .fitWidth);
+                                                        } else {
+                                                          return Center(
+                                                              child:
+                                                                  CircularProgressIndicator());
+                                                        }
+                                                      }),
                                                     ),
                                                     SizedBox(height: 10),
                                                     Row(
@@ -1023,45 +1026,6 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                               child: Center(
                                                                 child: Text(
                                                                     "Ambil ulang",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .white)),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(width: 10),
-                                                        Expanded(
-                                                          child:
-                                                              GestureDetector(
-                                                            onTap: () {
-                                                              controller
-                                                                  .uploadImage(
-                                                                      controller
-                                                                          .selectedKTPImagePath
-                                                                          .value,
-                                                                      "ktp")
-                                                                  .then((value) =>
-                                                                      Get.snackbar(
-                                                                          "Success",
-                                                                          "Image saved successfully"));
-                                                            },
-                                                            child: Container(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(10),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Color(
-                                                                    0xff851212),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                              child: Center(
-                                                                child: Text(
-                                                                    "Simpan",
                                                                     style: TextStyle(
                                                                         color: Colors
                                                                             .white)),

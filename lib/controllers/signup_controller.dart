@@ -16,19 +16,15 @@ import 'package:kobantitar_mobile/screens/components/camera.dart';
 import 'package:kobantitar_mobile/screens/sukses_notifikasi_screens/pendaftaran_sukses.dart';
 import 'package:kobantitar_mobile/api_services/service.dart';
 
-
-enum SignUpImage{
-  ktp, selfie
-}
-
+enum SignUpImage { ktp, selfie }
 
 class SignUpController extends GetxController {
   static var client = http.Client();
   List<Instansi> instansis = [];
   List<Bank> banks = [];
 
-  var isBankLoading = false.obs;
-  var isInstansiLoading = false.obs;
+  var isBankLoaded = false.obs;
+  var isInstansiLoaded = false.obs;
 
   final dataPribadiFormKey = GlobalKey<FormState>();
   final detailBankFormKey = GlobalKey<FormState>();
@@ -56,7 +52,7 @@ class SignUpController extends GetxController {
   @override
   void onInit() {
     jenisKelaminController.text = "PRIA";
-    if(argumentData[1] == "LAMA"){
+    if (argumentData[1] == "LAMA") {
       print("LAMA");
       NomorAnggota nomorAnggota = argumentData[2];
       namaController.text = nomorAnggota.nama!;
@@ -91,62 +87,47 @@ class SignUpController extends GetxController {
   }
 
   void getInstansi() async {
-    try {
-      isInstansiLoading(true);
-      var data = await Service.fetchInstansi();
-      if (data != null) {
-        instansis = data;
-      }
-    } finally {
-      isInstansiLoading(false);
+    final data = await Service.fetchInstansi();
+    if (data != null) {
+      instansis = data;
+      isInstansiLoaded(true);
     }
   }
 
   void getBank() async {
-    try {
-      isBankLoading(true);
-      var data = await Service.fetchBank();
-      if (data != null) {
-        banks = data;
-      }
-    } finally {
-      isBankLoading(false);
+    final data = await Service.fetchBank();
+    if (data != null) {
+      banks = data;
+      isBankLoaded(true);
     }
   }
 
+  Map<SignUpImage, String> selectedImagePaths =
+      {SignUpImage.ktp: "", SignUpImage.selfie: ""}.obs;
 
+  Map<SignUpImage, int> fileIds =
+      {SignUpImage.ktp: 0, SignUpImage.selfie: 0}.obs;
 
-  Map<SignUpImage, String> selectedImagePaths = {
-    SignUpImage.ktp: "",
-    SignUpImage.selfie : ""
-  }.obs;
-
-  Map<SignUpImage, int> fileIds = {
-    SignUpImage.ktp: 0,
-    SignUpImage.selfie : 0
-  }.obs;
-
-
-  bool checkIsImageFilled(){
+  bool checkIsImageFilled() {
     bool flag = true;
-    fileIds.forEach((key, value) { 
-      if(value == 0){
+    fileIds.forEach((key, value) {
+      if (value == 0) {
         flag = false;
       }
     });
     return flag;
   }
- 
+
   void getImage(SignUpImage imageContext) async {
     try {
-
-      final image = await Get.to(CameraApp(cameraId: imageContext == SignUpImage.selfie ? 1 : 0, ));
+      final image = await Get.to(CameraApp(
+        cameraId: imageContext == SignUpImage.selfie ? 1 : 0,
+      ));
 
       if (image != null) {
         selectedImagePaths[imageContext] = "LOADING";
         await uploadImage(image.path, imageContext);
         selectedImagePaths[imageContext] = image.path;
-        
       } else {
         Get.snackbar("No Image Selected", "Please select an image");
       }
@@ -154,7 +135,6 @@ class SignUpController extends GetxController {
       print("Failed to pick image: $e");
     }
   }
-
 
   Future<http.StreamedResponse> uploadImage(
       String file, SignUpImage uploadContext) async {
@@ -183,7 +163,7 @@ class SignUpController extends GetxController {
       Uri.parse("${config.baseURL}/register"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Accept' : 'application/json'
+        'Accept': 'application/json'
       },
       body: jsonEncode(<String, dynamic>{
         "jenis_pendaftaran": argumentData[1],
@@ -210,14 +190,12 @@ class SignUpController extends GetxController {
       final json = jsonDecode(response.body);
       Get.off(() => PendaftaranSukses());
       return "Success";
-    } 
-    if (response.statusCode == 422) {
-      Get.offAll(()=> LoginScreen());
-      Get.snackbar("Sign Up Failed", "Email Anda Sudah digunakan silahkan login");
-
     }
-    
-    else {
+    if (response.statusCode == 422) {
+      Get.offAll(() => LoginScreen());
+      Get.snackbar(
+          "Sign Up Failed", "Email Anda Sudah digunakan silahkan login");
+    } else {
       print(response.body);
       print(response.statusCode);
       Get.snackbar("Sign Up Failed", "Invalid data");

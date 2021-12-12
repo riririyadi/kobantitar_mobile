@@ -152,7 +152,6 @@ class _DataPribadiState extends State<DataPribadi> {
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
-
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -217,9 +216,7 @@ class _DataPribadiState extends State<DataPribadi> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Obx(() {
-              if (controller.isInstansiLoading.value) {
-                return Text("");
-              } else {
+              if (controller.isInstansiLoaded.value) {
                 return DropdownButtonHideUnderline(
                   child: DropdownButtonFormField(
                     decoration: InputDecoration(
@@ -234,11 +231,16 @@ class _DataPribadiState extends State<DataPribadi> {
                       return DropdownMenuItem(
                           value: item.id,
                           child: Text(item.name!,
+                              maxLines: 1,
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 12.0)));
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.black,
+                                  fontSize: 12.0)));
                     }).toList(),
                   ),
                 );
+              } else {
+                return Text("");
               }
             }),
           ),
