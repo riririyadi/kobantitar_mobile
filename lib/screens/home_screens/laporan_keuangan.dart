@@ -44,12 +44,15 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
     'Desember'
   ];
 
-  String selectedMonth = '1';
-  String selectedMonthYear = '2010';
-  String selectedYear = '2010';
+  String selectedMonth = "";
+  String selectedMonthYear = "";
+  String selectedYear = "";
 
   @override
   void initState() {
+    selectedMonth = '1';
+    selectedMonthYear = '2010';
+    selectedYear = '2010';
     super.initState();
   }
 
@@ -242,6 +245,9 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
                   GestureDetector(
                     onTap: () {
                       controller.getLaporanTahunan(selectedYear);
+                      setState(() {
+                        selectedYear = '2010';
+                      });
                     },
                     child: Container(
                       height: 48.0,
@@ -370,6 +376,10 @@ class _LaporanKeuanganState extends State<LaporanKeuangan> {
                     onTap: () {
                       controller.getLaporanBulanan(
                           selectedMonthYear, selectedMonth);
+                      setState(() {
+                        selectedMonth = '1';
+                        selectedMonthYear = '2010';
+                      });
                     },
                     child: Container(
                       height: 48.0,

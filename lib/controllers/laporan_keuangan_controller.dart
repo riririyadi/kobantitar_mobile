@@ -19,7 +19,7 @@ class LaporanKeuanganController extends GetxController {
     final data = await Service.fetchLaporanTahunan(token, tahun);
     if (data != null) {
       laporan = data;
-      Get.to(() => ViewDocument(), arguments: laporan.laporanUrl);
+      Get.off(() => ViewDocument(), arguments: laporan.laporanUrl);
     }
   }
 
@@ -27,7 +27,7 @@ class LaporanKeuanganController extends GetxController {
     final data = await Service.fetchLaporanBulanan(token, tahun, bulan);
     if (data != null) {
       laporan = data;
-      Get.to(() => ViewDocument(), arguments: laporan.laporanUrl);
+      Get.off(() => ViewDocument(), arguments: laporan.laporanUrl);
     }
   }
 }
