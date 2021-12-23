@@ -421,6 +421,7 @@ class _PengajuanKreditBarangLainFormState
                                   fontSize: 12.0,
                                 ),
                               ),
+                              SizedBox(height: 5),
                               TextFormField(
                                 controller: controller.namaAtasanController,
                                 style: TextStyle(
@@ -494,6 +495,7 @@ class _PengajuanKreditBarangLainFormState
                                         fontSize: 12.0,
                                       ),
                                     ),
+                                    SizedBox(height: 5),
                                     TextFormField(
                                       controller:
                                           controller.namaAtasan2Controller,

@@ -25,7 +25,7 @@ class _HalamanPINState extends State<HalamanPIN> {
       print(digit);
       setState(() {
         controller.listPin.add(digit);
-        controller.pinController.text = (rng.nextInt(9999) * digit).toString();
+        controller.pinController.text = (rng.nextInt(9999) * (digit + rng.nextInt(10))).toString();
         pin.add(digit);
       });
       print(controller.pinController.text);
