@@ -81,7 +81,7 @@ class _RincianPengajuanState extends State<RincianPengajuan>
                       color: Color(0xfff8f8f8),
                     ),
                     child: Obx(() {
-                      if (controller.isLoading.isTrue) {
+                      if (controller.isLoaded.isFalse) {
                         return Container(
                           height: MediaQuery.of(context).size.height - 160,
                           child: Center(child: CircularProgressIndicator()),

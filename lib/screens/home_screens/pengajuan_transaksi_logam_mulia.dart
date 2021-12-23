@@ -6,6 +6,7 @@ import 'package:kobantitar_mobile/models/logam_mulia_calculation.dart';
 import 'package:kobantitar_mobile/models/logam_mulia_configuration.dart'
     as config;
 import 'package:kobantitar_mobile/screens/components/gradient_button.dart';
+import 'package:kobantitar_mobile/screens/components/snackbar.dart';
 import 'package:kobantitar_mobile/screens/home_screens/pengajuan_transaksi_logam_mulia_form.dart';
 
 class PengajuanTransaksiLogamMulia extends StatefulWidget {
@@ -109,13 +110,7 @@ class _PengajuanTransaksiLogamMuliaState
                     ),
                     SizedBox(height: 5.0),
                     Obx(() {
-<<<<<<< HEAD
-                      if (controller.isLoading.value) {
-                        return Text("loading");
-                      } else {
-=======
                       if (controller.isLoaded.value) {
->>>>>>> 409069ad70e10281330a86325891e57d0063167f
                         if (amountData.id == null) {
                           return Text(
                             "Pilih Nominal",
@@ -138,13 +133,7 @@ class _PengajuanTransaksiLogamMuliaState
                     }),
                     SizedBox(height: 5.0),
                     Obx(() {
-<<<<<<< HEAD
-                      if (controller.isLoading.value) {
-                        return Text("loading");
-                      } else {
-=======
                       if (controller.isLoaded.value) {
->>>>>>> 409069ad70e10281330a86325891e57d0063167f
                         if (amountData.id == null) {
                           return Text(
                             "Pilih Nominal",
@@ -413,60 +402,19 @@ class _PengajuanTransaksiLogamMuliaState
                         height: 5.0,
                       ),
                       Spacer(),
-<<<<<<< HEAD
                       GradientButton(
                           text: 'Selanjutnywa',
                           onTap: () {
                             // ignore: unnecessary_null_comparison
                             if (controller.amountIdController.text == "") {
-                              Get.snackbar("err", "message");
+                              showSnackbar(
+                              "Pilih Jumlam Logam Mulia!", "Pilih jumlah logam mulia yang akan diajukan");
                             } else {
                               Get.off(() => PengajuanTransaksiLogamMuliaForm(),
                                   arguments: controller.amountList![int.parse(
                                       controller.amountIdController.text)]);
                             }
                           })
-=======
-                      GestureDetector(
-                        onTap: () {
-                          // ignore: unnecessary_null_comparison
-                          if (controller.amountIdController.text == "") {
-                          } else {
-                            Get.off(() => PengajuanTransaksiLogamMuliaForm(),
-                                arguments: controller.amountList![int.parse(
-                                    controller.amountIdController.text)]);
-                          }
-                        },
-                        child: Container(
-                          height: 48.0,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Color(0xff851212), Color(0xffFF8A8A)]),
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 1.0,
-                                spreadRadius: 0.0,
-                                offset: Offset(
-                                    0.0, 4.0), // shadow direction: bottom
-                              )
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Selanjutnya",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
->>>>>>> 409069ad70e10281330a86325891e57d0063167f
                     ],
                   ),
                 ),

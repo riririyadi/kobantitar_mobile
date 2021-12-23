@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
+      if (notification != null ) {
         showDialog(
             context: context,
             builder: (_) {
