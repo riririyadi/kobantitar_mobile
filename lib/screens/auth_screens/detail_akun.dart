@@ -46,6 +46,9 @@ class _DetailAkunState extends State<DetailAkun> {
                 if (value == "") {
                   return 'Email tidak boleh kosong';
                 }
+                if (!value!.contains('@')) {
+                  return 'Alamat email tidak valid';
+                }
                 return null;
               },
             ),
@@ -111,6 +114,9 @@ class _DetailAkunState extends State<DetailAkun> {
               validator: (value) {
                 if (value == "") {
                   return 'Password tidak boleh kosong';
+                }
+                if (value != "" && value!.length < 6) {
+                  return 'Password minimal 6 karakter';
                 }
                 return null;
               },

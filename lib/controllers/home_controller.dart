@@ -124,13 +124,12 @@ class HomeController extends GetxController {
           title: "Pembaruan tersedia",
           titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           content: Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("Update aplikasi anda untuk dukungan yang lebih optimal",
-                      style: TextStyle(fontSize: 14))
-                ]),
+            child: Center(
+              child: Text(
+                  "Update aplikasi anda untuk dukungan yang lebih optimal",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14)),
+            ),
           ),
           cancel: GestureDetector(
             onTap: () => Get.back(),
@@ -143,7 +142,8 @@ class HomeController extends GetxController {
             onTap: () => Get.back(),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("Update", style: TextStyle(fontSize: 14)),
+              child: Text("Update",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
             ),
           ),
           contentPadding: EdgeInsets.all(10),

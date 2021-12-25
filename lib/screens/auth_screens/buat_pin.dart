@@ -116,7 +116,7 @@ class _BuatPINState extends State<BuatPIN> {
                       autofocus: true,
                       keyboardType: TextInputType.number,
                     ),
-                     TextField(
+                    TextField(
                       maxLength: 6,
                       focusNode: confirmFocusNode,
                       controller: konfirmPin,
@@ -135,7 +135,7 @@ class _BuatPINState extends State<BuatPIN> {
               child: Container(
                 height: double.infinity,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 80),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -146,9 +146,12 @@ class _BuatPINState extends State<BuatPIN> {
                 child: counter == 0
                     ? Column(
                         children: [
-                          Text(
-                            "Buat PIN untuk keamanan",
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                          GestureDetector(
+                            onTap: () => focusNode.requestFocus(),
+                            child: Text(
+                              "Buat PIN untuk keamanan",
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
                           ),
                           SizedBox(height: 30),
                           GestureDetector(
@@ -202,69 +205,94 @@ class _BuatPINState extends State<BuatPIN> {
                           )
                         ],
                       )
-                    : Padding(
-                        padding: const EdgeInsets.only(bottom: 60),
-                        child: Column(
-                          children: [
-                            Text(
-                              "Verifikasi PIN untuk keamanan",
-                              style: TextStyle(fontWeight: FontWeight.w600),
+                    : Column(
+                        children: [
+                          Text(
+                            "Verifikasi PIN untuk keamanan",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(height: 30),
+                          GestureDetector(
+                            onTap: () => confirmFocusNode.requestFocus(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: konfirmPin.text.length >= 1
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: konfirmPin.text.length >= 2
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: konfirmPin.text.length >= 3
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: konfirmPin.text.length >= 4
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: konfirmPin.text.length >= 5
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                                SizedBox(width: 10),
+                                CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: konfirmPin.text.length >= 6
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 30),
-                            GestureDetector(
-                              onTap: () => confirmFocusNode.requestFocus(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor: konfirmPin.text.length >= 1
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor: konfirmPin.text.length >= 2
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor: konfirmPin.text.length >= 3
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor: konfirmPin.text.length >= 4
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor: konfirmPin.text.length >= 5
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                  SizedBox(width: 10),
-                                  CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor: konfirmPin.text.length >= 6
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
               ),
             ),
+            Positioned(
+                left: 20,
+                top: 85,
+                child: Container(
+                  child: counter == 1
+                      ? GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
+                              counter = 0;
+                              pinBaru.clear();
+                              konfirmPin.clear();
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.arrow_back_ios,
+                                size: 14,
+                              ),
+                              Text("Buat Ulang PIN",
+                                  style: TextStyle(fontSize: 12)),
+                            ],
+                          ),
+                        )
+                      : Row(),
+                )),
             Positioned(
               bottom: 4,
               left: 0,

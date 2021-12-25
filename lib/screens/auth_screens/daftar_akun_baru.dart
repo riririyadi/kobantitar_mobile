@@ -48,7 +48,12 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Color(0xffEE6A6A), Color(0xffC30707), Color(0xfff8f8f8),Color(0xfff8f8f8)]),
+                      colors: [
+                        Color(0xffEE6A6A),
+                        Color(0xffC30707),
+                        Color(0xfff8f8f8),
+                        Color(0xfff8f8f8)
+                      ]),
                 ),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -106,17 +111,30 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                         children: [
                           Row(
                             children: [
-                              CircleAvatar(
-                                backgroundColor: controller.step >= 0
-                                    ? Color(0xffE54444)
-                                    : Color(0xffe0e0e0),
-                                child: Icon(Icons.person,
-                                    size: 12.0, color: Colors.white),
-                                radius: 14,
+                              GestureDetector(
+                                onTap: controller.step > 0
+                                    ? () {
+                                        setState(() {
+                                          controller.step = 0;
+                                        });
+                                      }
+                                    : () {},
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: controller.step >= 0
+                                          ? Color(0xffE54444)
+                                          : Color(0xffe0e0e0),
+                                      child: Icon(Icons.person,
+                                          size: 12.0, color: Colors.white),
+                                      radius: 14,
+                                    ),
+                                    SizedBox(width: 5.0),
+                                    Text("Data Pribadi",
+                                        style: TextStyle(fontSize: 10.0)),
+                                  ],
+                                ),
                               ),
-                              SizedBox(width: 5.0),
-                              Text("Data Pribadi",
-                                  style: TextStyle(fontSize: 10.0)),
                               SizedBox(width: 5.0),
                               Container(
                                 height: 2,
@@ -126,17 +144,30 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                                     : BoxDecoration(color: Color(0xffe0e0e0)),
                               ),
                               SizedBox(width: 5.0),
-                              CircleAvatar(
-                                backgroundColor: controller.step >= 1
-                                    ? Color(0xffE54444)
-                                    : Color(0xffe0e0e0),
-                                child: Icon(Icons.home,
-                                    size: 12.0, color: Colors.white),
-                                radius: 14,
+                              GestureDetector(
+                                onTap: controller.step > 1
+                                    ? () {
+                                        setState(() {
+                                          controller.step = 1;
+                                        });
+                                      }
+                                    : () {},
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: controller.step >= 1
+                                          ? Color(0xffE54444)
+                                          : Color(0xffe0e0e0),
+                                      child: Icon(Icons.home,
+                                          size: 12.0, color: Colors.white),
+                                      radius: 14,
+                                    ),
+                                    SizedBox(width: 5.0),
+                                    Text("Detail Bank",
+                                        style: TextStyle(fontSize: 10.0)),
+                                  ],
+                                ),
                               ),
-                              SizedBox(width: 5.0),
-                              Text("Detail Bank",
-                                  style: TextStyle(fontSize: 10.0)),
                               SizedBox(width: 5.0),
                               Container(
                                 height: 2,
@@ -146,18 +177,31 @@ class _DaftarAkunBaruState extends State<DaftarAkunBaru> {
                                     : BoxDecoration(color: Color(0xffe0e0e0)),
                               ),
                               SizedBox(width: 5.0),
-                              CircleAvatar(
-                                backgroundColor: controller.step >= 2
-                                    ? Color(0xffE54444)
-                                    : Color(0xffe0e0e0),
-                                child: Icon(Icons.lock,
-                                    size: 12.0, color: Colors.white),
-                                radius: 14,
+                              GestureDetector(
+                                onTap: controller.step > 2
+                                    ? () {
+                                        setState(() {
+                                          controller.step = 2;
+                                        });
+                                      }
+                                    : () {},
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: controller.step >= 2
+                                          ? Color(0xffE54444)
+                                          : Color(0xffe0e0e0),
+                                      child: Icon(Icons.lock,
+                                          size: 12.0, color: Colors.white),
+                                      radius: 14,
+                                    ),
+                                    SizedBox(width: 5.0),
+                                    Text("Detail Akun",
+                                        style: TextStyle(fontSize: 10.0)),
+                                    SizedBox(width: 5.0),
+                                  ],
+                                ),
                               ),
-                              SizedBox(width: 5.0),
-                              Text("Detail Akun",
-                                  style: TextStyle(fontSize: 10.0)),
-                              SizedBox(width: 5.0),
                               Container(
                                 height: 2,
                                 width: 30,

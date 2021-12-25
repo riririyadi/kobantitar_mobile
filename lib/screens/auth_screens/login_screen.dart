@@ -166,8 +166,11 @@ class _LoginScreenState extends State<LoginScreen> {
         labelText: 'Masukkan email',
       ),
       validator: (value) {
+        if (value == "") {
+          return 'Email tidak boleh kosong';
+        }
         if (!value!.contains('@')) {
-          return 'Invalid email address';
+          return 'Alamat email tidak valid';
         }
         return null;
       },
@@ -200,8 +203,11 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       validator: (value) {
-        if (value!.length < 6) {
-          return 'Password must be at least 6 characters';
+        if (value == "") {
+          return 'Password tidak boleh kosong';
+        }
+        if (value != "" && value!.length < 6) {
+          return 'Password minimal 6 karakter';
         }
         return null;
       },

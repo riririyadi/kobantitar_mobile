@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:kobantitar_mobile/screens/auth_screens/login_screen.dart';
 import 'package:kobantitar_mobile/screens/components/camera.dart';
 import 'package:kobantitar_mobile/screens/splash_screen.dart';
 import 'package:get/get.dart';
