@@ -16,10 +16,6 @@ import 'package:kobantitar_mobile/screens/components/webview.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PengajuanLogamMuliaFormController extends GetxController {
-  var tenorController = TextEditingController();
-
-  var dateController = TextEditingController();
-  var keperluanController = TextEditingController();
   final userData = GetStorage();
   late String token;
   var isLoaded = false.obs;
@@ -32,6 +28,9 @@ class PengajuanLogamMuliaFormController extends GetxController {
   int? approvalFileId2;
   var termsUrl = "";
   var isDoubleApproval = false;
+  var tenorController = TextEditingController();
+  var dateController = TextEditingController();
+  var keperluanController = TextEditingController();
   var namaAtasanController = TextEditingController();
   var namaAtasan2Controller = TextEditingController();
 

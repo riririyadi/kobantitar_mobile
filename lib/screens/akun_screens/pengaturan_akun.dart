@@ -19,9 +19,6 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
   final PengaturanAkunController controller =
       Get.put(PengaturanAkunController());
 
-  int instansiValue = 4;
-  int bankValue = 5;
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +32,12 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xffEE6A6A), Color(0xffC30707), Color(0xfff8f8f8),Color(0xfff8f8f8)]),
+              colors: [
+                Color(0xffEE6A6A),
+                Color(0xffC30707),
+                Color(0xfff8f8f8),
+                Color(0xfff8f8f8)
+              ]),
         ),
         child: SafeArea(
           child: Stack(
@@ -502,7 +504,7 @@ class _PengaturanAkunState extends State<PengaturanAkun> {
                                                 BorderRadius.circular(10.0),
                                           ),
                                           labelText:
-                                              'Masukkan 16 digit Jabatan / Bagian / Dept',
+                                              'Masukkan Jabatan / Bagian / Dept',
                                         ),
                                       ),
                                     ),

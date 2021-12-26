@@ -1,7 +1,6 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:kobantitar_mobile/api_services/service.dart';
@@ -118,36 +117,53 @@ class HomeController extends GetxController {
     }
   }
 
+  Future openLinkUpdate(String uri) async {
+    if (await canLaunch(uri)) {
+      await launch(uri);
+    }
+  }
+
   void checkVersion() {
-    if (_packageInfo.version != setting.appVersionName!) {
-      Get.defaultDialog(
-          title: "Pembaruan tersedia",
-          titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          content: Container(
-            child: Center(
-              child: Text(
-                  "Update aplikasi anda untuk dukungan yang lebih optimal",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 14)),
+    if (setting.appVersionName != null) {
+      if (int.parse(_packageInfo.version.replaceAll(".", "")) <
+          int.parse(setting.appVersionName!.replaceAll(".", ""))) {
+        Get.defaultDialog(
+            title: "Pembaruan tersedia",
+            titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            content: Container(
+              child: Center(
+                child: Text(
+                    "Update aplikasi anda untuk dukungan yang lebih optimal",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14)),
+              ),
             ),
-          ),
-          cancel: GestureDetector(
-            onTap: () => Get.back(),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Nanti", style: TextStyle(fontSize: 14)),
+            cancel: GestureDetector(
+              onTap: () => Get.back(),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 8.0, 12.0, 8.0),
+                child: Text("Nanti", style: TextStyle(fontSize: 14)),
+              ),
             ),
-          ),
-          confirm: GestureDetector(
-            onTap: () => Get.back(),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Update",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+            confirm: GestureDetector(
+              onTap: () {
+                if (Platform.isAndroid) {
+                  openLinkUpdate(
+                      "https://play.google.com/store/apps/details?id=com.brainy.kobantitar");
+                } else if (Platform.isIOS) {
+                  openLinkUpdate("");
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12.0, 8.0, 8.0, 8.0),
+                child: Text("Update",
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              ),
             ),
-          ),
-          contentPadding: EdgeInsets.all(10),
-          titlePadding: EdgeInsets.all(10));
-    } else {}
+            contentPadding: EdgeInsets.all(10),
+            titlePadding: EdgeInsets.all(10));
+      }
+    }
   }
 }

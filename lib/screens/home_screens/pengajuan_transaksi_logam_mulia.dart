@@ -403,16 +403,17 @@ class _PengajuanTransaksiLogamMuliaState
                       ),
                       Spacer(),
                       GradientButton(
-                          text: 'Selanjutnywa',
+                          text: 'Selanjutnya',
                           onTap: () {
                             // ignore: unnecessary_null_comparison
                             if (controller.amountIdController.text == "") {
-                              showSnackbar(
-                              "Pilih Jumlam Logam Mulia!", "Pilih jumlah logam mulia yang akan diajukan");
+                              showSnackbar("Pilih Jumlah Logam Mulia!",
+                                  "Pilih jumlah logam mulia yang akan diajukan");
                             } else {
                               Get.off(() => PengajuanTransaksiLogamMuliaForm(),
                                   arguments: controller.amountList![int.parse(
                                       controller.amountIdController.text)]);
+                              controller.amountIdController.text == "";
                             }
                           })
                     ],

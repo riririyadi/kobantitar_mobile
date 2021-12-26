@@ -36,7 +36,12 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xffEE6A6A), Color(0xffC30707), Color(0xfff8f8f8),Color(0xfff8f8f8)]),
+              colors: [
+                Color(0xffEE6A6A),
+                Color(0xffC30707),
+                Color(0xfff8f8f8),
+                Color(0xfff8f8f8)
+              ]),
         ),
         child: SafeArea(
           child: Stack(
@@ -171,7 +176,7 @@ class _AmbilSimpananSukarelaState extends State<AmbilSimpananSukarela> {
                                   },
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Nominal Pengajuan tidak boleh kosong';
+                                      return 'Nominal Pengambilan tidak boleh kosong';
                                     }
                                   }),
                               SizedBox(

@@ -303,7 +303,7 @@ class _AkunWidgetState extends State<AkunWidget> {
                         );
                       } else {
                         return Text(
-                          "Loading",
+                          "Loading...",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -326,7 +326,7 @@ class _AkunWidgetState extends State<AkunWidget> {
                         );
                       } else {
                         return Text(
-                          "Loading",
+                          "Loading...",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -401,7 +401,7 @@ class _AkunWidgetState extends State<AkunWidget> {
                         );
                       } else {
                         return Text(
-                          "Loading",
+                          "Loading...",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -429,7 +429,7 @@ class _AkunWidgetState extends State<AkunWidget> {
                         ),
                       );
                     } else {
-                      return Text("Loading");
+                      return Text("Loading...");
                     }
                   }),
                   GestureDetector(
